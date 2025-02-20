@@ -1,0 +1,17 @@
+stage
+stageErect
+spooky
+spookyErect
+philly
+phillyErect
+limo
+limoErect
+mall
+mallErect
+mallEvil
+school
+schoolEvil
+tank
+streets
+streetsBlazin
+streetsErect

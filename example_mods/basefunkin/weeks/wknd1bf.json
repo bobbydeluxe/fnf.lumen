@@ -1,0 +1,26 @@
+{
+	"storyName": "Due Debts",
+	"difficulties": "Easy, Normal, Hard",
+	"hideFreeplay": false,
+	"weekBackground": "stage",
+	"weekBefore": "week7",
+	"startUnlocked": true,
+	"weekCharacters": [
+		"darnell",
+		"bf",
+		"gf"
+	],
+	"songs": [
+		[
+			"Darnell (BF Mix)",
+			"darnell",
+			[
+				65,
+				60,
+				174
+			]
+		]
+	],
+	"hideStoryMode": true,
+	"weekName": "Weekend 1"
+}
