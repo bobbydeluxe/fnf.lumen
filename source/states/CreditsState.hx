@@ -38,11 +38,11 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
-			['ReFlavored Stuff'],
+			['MintEngine Stuff'],
 			[
 				'BobbyDX',
 				'bobby',
-				'Created P-Slice ReFlavored',
+				'Created Mint Engine',
 				'https://github.com/bobbydeluxe',
 				'82faa2' // why tf is the formatting like this
 			],
@@ -64,8 +64,8 @@ class CreditsState extends MusicBeatState
 			[
 				'betopia',
 				'betpowo',
-				'GF + Speaker files',
-				'about:blank',
+				'sillyfont file',
+				'https://betpowo.github.io/',
 				'f52c6f'
 			],
 			[""],

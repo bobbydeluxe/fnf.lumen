@@ -141,7 +141,7 @@ class UserErrorSubstate extends MusicBeatSubstate
         function printError(error:CrashData)
         {
             var star = #if CHECK_FOR_UPDATES "" #else "*" #end;
-            printToTrace('PSLICE-REFLAVOR ${MainMenuState.psFlavorVersion}$star  (${error.message})');
+            printToTrace('MintEngine ${MainMenuState.mintEngineVersion}$star  (${error.message})');
             textNextY += 35;
             FlxTimer.wait(1 / 24, () ->
             {
@@ -172,7 +172,7 @@ class UserErrorSubstate extends MusicBeatSubstate
                 printToTrace('RUNTIME INFORMATION');
                 var date_split = error.date.split(" ");
                 printToTrace('TIME:${date_split[1].rpad(" ",9)} DATE:${date_split[0]}');
-                printToTrace('MOD:${error.activeMod.rpad(" ",10)} PE:${MainMenuState.psychEngineVersion.rpad(" ", 5)} SYS:${error.systemName}');
+                printToTrace('MOD:${error.activeMod.rpad(" ",10)} VER:${MainMenuState.mintEngineVersion.rpad(" ", 5)} SYS:${error.systemName}');
                 printSpaceToTrace();
                 if(isCritical) printToTrace('REPORT TO GITHUB.COM/BOBBYDELUXE/PSLICE-REFLAVORED');
                 else printToTrace('');
@@ -195,7 +195,7 @@ class UserErrorSubstate extends MusicBeatSubstate
             var star = #if CHECK_FOR_UPDATES "" #else "*" #end;
             dateNow = dateNow.replace(' ', '_');
             dateNow = dateNow.replace(':', "'");
-            errMsg += 'ReFlavored ${MainMenuState.psFlavorVersion}$star\n';
+            errMsg += 'MintEngine ${MainMenuState.mintEngineVersion}$star\n';
             errMsg += '\nUncaught Error: ' + error.message + "\n";
             for (x in error.extendedTrace)
             {
@@ -205,13 +205,13 @@ class UserErrorSubstate extends MusicBeatSubstate
             errMsg += 'Active mod: ${error.activeMod}\n';
             errMsg += 'Platform: ${error.systemName}\n';
             errMsg += '\n';
-            errMsg += '\nPlease report this error to the GitHub page: https://github.com/Psych-Slice/P-Slice\n\n> Crash Handler written by: sqirra-rng';
+            errMsg += '\nPlease report this error to the GitHub page: https://github.com/bobbydeluxe/FNF-MintEngine\n\n> Crash Handler written by: sqirra-rng';
     
             #if !LEGACY_PSYCH
             @:privateAccess // lazy
             backend.CrashHandler.saveErrorMessage(errMsg + '\n');
             #else
-            var path = './crash/' + 'PSlice_' + dateNow + '.txt';
+            var path = './crash/' + 'MintEngine_' + dateNow + '.txt';
             File.saveContent(path, errMsg + '\n');
             Sys.println(errMsg);
             #end

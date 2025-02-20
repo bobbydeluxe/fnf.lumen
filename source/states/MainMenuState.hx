@@ -11,7 +11,7 @@ import options.OptionsState;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psFlavorVersion:String = '0.1';
+	public static var mintEngineVersion:String = '0.1';
 	public static var psychEngineVersion:String = '1.0'; // This is also used for Discord RPC
 	public static var pSliceVersion:String = '2.2.2'; 
 	public static var funkinVersion:String = '0.5.3'; // Version of funkin' we are emulationg
@@ -98,7 +98,7 @@ class MainMenuState extends MusicBeatState
 		}
 
 		var psychVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, "Psych Engine " + psychEngineVersion, 12);
-		var fnfVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, 'v${funkinVersion} (P-Slice ${pSliceVersion}, ReFlavored Build ${psFlavorVersion})', 12);
+		var fnfVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, 'v${funkinVersion} (P-Slice ${pSliceVersion}, MintEngine ${mintEngineVersion})', 12);
 
 		psychVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		fnfVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
