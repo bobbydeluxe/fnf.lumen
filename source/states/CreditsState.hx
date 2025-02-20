@@ -68,6 +68,7 @@ class CreditsState extends MusicBeatState
 				'https://betpowo.github.io/',
 				'f52c6f'
 			],
+			['MrPolo', 'polo', 'IntroVideoState code', 'about:blank', '7a4b37'],
 			[""],
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
