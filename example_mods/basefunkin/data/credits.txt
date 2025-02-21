@@ -1,6 +1,0 @@
-Bobby's Funkin' Recode
-Ledonic::ledo::Ported Weekend 1 and Erect Remixes::http://www.youtube.com/@ledonic852::0061D8
-cyachao::::Provided the updated rain shader\nObtained at the Psych Ward (Official Psych Discord Server)::::A1A1A1
-bobbyDX::bobby::Made the recode::::FFDD33
-skellix::skellix::credits script::https://gamebanana.com/members/2294895::42FF75
-UliseGas::ulise::week3 picomix cutscene script::about:blank::BFBFFF
