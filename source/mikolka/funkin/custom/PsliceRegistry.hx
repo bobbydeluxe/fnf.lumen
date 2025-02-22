@@ -6,7 +6,7 @@ import haxe.Json;
 class PsliceRegistry {
     final regPath:String;
     public function new(registryName:String) {
-        regPath = 'registry/$registryName';
+        regPath = 'data/registry/$registryName';
     }
     function readJson(id:String):Dynamic {
         var char_path = FunkinPath.getPath('$regPath/$id.json');
