@@ -21,7 +21,7 @@ class ModsHelper {
 	}
 	public static function getModsWithPlayersRegistry():Array<String> {
 		#if MODS_ALLOWED
-		return Mods.parseList().enabled.filter(s ->FileSystem.exists(Paths.mods(s)+'/registry/players'));
+		return Mods.parseList().enabled.filter(s ->FileSystem.exists(Paths.mods(s)+'/data/registry/players'));
 		#else
 		return [];
 		#end

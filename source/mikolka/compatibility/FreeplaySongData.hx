@@ -102,10 +102,10 @@ using mikolka.funkin.utils.ArrayTools;
  
          Mods.currentModDirectory = this.folder;
          var fileSngName = Paths.formatToSongPath(songId);
-         var sngDataPath = Paths.getSharedPath("data/"+fileSngName);
+         var sngDataPath = Paths.getSharedPath("data/songs/"+fileSngName);
  
          #if MODS_ALLOWED
-         var mod_path = Paths.modFolders("data/"+fileSngName);
+         var mod_path = Paths.modFolders("data/songs/"+fileSngName);
          if(FileSystem.exists(mod_path)) sngDataPath = mod_path;
          #end
          
