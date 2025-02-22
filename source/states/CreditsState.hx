@@ -40,7 +40,7 @@ class CreditsState extends MusicBeatState
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			['MintEngine Stuff'],
 			[
-				'BobbyDX',
+				'bobbyDX',
 				'bobby',
 				'Created Mint Engine',
 				'https://github.com/bobbydeluxe',
@@ -69,6 +69,7 @@ class CreditsState extends MusicBeatState
 				'f52c6f'
 			],
 			['MrPolo', 'polo', 'IntroVideoState code', 'about:blank', '7a4b37'],
+			['JustDragos', 'dragos', 'Lil Buddies code', 'https://gamebanana.com/tuts/18304', 'e3b74f'],
 			[""],
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],

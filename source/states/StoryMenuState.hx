@@ -101,7 +101,7 @@ class StoryMenuState extends MusicBeatState
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32);
 
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
-		txtWeekTitle.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		txtWeekTitle.setFormat(Paths.font("sillyfont.ttf"), 32, FlxColor.WHITE, RIGHT);
 		txtWeekTitle.alpha = 0.7;
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
@@ -457,7 +457,7 @@ class StoryMenuState extends MusicBeatState
 		WeekData.setDirectoryFromWeek(leWeek);
 
 		var leName:String = Language.getPhrase('storyname_${leWeek.fileName}', leWeek.storyName);
-		txtWeekTitle.text = leName.toUpperCase();
+		//txtWeekTitle.text = leName.toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
 
 		var unlocked:Bool = !weekIsLocked(leWeek.fileName);

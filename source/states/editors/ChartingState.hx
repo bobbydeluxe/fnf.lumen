@@ -216,6 +216,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var waveformEnabled:Bool = false;
 	var waveformTarget:WaveformTarget = INST;
 
+	var lilBf:FlxSprite;
+    var lilOpp:FlxSprite;
+
 	override function create()
 	{
 		if(Difficulty.list.length < 1) Difficulty.resetList();
@@ -282,6 +285,65 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		add(behindRenderedNotes);
 		add(curRenderedNotes);
 		add(movingNotes);
+
+		//LilStage
+        var lilStage:FlxSprite = new FlxSprite(0).loadGraphic(Paths.image('chartEditor/lilStage'));
+        lilStage.antialiasing = ClientPrefs.data.antialiasing;
+        lilStage.scrollFactor.set(0, 0);
+        lilStage.x = 10;
+        lilStage.y = 400;
+        lilStage.setGraphicSize(Std.int(lilStage.width));
+        lilStage.updateHitbox();
+        add(lilStage);
+
+		 //Lilbf
+        lilBf = new FlxSprite(0, 0);
+        lilBf.frames = Paths.getSparrowAtlas('ChartEditor/lilBf');
+        lilBf.animation.addByPrefix('idle', 'lilbf idle', 12, true);
+        lilBf.animation.play('idle');
+        
+        lilBf.animation.addByPrefix('0', 'lilbf left', 12, true);
+        //lilBf.animation.play('left');
+        lilBf.animation.addByPrefix('1', 'lilbf down', 12, true);
+        //lilBf.animation.play('down');
+        lilBf.animation.addByPrefix('2', 'lilbf up', 12, true);
+        //lilBf.animation.play('up');
+        lilBf.animation.addByPrefix('3', 'lilbf right', 12, true);
+        //lilBf.animation.play('right');
+        lilBf.antialiasing = ClientPrefs.data.antialiasing;
+        lilBf.scrollFactor.set(0, 0);
+        lilBf.setGraphicSize(Std.int(lilBf.width));
+        lilBf.x = 0;
+        lilBf.y = 400;
+        lilBf.updateHitbox();
+        add(lilBf);
+
+		//LilOponent
+        lilOpp = new FlxSprite(0, 0);
+        lilOpp.frames = Paths.getSparrowAtlas('ChartEditor/lilOpp');
+        
+        lilOpp.animation.addByPrefix('idle', 'lilOpp idle', 12, true);
+        lilOpp.animation.play('idle');
+        
+        lilOpp.animation.addByPrefix('0', 'lilOpp left', 12, true);
+        //lilBf.animation.play('left');
+        
+        lilOpp.animation.addByPrefix('1', 'lilOpp down', 12, true);
+        //lilBf.animation.play('down');
+        
+        lilOpp.animation.addByPrefix('2', 'lilOpp up', 12, true);
+        //lilBf.animation.play('up');
+        
+        lilOpp.animation.addByPrefix('3', 'lilOpp right', 12, true);
+        //lilBf.animation.play('right');
+        
+        lilOpp.antialiasing = ClientPrefs.data.antialiasing;
+        lilOpp.scrollFactor.set(0, 0);
+        lilOpp.setGraphicSize(Std.int(lilOpp.width));
+        lilOpp.x = 15;
+        lilOpp.y = 400;
+        lilOpp.updateHitbox();
+        add(lilOpp);
 
 		eventLockOverlay = new FlxSprite(gridBg.x, 0).makeGraphic(1, 1, FlxColor.BLACK);
 		eventLockOverlay.alpha = 0.6;
@@ -928,6 +990,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 					if(FlxG.sound.music.playing)
 						setSongPlaying(false);
 
+					lilOpp.animation.play('idle');
+        			lilBf.animation.play('idle');
+
 					if(mouseSnapCheckBox.checked && FlxG.mouse.wheel != 0)
 					{
 						var snap:Float = Conductor.stepCrochet / (curQuant/16) / curZoom;
@@ -951,6 +1016,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				else if(FlxG.keys.justPressed.SPACE)
 				{
 					setSongPlaying(!FlxG.sound.music.playing);
+
+					lilOpp.animation.play('idle');
+        			lilBf.animation.play('idle');
 				}
 			}
 
@@ -1476,6 +1544,11 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 							strumNote.resetAnim = Math.max(Conductor.stepCrochet * 1.25, note.sustainLength) / 1000 / playbackRate;
 						}
 					}
+
+						if(note.mustPress)
+						lilBf.animation.play("" + (note.noteData % 4), true);
+						if(!note.mustPress)
+						lilOpp.animation.play("" + (note.noteData % 4), true);
 				}
 			}
 			forceDataUpdate = false;
@@ -2120,6 +2193,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		if(sec != null) curSec = sec;
 		curSec = Std.int(FlxMath.bound(curSec, 0, PlayState.SONG.notes.length-1));
 		Conductor.bpm = cachedSectionBPMs[curSec];
+
+		lilOpp.animation.play('idle');
+        lilBf.animation.play('idle');
 
 		var hei:Float = 0;
 		if(curSec > 0)
