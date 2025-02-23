@@ -144,7 +144,7 @@ class Mods
 		#if MODS_ALLOWED
 		if(folder == null) folder = Mods.currentModDirectory;
 
-		var path = Paths.mods(folder + '/_meta.json');
+		var path = Paths.mods(folder + '/metadata.json');
 		if(FileSystem.exists(path)) {
 			try {
 				#if sys

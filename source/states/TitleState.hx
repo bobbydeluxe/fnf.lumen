@@ -93,7 +93,7 @@ class TitleState extends MusicBeatState
 			http.onData = function(data:String)
 			{
 				updateVersion = data.split('\n')[0].trim();
-				var curVersion:String = MainMenuState.psFlavorVersion.trim();
+				var curVersion:String = MainMenuState.mintEngineVersion.trim();
 				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
 				if (updateVersion != curVersion)
 				{

@@ -78,7 +78,7 @@ class StageData {
 	public static function getStageFile(stage:String):StageFile {
 		try
 		{
-			var path:String = Paths.getPath('stages/' + stage + '.json', TEXT, null, true);
+			var path:String = Paths.getPath('data/stages/' + stage + '.json', TEXT, null, true);
 			#if MODS_ALLOWED
 			if(FileSystem.exists(path))
 				return cast tjson.TJSON.parse(File.getContent(path));
@@ -92,7 +92,7 @@ class StageData {
 
 	public static function vanillaSongStage(songName):String
 	{
-		switch (songName)
+		/*switch (songName)
 		{
 			case 'spookeez' | 'south' | 'monster':
 				return 'spooky';
@@ -110,7 +110,7 @@ class StageData {
 				return 'schoolEvil';
 			case 'ugh' | 'guns' | 'stress':
 				return 'tank';
-		}
+		}*/
 		return 'stage';
 	}
 

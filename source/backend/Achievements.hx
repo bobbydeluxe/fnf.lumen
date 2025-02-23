@@ -211,11 +211,11 @@ class Achievements {
 
 		var modLoaded:String = Mods.currentModDirectory;
 		Mods.currentModDirectory = null;
-		loadAchievementJson(Paths.mods('data/achievements.json'));
+		loadAchievementJson(Paths.mods('data/config/achievements.json'));
 		for (i => mod in Mods.parseList().enabled)
 		{
 			Mods.currentModDirectory = mod;
-			loadAchievementJson(Paths.mods('$mod/data/achievements.json'));
+			loadAchievementJson(Paths.mods('$mod/data/config/achievements.json'));
 		}
 		Mods.currentModDirectory = modLoaded;
 	}

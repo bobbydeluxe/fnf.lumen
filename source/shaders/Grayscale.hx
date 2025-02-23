@@ -9,7 +9,7 @@ class Grayscale extends FlxRuntimeShader
 
   public function new(amount:Float = 1)
   {
-    super(Assets.getText(Paths.getPath('shaders/grayscale.frag', TEXT, null,false)));
+    super(Assets.getText(Paths.getPath('data/shaders/grayscale.frag', TEXT, null,false)));
     setAmount(amount);
   }
 

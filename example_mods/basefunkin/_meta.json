@@ -1,7 +1,0 @@
-{
-    "name": "Base FNF",
-    "description": "Content from Vanilla Funkin' ported as a mod folder, done in lua\n\nCreated for P-Slice ReFlavored",
-    "restart":false,
-    "runsGlobally": true,
-    "color": [0, 170, 255]
-}

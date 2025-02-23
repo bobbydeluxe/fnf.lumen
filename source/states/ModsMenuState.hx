@@ -903,7 +903,7 @@ class ModItem extends FlxSpriteGroup
 		this.folder = folder;
 		pack = Mods.getPack(folder);
 
-		var path:String = Paths.mods('$folder/data/settings.json');
+		var path:String = Paths.mods('$folder/data/config/settings.json');
 		if (FileSystem.exists(path))
 		{
 			try
@@ -935,10 +935,10 @@ class ModItem extends FlxSpriteGroup
 		add(text);
 
 		var isPixel = false;
-		var file:String = Paths.mods('$folder/_icon.png');
+		var file:String = Paths.mods('$folder/data/config/icon.png');
 		if (!FileSystem.exists(file))
 		{
-			file = Paths.mods('$folder/_icon-pixel.png');
+			file = Paths.mods('$folder/data/config/iconPixel.png');
 			isPixel = true;
 		}
 

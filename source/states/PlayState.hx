@@ -472,8 +472,8 @@ class PlayState extends MusicBeatState
 		
 		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 		// STAGE SCRIPTS
-		#if LUA_ALLOWED startLuasNamed('stages/' + curStage + '.lua'); #end
-		#if HSCRIPT_ALLOWED startHScriptsNamed('stages/' + curStage + '.hx'); #end
+		#if LUA_ALLOWED startLuasNamed('scripts/stages/' + curStage + '.lua'); #end
+		#if HSCRIPT_ALLOWED startHScriptsNamed('scripts/stages/' + curStage + '.hx'); #end
 
 		// CHARACTER SCRIPTS
 		if(gf != null) startCharacterScripts(gf.curCharacter);
@@ -590,16 +590,16 @@ class PlayState extends MusicBeatState
 
 		#if LUA_ALLOWED
 		for (notetype in noteTypes)
-			startLuasNamed('custom_notetypes/' + notetype + '.lua');
+			startLuasNamed('scripts/notetypes/' + notetype + '.lua');
 		for (event in eventsPushed)
-			startLuasNamed('custom_events/' + event + '.lua');
+			startLuasNamed('scripts/events/' + event + '.lua');
 		#end
 
 		#if HSCRIPT_ALLOWED
 		for (notetype in noteTypes)
-			startHScriptsNamed('custom_notetypes/' + notetype + '.hx');
+			startHScriptsNamed('scripts/notetypes/' + notetype + '.hx');
 		for (event in eventsPushed)
-			startHScriptsNamed('custom_events/' + event + '.hx');
+			startHScriptsNamed('scripts/events/' + event + '.hx');
 		#end
 		noteTypes = null;
 		eventsPushed = null;
@@ -788,7 +788,7 @@ class PlayState extends MusicBeatState
 		// Lua
 		#if LUA_ALLOWED
 		var doPush:Bool = false;
-		var luaFile:String = 'characters/$name.lua';
+		var luaFile:String = 'scripts/characters/$name.lua';
 		#if MODS_ALLOWED
 		var replacePath:String = Paths.modFolders(luaFile);
 		if(FileSystem.exists(replacePath))
