@@ -612,7 +612,7 @@ class PlayState extends MusicBeatState
 
 		// SONG SPECIFIC SCRIPTS
 		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/$songName/'))
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/songs/$songName/'))
 			#if linux
 			for (file in CoolUtil.sortAlphabetically(Paths.readDirectory(folder)))
 			#else
