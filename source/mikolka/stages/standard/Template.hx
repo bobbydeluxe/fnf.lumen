@@ -1,6 +1,4 @@
-package states.stages;
-
-
+package mikolka.stages.standard;
 
 class Template extends BaseStage
 {
