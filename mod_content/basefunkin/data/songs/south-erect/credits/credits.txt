@@ -1,0 +1,2 @@
+Kawai_Sprite,_Saruky
+fabs,_Spazkid

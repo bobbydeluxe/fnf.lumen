@@ -1,0 +1,40 @@
+{
+	"storyName": "Tankman",
+	"difficulties": "Easy, Normal, Hard",
+	"hideFreeplay": false,
+	"weekBackground": "tank",
+	"weekBefore": "week5pico",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
+	"startUnlocked": true,
+	"weekCharacters": [
+		"tankman",
+		"pico-player",
+		"nene"
+	],
+	"songs": [
+		[
+			"Ugh (Pico Mix)",
+			"tankman",
+			[
+				246,
+				182,
+				4
+			]
+		],
+		[
+			"Guns (Pico Mix)",
+			"tankman",
+			[
+				246,
+				182,
+				4
+			]
+		]
+	],
+	"hideStoryMode": true,
+	"weekName": "Week 7"
+}

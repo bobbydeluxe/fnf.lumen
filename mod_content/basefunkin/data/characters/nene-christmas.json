@@ -1,0 +1,79 @@
+{
+	"animations": [
+		{
+			"offsets": [-129, 59],
+			"loop": false,
+			"fps": 24,
+			"anim": "cheer",
+			"indices": [],
+			"name": "combo celebration 1 nene xmas"
+		},
+		{
+			"offsets": [-51, -16],
+			"loop": false,
+			"fps": 18,
+			"anim": "fawn",
+			"indices": [0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6],
+			"name": "fawn nene xmas"
+		},
+		{
+			"offsets": [0, 52],
+			"loop": false,
+			"fps": 24,
+			"anim": "knifeRaise",
+			"indices": [],
+			"name": "knife raise xmas"
+		},
+		{
+			"offsets": [134, 51],
+			"loop": false,
+			"fps": 16,
+			"anim": "knifelower",
+			"indices": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+			"name": "knife lower xmas"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
+			"anim": "danceLeft",
+			"indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+			"name": "Nene Abot Idle xmas"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
+			"anim": "danceRight",
+			"indices": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+			"name": "Nene Abot Idle xmas"
+		},
+		{
+			"offsets": [0, 0],
+			"loop": false,
+			"fps": 24,
+			"anim": "drop70",
+			"indices": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11],
+			"name": "laughing nene xmas"
+		},
+		{
+			"offsets": [-110, 52],
+			"loop": true,
+			"fps": 24,
+			"anim": "idleKnife",
+			"indices": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+			"name": "knife high held xmas"
+		}
+	],
+	"vocals_file": "",
+	"no_antialiasing": false,
+	"image": "characters/xmas/neneChristmas",
+	"position": [40, 50],
+	"healthicon": "face",
+	"flip_x": false,
+	"healthbar_colors": [161, 161, 161],
+	"camera_position": [10, -20],
+	"sing_duration": 4,
+	"scale": 0.999999999999999,
+	"_editor_isPlayer": false
+}

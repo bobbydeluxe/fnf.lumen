@@ -1,0 +1,7 @@
+{
+    "name": "Base FNF",
+    "description": "Assets and Songs from the vanilla game, ported to MintEngine",
+    "restart":false,
+    "runsGlobally": true,
+    "color": [0, 255, 128]
+}
