@@ -302,7 +302,7 @@ class StoryMenuState extends MusicBeatState
 				persistentUpdate = false;
 				openSubState(new GameplayChangersSubstate());
 				#if TOUCH_CONTROLS_ALLOWED
-				removeTouchPad();
+				removeTouchPad();//
 				#end
 			}
 			else if(controls.RESET #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonY.justPressed #end)
@@ -457,7 +457,7 @@ class StoryMenuState extends MusicBeatState
 		WeekData.setDirectoryFromWeek(leWeek);
 
 		var leName:String = Language.getPhrase('storyname_${leWeek.fileName}', leWeek.storyName);
-		txtWeekTitle.text = leName
+		txtWeekTitle.text = leName;
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
 
 		var unlocked:Bool = !weekIsLocked(leWeek.fileName);

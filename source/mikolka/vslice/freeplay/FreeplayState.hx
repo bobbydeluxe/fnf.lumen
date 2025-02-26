@@ -43,6 +43,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import options.GameplayChangersSubstate;
 
 using mikolka.funkin.custom.FunkinTools;
 using mikolka.funkin.utils.ArrayTools;
@@ -1710,7 +1711,14 @@ class FreeplayState extends MusicBeatSubstate
 			diffSelRight.setPress(false);
 			diffSelLeft.setPress(false);
 		}
-
+		if(FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonX.justPressed #end)
+		{
+			persistentUpdate = false;
+			openSubState(new GameplayChangersSubstate());
+			#if TOUCH_CONTROLS_ALLOWED
+			removeTouchPad();//
+			#end
+		}
 		if (controls.BACK && !busy)
 		{
 			busy = true;
