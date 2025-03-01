@@ -1,6 +1,5 @@
 package mikolka.stages.standard;
 
-import mikolka.stages.objects.StageSpotlight;
 import mikolka.compatibility.VsliceOptions;
 #if !LEGACY_PSYCH
 import objects.Character;
@@ -37,6 +36,5 @@ class StageWeek1 extends BaseStage
 			stageCurtains.updateHitbox();
 			add(stageCurtains);
 		}
-		new StageSpotlight(200,0);
 	}
 }

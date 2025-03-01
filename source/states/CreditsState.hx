@@ -69,7 +69,7 @@ class CreditsState extends MusicBeatState
 				'f52c6f'
 			],
 			['MrPolo', 'polo', 'IntroVideoState code', 'about:blank', '7a4b37'],
-			['JustDragos', 'dragos', 'Lil Buddies code', 'https://gamebanana.com/tuts/18304', 'e3b74f'],
+			['Moonlight_Catalyst',		'moonlight_catalyst',		'Chart Editor Code',								'https://www.youtube.com/channel/UCmvsORFe7ZldiG4budmzELA',	'9764B7'],
 			[""],
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],

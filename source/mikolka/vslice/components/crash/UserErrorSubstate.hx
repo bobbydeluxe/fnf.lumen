@@ -174,7 +174,7 @@ class UserErrorSubstate extends MusicBeatSubstate
                 printToTrace('TIME:${date_split[1].rpad(" ",9)} DATE:${date_split[0]}');
                 printToTrace('MOD:${error.activeMod.rpad(" ",10)} VER:${MainMenuState.mintEngineVersion.rpad(" ", 5)} SYS:${error.systemName}');
                 printSpaceToTrace();
-                if(isCritical) printToTrace('REPORT TO GITHUB.COM/BOBBYDELUXE/PSLICE-REFLAVORED');
+                if(isCritical) printToTrace('REPORT TO GITHUB.COM/BOBBYDELUXE/FNF-MINTENGINE');
                 else printToTrace('');
                 if(isCritical){
                     if(controls.mobileC) printToTrace('TAP ANYWHERE TO RESTART');

@@ -11,7 +11,6 @@ class Tank extends BaseStage
 {
 	var tankWatchtower:BGSprite;
 	var tankGround:BackgroundTank;
-	var tankmanRun:FlxTypedGroup<TankmenBG>;
 	var foregroundSprites:FlxTypedGroup<BGSprite>;
 
 	override function create()
@@ -56,9 +55,6 @@ class Tank extends BaseStage
 		tankGround = new BackgroundTank();
 		add(tankGround);
 
-		tankmanRun = new FlxTypedGroup<TankmenBG>();
-		add(tankmanRun);
-
 		var ground:BGSprite = new BGSprite('tankGround', -420, -150);
 		ground.setGraphicSize(Std.int(1.15 * ground.width));
 		ground.updateHitbox();
@@ -72,55 +68,8 @@ class Tank extends BaseStage
 		foregroundSprites.add(new BGSprite('tank5', 1620, 700, 1.5, 1.5, ['fg']));
 		if(!VsliceOptions.LOW_QUALITY) foregroundSprites.add(new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']));
 
-		// Default GFs
-		if(songName == 'stress') setDefaultGF('pico-speaker');
-		else setDefaultGF('gf-tankmen');
-		
-		/*if (isStoryMode && !seenCutscene)
-		{
-			switch (songName.toLowerCase())
-			{
-				case 'ugh':
-					setStartCallback(ughIntro);
-				case 'guns':
-					setStartCallback(gunsIntro);
-				case 'stress':
-					setStartCallback(stressIntro);
-			}
-		}*/
+		setDefaultGF('gf-tankmen');
 		super.create();
-	}
-	override function createPost()
-	{
-		super.createPost();
-		add(foregroundSprites);
-
-		if(!VsliceOptions.LOW_QUALITY)
-		{
-			for (daGf in gfGroup)
-			{
-				var gf:Character = cast daGf;
-				if(gf.curCharacter == 'pico-speaker')
-				{
-					var firstTank:TankmenBG = new TankmenBG(20, 500, true);
-					firstTank.resetShit(20, 1500, true);
-					firstTank.strumTime = 10;
-					firstTank.visible = false;
-					tankmanRun.add(firstTank);
-
-					for (i in 0...TankmenBG.animationNotes.length)
-					{
-						if(FlxG.random.bool(16)) {
-							var tankBih = tankmanRun.recycle(TankmenBG);
-							tankBih.strumTime = TankmenBG.animationNotes[i][0];
-							tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
-							tankmanRun.add(tankBih);
-						}
-					}
-					break;
-				}
-			}
-		}
 	}
 
 	override function countdownTick(count:Countdown, num:Int) if(num % 2 == 0) everyoneDance();

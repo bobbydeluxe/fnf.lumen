@@ -1,5 +1,6 @@
 package states;
 
+import bobbydx.stages.EventLoader;
 import mikolka.JoinedLuaVariables;
 import substates.StickerSubState;
 import mikolka.vslice.freeplay.FreeplayState;
@@ -392,11 +393,7 @@ class PlayState extends MusicBeatState
 		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
 		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
 
-		switch (curStage)
-		{
-			case 'stage': new StageWeek1(); 						//Week 1
-			case 'tank': new Tank();								//Week 7
-		}
+		EventLoader.addstage(curStage);
 		if(isPixelStage) introSoundsSuffix = '-pixel';
 
 		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
@@ -824,7 +821,7 @@ class PlayState extends MusicBeatState
 		// HScript
 		#if HSCRIPT_ALLOWED
 		var doPush:Bool = false;
-		var scriptFile:String = 'characters/' + name + '.hx';
+		var scriptFile:String = 'scripts/characters/' + name + '.hx';
 		#if MODS_ALLOWED
 		var replacePath:String = Paths.modFolders(scriptFile);
 		if(FileSystem.exists(replacePath))
@@ -3928,7 +3925,7 @@ class PlayState extends MusicBeatState
 			return true;
 		}
 
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'shaders/'))
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/shaders/'))
 		{
 			var frag:String = folder + name + '.frag';
 			var vert:String = folder + name + '.vert';
