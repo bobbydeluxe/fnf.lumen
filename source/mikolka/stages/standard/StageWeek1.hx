@@ -8,9 +8,6 @@ import objects.Note;
 
 class StageWeek1 extends BaseStage
 {
-	var dadbattleBlack:BGSprite;
-	var dadbattleLight:BGSprite;
-	var dadbattleFog:DadBattleFog;
 	override function create()
 	{
 		var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
