@@ -88,7 +88,7 @@ class TitleState extends MusicBeatState
 		if (ClientPrefs.data.checkForUpdates && !closedState)
 		{
 			trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/bobbydeluxe/pslice-reflavored/main/gitVersion.txt");
+			var http = new haxe.Http("https://raw.githubusercontent.com/bobbydeluxe/pslice.mint/main/gitVersion.txt");
 
 			http.onData = function(data:String)
 			{

@@ -64,12 +64,13 @@ class CreditsState extends MusicBeatState
 			[
 				'betopia',
 				'betpowo',
-				'sillyfont file',
+				'sillyfont file + gf spritesheets',
 				'https://betpowo.github.io/',
 				'f52c6f'
 			],
 			['MrPolo', 'polo', 'IntroVideoState code', 'about:blank', '7a4b37'],
-			['GoodieBag', 'goodie', 'Press Enter To Begin Text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
+			['JoaDash', 'joadash', 'BF alt dodge anim', 'https://gamebanana.com/members/1816005', '89aae0'],
+			['GoodieBag', 'goodie', 'Lil Buddies and Press Enter To Begin text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
 			[""],
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],

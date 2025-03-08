@@ -44,7 +44,7 @@ class OutdatedState extends MusicBeatState
 		if(!leftState) {
 			if (controls.ACCEPT) {
 				leftState = true;
-				CoolUtil.browserLoad("https://github.com/bobbydeluxe/pslice-reflavored");
+				CoolUtil.browserLoad("https://github.com/bobbydeluxe/pslice.mint");
 			}
 			else if(controls.BACK) {
 				leftState = true;

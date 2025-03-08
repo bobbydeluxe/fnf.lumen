@@ -1143,8 +1143,8 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "setObjectCamera", function(obj:String, camera:String = 'game') {
-			var real = game.getLuaObject(obj);
-			if(real!=null){
+			var real:FlxBasic = game.getLuaObject(obj);
+			if(real != null) {
 				real.cameras = [LuaUtils.cameraFromString(camera)];
 				return true;
 			}
@@ -1250,7 +1250,7 @@ class FunkinLua {
 			if(!Assets.exists(path, TEXT))
 			#end
 			#end
-				path = Paths.getPath('data/$songPath/$dialogueFile.json', TEXT);
+				path = Paths.getPath('data/songs/$songPath/$dialogueFile.json', TEXT);
 
 			luaTrace('startDialogue: Trying to load dialogue: ' + path);
 

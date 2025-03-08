@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/bobbydeluxe/FNF-MintEngine/main/art/banner.png)
+![](https://raw.githubusercontent.com/bobbydeluxe/pslice.mint/main/art/banner.png)
 
 # Friday Night Funkin | MintEngine
 
