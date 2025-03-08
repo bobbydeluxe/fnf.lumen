@@ -9,43 +9,43 @@ function onCreate()
 	-- background shit
 	tankSpeed = getRandomInt(5, 7);
 	tankAngle = getRandomInt(-90, 45);
-	makeLuaSprite('tankSky', 'warzone/tankSky', -400, -400);
+	makeLuaSprite('tankSky', 'warzone/images/tankSky', -400, -400);
 	setScrollFactor('tankSky', 0, 0);
 
-	makeLuaSprite('tankBuildings', 'warzone/tankBuildings', -200, 0);
+	makeLuaSprite('tankBuildings', 'warzone/images/tankBuildings', -200, 0);
 	setScrollFactor('tankBuildings', 0.3, 0.3);
 	scaleObject('tankBuildings', 1.1, 1.1);
 
-	makeLuaSprite('tankRuins', 'warzone/tankRuins', -200, 0);
+	makeLuaSprite('tankRuins', 'warzone/images/tankRuins', -200, 0);
 	setScrollFactor('tankRuins', 0.35, 0.35);
 	scaleObject('tankRuins', 1.1, 1.1);
 
-	makeAnimatedLuaSprite('tankWatchtower', 'warzone/tankWatchtower', 100, 50);
+	makeAnimatedLuaSprite('tankWatchtower', 'warzone/images/tankWatchtower', 100, 50);
 	addAnimationByPrefix('tankWatchtower', 'idle', 'watchtower', 24, false);
 	setScrollFactor('tankWatchtower', 0.5, 0.5);
 
-	makeAnimatedLuaSprite('tankRolling', 'warzone/tankRolling', 300, 300);
+	makeAnimatedLuaSprite('tankRolling', 'warzone/images/tankRolling', 300, 300);
 	addAnimationByPrefix('tankRolling', 'idle', 'BG tank w lighting', 24, true);
 	setScrollFactor('tankRolling', 0.5, 0.5);
 
-	makeLuaSprite('tankGround', 'tankGround', -420, -150);
+	makeLuaSprite('tankGround', 'warzone/images/tankGround', -420, -150);
 	scaleObject('tankGround', 1.15, 1.15);
 	
 	-- those are only loaded if you have Low quality turned off, to decrease loading times and memory
 	if not lowQuality then
-		makeLuaSprite('tankClouds', 'warzone/tankClouds', getRandomInt(-700, -100), getRandomInt(-20, 20));
+		makeLuaSprite('tankClouds', 'warzone/images/tankClouds', getRandomInt(-700, -100), getRandomInt(-20, 20));
 		setScrollFactor('tankClouds', 0.1, 0.1);
 		setProperty('tankClouds.velocity.x', getRandomInt(5, 15));
 
-		makeLuaSprite('tankMountains', 'warzone/tankMountains', -300, -20);
+		makeLuaSprite('tankMountains', 'warzone/images/tankMountains', -300, -20);
 		setScrollFactor('tankMountains', 0.2, 0.2);
 		scaleObject('tankMountains', 1.2, 1.2);
 
-		makeAnimatedLuaSprite('smokeLeft', 'warzone/smokeLeft', -200, -100);
+		makeAnimatedLuaSprite('smokeLeft', 'warzone/images/smokeLeft', -200, -100);
 		addAnimationByPrefix('smokeLeft', 'idle', 'SmokeBlurLeft');
 		setScrollFactor('smokeLeft', 0.4, 0.4);
 
-		makeAnimatedLuaSprite('smokeRight', 'warzone/smokeRight', 1100, -100);
+		makeAnimatedLuaSprite('smokeRight', 'warzone/images/smokeRight', 1100, -100);
 		addAnimationByPrefix('smokeRight', 'idle', 'SmokeRight');
 		setScrollFactor('smokeRight', 0.4, 0.4);
 	end
@@ -63,28 +63,28 @@ function onCreate()
 
 
 	-- foreground shit
-	makeAnimatedLuaSprite('tank0', 'warzone/tank0', -500, 650);
+	makeAnimatedLuaSprite('tank0', 'warzone/images/tank0', -500, 650);
 	addAnimationByPrefix('tank0', 'idle', 'fg', 24, false);
 	setScrollFactor('tank0', 1.7, 1.5);
 	
-	makeAnimatedLuaSprite('tank2', 'warzone/tank2', 450, 940);
+	makeAnimatedLuaSprite('tank2', 'warzone/images/tank2', 450, 940);
 	addAnimationByPrefix('tank2', 'idle', 'foreground', 24, false);
 	setScrollFactor('tank2', 1.5, 1.5);
 	
-	makeAnimatedLuaSprite('tank5', 'warzone/tank5', 1620, 700);
+	makeAnimatedLuaSprite('tank5', 'warzone/images/tank5', 1620, 700);
 	addAnimationByPrefix('tank5', 'idle', 'fg', 24, false);
 	setScrollFactor('tank5', 1.5, 1.5);
 	
 	if not lowQuality then
-		makeAnimatedLuaSprite('tank1', 'warzone/tank1', -300, 750);
+		makeAnimatedLuaSprite('tank1', 'warzone/images/tank1', -300, 750);
 		addAnimationByPrefix('tank1', 'idle', 'fg', 24, false);
 		setScrollFactor('tank1', 2.0, 0.2);
 		
-		makeAnimatedLuaSprite('tank4', 'warzone/tank4', 1300, 900);
+		makeAnimatedLuaSprite('tank4', 'warzone/images/tank4', 1300, 900);
 		addAnimationByPrefix('tank4', 'idle', 'fg', 24, false);
 		setScrollFactor('tank4', 1.5, 1.5);
 		
-		makeAnimatedLuaSprite('tank3', 'warzone/tank3', 1300, 1200);
+		makeAnimatedLuaSprite('tank3', 'warzone/images/tank3', 1300, 1200);
 		addAnimationByPrefix('tank3', 'idle', 'fg', 24, false);
 		setScrollFactor('tank3', 3.5, 2.5);
 	end

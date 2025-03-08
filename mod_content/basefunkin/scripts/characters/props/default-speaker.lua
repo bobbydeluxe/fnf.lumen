@@ -86,7 +86,7 @@ function onCountdownTick(swagCounter)
         danceEveryNumBeats = 1
     end
     if swagCounter % (danceEveryNumBeats * characterSpeed) == 0 then
-        playAnim('AbotSpeaker', '', true, false, 1)
+        playAnim('AbotSpeaker', 'GF Cheer', true, false, 1)
     end
 end
 
@@ -105,7 +105,7 @@ function onBeatHit()
         danceEveryNumBeats = 1
     end
     if curBeat % (danceEveryNumBeats * characterSpeed) == 0 then
-        playAnim('AbotSpeaker', '', true, false, 1)
+        playAnim('AbotSpeaker', 'GF Cheer', true, false, 1)
     end
 end
 

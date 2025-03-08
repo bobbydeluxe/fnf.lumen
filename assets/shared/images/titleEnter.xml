@@ -28,4 +28,14 @@
 <SubTexture name="ENTER PRESSED0020" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
 <SubTexture name="ENTER PRESSED0021" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
 <SubTexture name="ENTER PRESSED0022" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0023" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0024" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0025" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0026" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0027" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0028" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0029" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0030" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0031" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0032" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
 </TextureAtlas>
