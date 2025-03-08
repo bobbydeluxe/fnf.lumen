@@ -26,7 +26,7 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
     end
     
     makeFlxAnimateSprite('AbotSpeaker')
-    loadAnimateAtlas('AbotSpeaker', 'abot/abotSystem')
+    loadAnimateAtlas('AbotSpeaker', 'characters/defaultStereo')
     if characterType ~= '' then
         setObjectOrder('AbotSpeaker', getObjectOrder(characterType..'Group'))
     end
