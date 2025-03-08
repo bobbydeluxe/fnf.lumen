@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<TextureAtlas imagePath="titleEnter.png"><SubTexture name="ENTER FREEZE0000" x="924" y="856" width="860" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<TextureAtlas imagePath="titleEnter.png">
+<SubTexture name="ENTER FREEZE0000" x="924" y="856" width="860" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
 <SubTexture name="ENTER IDLE0000" x="924" y="856" width="860" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
 <SubTexture name="ENTER IDLE0001" x="924" y="856" width="860" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
 <SubTexture name="ENTER IDLE0002" x="0" y="1041" width="858" height="106" frameX="-50" frameY="-68" frameWidth="966" frameHeight="221" />
@@ -18,4 +19,13 @@
 <SubTexture name="ENTER PRESSED0011" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
 <SubTexture name="ENTER PRESSED0012" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
 <SubTexture name="ENTER PRESSED0013" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0014" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0015" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0016" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0017" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0018" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0019" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0020" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0021" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
+<SubTexture name="ENTER PRESSED0022" x="858" y="1041" width="859" height="106" frameX="-49" frameY="-68" frameWidth="966" frameHeight="221" />
 </TextureAtlas>
