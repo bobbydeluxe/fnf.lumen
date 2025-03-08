@@ -134,7 +134,7 @@
 	"image": "characters/bf_assets",
 	"position": [5, 350],
 	"healthicon": "bf",
-	"flip_x": false,
+	"flip_x": true,
 	"healthbar_colors": [49, 176, 209],
 	"camera_position": [-10, 10],
 	"sing_duration": 4,
