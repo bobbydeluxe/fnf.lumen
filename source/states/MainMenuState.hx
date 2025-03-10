@@ -8,6 +8,10 @@ import flixel.effects.FlxFlicker;
 import lime.app.Application;
 import states.editors.MasterEditorMenu;
 import options.OptionsState;
+import backend.Song;
+
+import crowplexus.iris.Iris;
+import psychlua.HScript;
 
 class MainMenuState extends MusicBeatState
 {
@@ -16,6 +20,10 @@ class MainMenuState extends MusicBeatState
 	public static var pSliceVersion:String = '2.2.2'; 
 	public static var funkinVersion:String = '0.5.3'; // Version of funkin' we are emulationg
 	public static var curSelected:Int = 0;
+
+	#if HSCRIPT_ALLOWED
+	public var hscriptArray:Array<HScript> = [];
+	#end
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
@@ -36,6 +44,49 @@ class MainMenuState extends MusicBeatState
 		//TODO
 		super();
 	}
+
+	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+			if(script != null)
+			{
+				if (script.exists(funcToCall)) {
+					if (args != null) 
+						script.call(funcToCall,args);
+					else 
+						script.call(funcToCall);
+				}
+				
+			}
+		#end
+	}
+
+	public function initHScript(file:String)
+	{
+		var newScript:HScript = null;
+		try
+		{
+			newScript = new HScript(null, file);
+			if (newScript.exists('onCreate')) newScript.call('onCreate');
+			trace('initialized hscript interp successfully: $file');
+			hscriptArray.push(newScript);
+		}
+		catch(e:Dynamic)
+		{
+			addTextToDebug('ERROR ON LOADING ($file) - $e', FlxColor.RED);
+			var newScript:HScript = cast (Iris.instances.get(file), HScript);
+			if(newScript != null)
+				newScript.destroy();
+		}
+	}
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	public function addTextToDebug(text:String, color:FlxColor) {
+
+	}
+	#end
+
+
 	override function create()
 	{
 		Paths.clearUnusedMemory();
@@ -51,6 +102,15 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/states/HaxeStates/MainMenu/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
+
 
 		persistentUpdate = persistentDraw = true;
 
@@ -62,9 +122,11 @@ class MainMenuState extends MusicBeatState
 		bg.updateHitbox();
 		bg.screenCenter();
 		add(bg);
+		callOnHScript("onLoad",["bg",bg]);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
+		callOnHScript("onLoad",["camFollow",camFollow]);
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
 		magenta.antialiasing = ClientPrefs.data.antialiasing;
@@ -75,9 +137,12 @@ class MainMenuState extends MusicBeatState
 		magenta.visible = false;
 		magenta.color = 0xFFfd719b;
 		add(magenta);
+		callOnHScript("onLoad",["magenta",magenta]);
+
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
+		callOnHScript("onLoad",["menuItems",menuItems]);
 
 		for (i in 0...optionShit.length)
 		{
@@ -89,6 +154,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
 			menuItems.add(menuItem);
+			callOnHScript("onCreateMenuItems",[i,menuItem]);
 			var scr:Float = (optionShit.length - 4) * 0.135;
 			if (optionShit.length < 6)
 				scr = 0;
@@ -129,12 +195,17 @@ class MainMenuState extends MusicBeatState
 		super.create();
 
 		FlxG.camera.follow(camFollow, null, 0.06);
+
+		callOnHScript("onCreatePost",[]);
 	}
 
 	var selectedSomethin:Bool = false;
 
 	override function update(elapsed:Float)
 	{
+
+		callOnHScript("onUpdate",[elapsed]);
+
 		if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * elapsed;
@@ -175,6 +246,7 @@ class MainMenuState extends MusicBeatState
 
 					FlxFlicker.flicker(menuItems.members[curSelected], 1, 0.06, false, false, function(flick:FlxFlicker)
 					{
+						callOnHScript("onStart", [optionShit[curSelected]]);
 						switch (optionShit[curSelected])
 						{
 							case 'story_mode':
@@ -246,6 +318,67 @@ class MainMenuState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+		callOnHScript("onUpdatePost",[elapsed]);
+	}
+
+	function triggerEvent(eventName:String,eventValue:Dynamic = 1,eventValue2:Dynamic = 1) {
+		switch (eventName) {
+			case "ChangeState" :
+				if (eventValue == "storymode") {
+					MusicBeatState.switchState(new StoryMenuState());
+				}
+				else if (eventValue == "freeplay") {
+                    persistentDraw = true;
+                    persistentUpdate = false;
+                    // Freeplay has its own custom transition
+                    FlxTransitionableState.skipNextTransIn = true;
+                    FlxTransitionableState.skipNextTransOut = true;
+
+                    openSubState(new FreeplayState());
+                    subStateOpened.addOnce(state -> {
+                        for (i in 0...menuItems.members.length) {
+                            menuItems.members[i].revive();
+                            menuItems.members[i].alpha = 1;
+                            menuItems.members[i].visible = true;
+                            selectedSomethin = false;
+                        }
+                        changeItem(0);
+                    });
+				}
+				else if (eventValue == "credits") {
+					MusicBeatState.switchState(new CreditsState());
+				}
+				else if (eventValue == "options") {
+					MusicBeatState.switchState(new OptionsState());
+				}
+				else if (eventValue == "awards") {
+					MusicBeatState.switchState(new AchievementsMenuState());
+				}
+				else if (eventValue == "mods") {
+					MusicBeatState.switchState(new ModsMenuState());
+				} else {
+					FlxG.save.data.currentState = eventValue;
+					MusicBeatState.switchState(new CustomState());
+				}
+			case "LoadSong" :
+				var songLowercase:String = Paths.formatToSongPath(eventValue);
+				var poop:String = Highscore.formatSong(songLowercase, eventValue2);
+	
+				try
+				{
+					Song.loadFromJson(poop, songLowercase);
+					PlayState.isStoryMode = false;
+					PlayState.storyDifficulty = eventValue2;
+				}
+
+				if (FlxG.save.data.isTransition == false) {
+					MusicBeatState.switchState(new PlayState());
+				} else {
+					LoadingState.loadAndSwitchState(new PlayState());
+				}
+			default :
+				trace("Null Value");
+		}
 	}
 
 	function changeItem(huh:Int = 0)
