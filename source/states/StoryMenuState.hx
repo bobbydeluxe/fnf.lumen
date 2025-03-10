@@ -15,6 +15,9 @@ import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 import substates.StickerSubState;
 
+import crowplexus.iris.Iris;
+import psychlua.HScript;
+
 import backend.StageData;
 
 class StoryMenuState extends MusicBeatState
@@ -44,6 +47,61 @@ class StoryMenuState extends MusicBeatState
 	var rightArrow:FlxSprite;
 
 	var loadedWeeks:Array<WeekData> = [];
+
+	#if HSCRIPT_ALLOWED
+	public var hscriptArray:Array<HScript> = [];
+	#end
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	private var luaDebugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
+	#end
+
+	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+			if(script != null)
+			{
+				if (script.exists(funcToCall)) script.call(funcToCall,args);
+			}
+		#end
+	}
+
+	public function initHScript(file:String)
+	{
+		var newScript:HScript = null;
+		try
+		{
+			newScript = new HScript(null, file);
+			if (newScript.exists('onCreate')) newScript.call('onCreate');			
+			trace('initialized hscript interp successfully: $file');
+			hscriptArray.push(newScript);
+		}
+		catch(e:Dynamic)
+		{
+			addTextToDebug('ERROR ON LOADING ($file) - $e', FlxColor.RED);
+			var newScript:HScript = cast (Iris.instances.get(file), HScript);
+			if(newScript != null)
+				newScript.destroy();
+		}
+	}
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	public function addTextToDebug(text:String, color:FlxColor) {
+		// var newText:psychlua.DebugLuaText = luaDebugGroup.recycle(psychlua.DebugLuaText);
+		// newText.text = text;
+		// newText.color = color;
+		// newText.disableTime = 6;
+		// newText.alpha = 1;
+		// newText.setPosition(10, 8 - newText.height);
+
+		// luaDebugGroup.forEachAlive(function(spr:psychlua.DebugLuaText) {
+		// 	spr.y += newText.height + 2;
+		// });
+		// luaDebugGroup.add(newText);
+
+		// Sys.println(text);
+	}
+	#end
 
 	var stickerSubState:StickerSubState;
 	public function new(?stickers:StickerSubState = null)
@@ -81,6 +139,16 @@ class StoryMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
+
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/states/HaxeStates/StoryMenu/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
+
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
 
 		final accept:String = controls.mobileC ? "A" : "ACCEPT";
 		final reject:String = controls.mobileC ? "B" : "BACK";
@@ -137,6 +205,8 @@ class StoryMenuState extends MusicBeatState
 				grpWeekText.add(weekThing);
 
 				weekThing.screenCenter(X);
+
+				callOnHScript("onCreatedWeek",[weekThing,num]);
 				// weekThing.updateHitbox();
 
 				// Needs an offset thingie
@@ -174,6 +244,8 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.play('idle');
 		difficultySelectors.add(leftArrow);
 
+		callOnHScript("onLoad",["leftArrow",leftArrow]);
+
 		Difficulty.resetList();
 		if(lastDifficultyName == '')
 		{
@@ -193,22 +265,37 @@ class StoryMenuState extends MusicBeatState
 		rightArrow.animation.play('idle');
 		difficultySelectors.add(rightArrow);
 
+		callOnHScript("onLoad",["rightArrow",rightArrow]);
+		callOnHScript("onLoad",["difficultySelectors",difficultySelectors]);
+
 		add(bgYellow);
+
+		callOnHScript("onLoad",["bgYellow",bgYellow]);
+
 		add(bgSprite);
+
+		callOnHScript("onLoad",["bgSprite",bgSprite]);
+
 		add(grpWeekCharacters);
+
+		callOnHScript("onLoad",["grpCharsSprite",grpWeekCharacters]);
 
 		var tracksSprite:FlxSprite = new FlxSprite(FlxG.width * 0.07 + 100, bgSprite.y + 425).loadGraphic(Paths.image('Menu_Tracks'));
 		tracksSprite.antialiasing = ClientPrefs.data.antialiasing;
 		tracksSprite.x -= tracksSprite.width/2;
 		add(tracksSprite);
+		callOnHScript("onLoad",["tracksSprite",tracksSprite]);
 
 		txtTracklist = new FlxText(FlxG.width * 0.05, tracksSprite.y + 60, 0, "", 32);
 		txtTracklist.alignment = CENTER;
 		txtTracklist.font = Paths.font("vcr.ttf");
 		txtTracklist.color = 0xFFe55777;
 		add(txtTracklist);
+		callOnHScript("onLoad",["txtTracklist",txtTracklist]);
 		add(scoreText);
+		callOnHScript("onLoad",["scoreText",scoreText]);
 		add(txtWeekTitle);
+		callOnHScript("onLoad",["txtWeekTitle",txtWeekTitle]);
 
 		changeWeek();
 		changeDifficulty();
@@ -218,6 +305,7 @@ class StoryMenuState extends MusicBeatState
 		#end
 
 		super.create();
+		callOnHScript("onCreatePost",[]);
 	}
 
 	override function closeSubState() {
@@ -233,6 +321,7 @@ class StoryMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		callOnHScript("onUpdate",[elapsed]);
 		if(WeekData.weeksList.length < 1)
 		{
 			if (controls.BACK && !movedBack && !selectedWeek)
@@ -321,6 +410,7 @@ class StoryMenuState extends MusicBeatState
 		if (controls.BACK && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
+			callOnHScript("onExitMenu",[]);
 			movedBack = true;
 			MusicBeatState.switchState(new MainMenuState());
 		}
@@ -333,6 +423,8 @@ class StoryMenuState extends MusicBeatState
 
 		for (num => lock in grpLocks.members)
 			lock.y = grpWeekText.members[lock.ID].y + grpWeekText.members[lock.ID].height/2 - lock.height/2;
+
+		callOnHScript("onUpdatePost",[elapsed]);
 	}
 
 	var movedBack:Bool = false;
@@ -378,6 +470,8 @@ class StoryMenuState extends MusicBeatState
 			if (stopspamming == false)
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
+
+				callOnHScript("onSelectWeek",[curWeek,curDifficulty]);
 
 				grpWeekText.members[curWeek].isFlashing = true;
 				for (char in grpWeekCharacters.members)
@@ -433,6 +527,8 @@ class StoryMenuState extends MusicBeatState
 
 			FlxTween.cancelTweensOf(sprDifficulty);
 			FlxTween.tween(sprDifficulty, {y: sprDifficulty.y + 30, alpha: 1}, 0.07);
+
+			callOnHScript("onChangeDifficulty",[sprDifficulty,curDifficulty]);
 		}
 		lastDifficultyName = diff;
 
@@ -492,6 +588,7 @@ class StoryMenuState extends MusicBeatState
 			curDifficulty = newPos;
 		}
 		updateText();
+		callOnHScript("onChangeWeek",[curWeek,leWeek,curDifficulty,bgSprite]);
 	}
 
 	function weekIsLocked(name:String):Bool {
@@ -522,6 +619,7 @@ class StoryMenuState extends MusicBeatState
 
 		txtTracklist.screenCenter(X);
 		txtTracklist.x -= FlxG.width * 0.35;
+		callOnHScript("onLoad",["txtTracklist",txtTracklist]);
 
 		#if !switch
 		intendedScore = Highscore.getWeekScore(loadedWeeks[curWeek].fileName, curDifficulty);

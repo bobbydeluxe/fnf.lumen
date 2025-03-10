@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="menu_simpleplay.png">
+	<!-- Created with Adobe Animate version 21.0.7.42652 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="simpleplay basic0000" x="0" y="0" width="333" height="131"/>
+	<SubTexture name="simpleplay basic0001" x="0" y="0" width="333" height="131"/>
+	<SubTexture name="simpleplay basic0002" x="0" y="0" width="333" height="131"/>
+	<SubTexture name="simpleplay basic0003" x="353" y="0" width="333" height="131"/>
+	<SubTexture name="simpleplay basic0004" x="353" y="0" width="333" height="131"/>
+	<SubTexture name="simpleplay basic0005" x="353" y="0" width="333" height="131"/>
+	<SubTexture name="simpleplay basic0006" x="0" y="151" width="333" height="131"/>
+	<SubTexture name="simpleplay basic0007" x="0" y="151" width="333" height="131"/>
+	<SubTexture name="simpleplay basic0008" x="0" y="151" width="333" height="131"/>
+	<SubTexture name="simpleplay white0000" x="353" y="151" width="417" height="195" frameX="-4" frameY="-3" frameWidth="426" frameHeight="203"/>
+	<SubTexture name="simpleplay white0001" x="0" y="366" width="424" height="199" frameX="0" frameY="-4" frameWidth="426" frameHeight="203"/>
+	<SubTexture name="simpleplay white0002" x="444" y="366" width="418" height="196" frameX="-8" frameY="0" frameWidth="426" frameHeight="203"/>
+</TextureAtlas>
