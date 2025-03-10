@@ -1,10 +1,20 @@
-function onCreatePost()
+function onCreate()
     -- Sets up the haxe commands needed for the event to work.
     runHaxeCode([[
         function enableFollowPoint() FlxG.camera.target = game.camFollow;
         function disableFollowPoint() FlxG.camera.target = null;
         function snapCameraToTarget() FlxG.camera.snapToTarget();
     ]])
+
+    --[[
+        IN-GAME CUTSCENES EXCLUSIVE:
+        Set it to true in other scripts if you want to use the event for a cutscene,
+        making 'duration' work in seconds instead of steps (since there's no BPM in cutscenes).
+        WARNING: Remember to set it back to false once the cutscene has ended.
+    ]]
+    if getVar('cutsceneMode') == nil then
+        setVar('cutsceneMode', false)
+    end
 end
 
 function onEvent(eventName, value1, value2, strumTime)
@@ -19,8 +29,13 @@ function onEvent(eventName, value1, value2, strumTime)
             setProperty('isCameraOnForcedPos', true)
             cancelTween('moveCamera')
 
-            -- Determines the target by the chosen character and/or offsets
+            -- Sets up the data for the target and removes any empty space in the string.
             local targetData = stringSplit(value1, ',')
+            for i = 1, #targetData do
+                targetData[i] = stringTrim(targetData[i])
+            end
+            
+            -- Determines the target by the chosen character and/or offsets
             if targetData[1] == '0' or string.lower(targetData[1]) == 'bf' or string.lower(targetData[1]) == 'boyfriend' then
                 targetX = getMidpointX('boyfriend') - getProperty('boyfriend.cameraPosition[0]') + getProperty('boyfriendCameraOffset[0]') - 100
                 targetY = getMidpointY('boyfriend') + getProperty('boyfriend.cameraPosition[1]') + getProperty('boyfriendCameraOffset[1]') - 100
@@ -47,7 +62,12 @@ function onEvent(eventName, value1, value2, strumTime)
                 setProperty('camFollow.x', targetX)
                 setProperty('camFollow.y', targetY)
             else
+                -- Sets up the data for the tween and removes any empty space in the string.
                 local tweenData = stringSplit(value2, ',')
+                for i = 1, #tweenData do
+                    tweenData[i] = stringTrim(tweenData[i])
+                end
+
                 if tweenData[1] == '0' then
                     -- Instantly places the camera to target
                     runHaxeFunction('enableFollowPoint')
@@ -59,12 +79,20 @@ function onEvent(eventName, value1, value2, strumTime)
                     runHaxeFunction('disableFollowPoint')
                     setProperty('camFollow.x', targetX - screenWidth / 2)
                     setProperty('camFollow.y', targetY - screenHeight / 2)
-                    local tweenData = stringSplit(value2, ',')
-                    local duration = stepCrochet * tonumber(tweenData[1]) / 1000
+
+                    local duration = 0
+                    if getVar('cutsceneMode') == true then
+                        -- Duration is in seconds
+                        duration = tonumber(tweenData[1])
+                    else
+                        -- Duration is in steps (related to BPM)
+                        duration = stepCrochet * tonumber(tweenData[1]) / 1000
+                    end
+
                     if tweenData[2] == nil then
                         tweenData[2] = 'linear'
                     end
-                    if version == '1.0' then
+                    if version >= '1.0' then
                         tweenNameAdd = 'tween_' -- Shadow Mario fucked it up.
                     else
                         tweenNameAdd = ''

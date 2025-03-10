@@ -25,8 +25,8 @@ end
     Go check the Abot Speaker's script for more information at line 217.
 ]]
 function onCreatePost()
-    addLuaScript('scripts/characters/props/default-speaker')
-    callScript('scripts/characters/props/default-speaker', 'createSpeaker', {'gf', 0, 0}) -- {characterName, offsetX, offsetY}
+    addLuaScript('scripts/characters/props/speaker')
+    callScript('scripts/characters/props/speaker', 'createSpeaker', {'gf', 0, 0}) -- {characterName, offsetX, offsetY}
 end
 
 local comboAnimActive = true

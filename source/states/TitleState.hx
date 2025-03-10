@@ -18,6 +18,9 @@ import states.MainMenuState;
 import mikolka.vslice.components.ScreenshotPlugin;
 import mikolka.vslice.AttractState;
 
+import crowplexus.iris.Iris;
+import psychlua.HScript;
+
 typedef TitleData =
 {
 	var titlex:Float;
@@ -69,6 +72,48 @@ class TitleState extends MusicBeatState
 	var mustUpdate:Bool = false;
 
 	public static var updateVersion:String = '';
+
+	#if HSCRIPT_ALLOWED
+	public var hscriptArray:Array<HScript> = [];
+	#end
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	private var luaDebugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
+	#end
+
+	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+			if(script != null)
+			{
+				if (script.exists(funcToCall)) script.call(funcToCall,args);
+			}
+		#end
+	}
+
+	public function initHScript(file:String)
+	{
+		var newScript:HScript = null;
+		try
+		{
+			newScript = new HScript(null, file);
+			if (newScript.exists('onCreate')) newScript.call('onCreate');
+			trace('initialized hscript interp successfully: $file');
+			hscriptArray.push(newScript);
+		}
+		catch(e:Dynamic)
+		{
+			addTextToDebug('ERROR ON LOADING ($file) - $e', FlxColor.RED);
+			var newScript:HScript = cast (Iris.instances.get(file), HScript);
+			if(newScript != null)
+				newScript.destroy();
+		}
+	}
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	public function addTextToDebug(text:String, color:FlxColor) {
+	}
+	#end
 
 	override public function create():Void
 	{
@@ -176,6 +221,16 @@ class TitleState extends MusicBeatState
 		#if TITLE_SCREEN_EASTER_EGG easterEggData(); #end
 		Conductor.bpm = musicBPM;
 
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/states/HaxeStates/TitleState/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
+
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
+
 		logoBl = new FlxSprite(logoPosition.x, logoPosition.y);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = ClientPrefs.data.antialiasing;
@@ -275,10 +330,15 @@ class TitleState extends MusicBeatState
 		ngSpr.visible = false;
 		
 		add(gfDance);
+		callOnHScript("onLoad",["gfDance",gfDance]);
 		add(logoBl); //FNF Logo
+		callOnHScript("onLoad",["logoBl",logoBl]);
 		add(titleText); //"Press Enter to Begin" text
+		callOnHScript("onLoad",["titleText",titleText]);
 		add(credGroup);
+		callOnHScript("onLoad",["credGroup",credGroup]);
 		add(ngSpr);
+		callOnHScript("onLoad",["ngSpr",ngSpr]);
 
 		if (initialized)
 			skipIntro();
@@ -286,6 +346,7 @@ class TitleState extends MusicBeatState
 			initialized = true;
 
 		// credGroup.add(credTextShit);
+		callOnHScript("onCreatePost",[]);
 	}
 
 	// JSON data
@@ -326,6 +387,7 @@ class TitleState extends MusicBeatState
 						var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image(titleJSON.backgroundSprite));
 						bg.antialiasing = ClientPrefs.data.antialiasing;
 						add(bg);
+						callOnHScript("onLoad",["bg",bg]);
 					}
 				}
 				catch(e:haxe.Exception)
@@ -400,6 +462,7 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		callOnHScript("onUpdate",[elapsed]);
 		#if debug
 		if (controls.FAVORITE)
 			moveToAttract();
@@ -468,6 +531,7 @@ class TitleState extends MusicBeatState
 
 				transitioning = true;
 				// FlxG.sound.music.stop();
+				callOnHScript("onConfirm",[]);
 
 				enterTimer = new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
@@ -576,6 +640,7 @@ class TitleState extends MusicBeatState
 			var money:Alphabet = new Alphabet(0, 0, textArray[i], true);
 			money.screenCenter(X);
 			money.y += (i * 60) + 200 + offset;
+			callOnHScript("onCreateCoolText",[money,textArray,offset]);
 
 			if (credGroup != null && textGroup != null)
 			{
@@ -594,11 +659,13 @@ class TitleState extends MusicBeatState
 			coolText.y += (textGroup.length * 60) + 200 + offset;
 			credGroup.add(coolText);
 			textGroup.add(coolText);
+			callOnHScript("onAddMoreText",[coolText,text,offset]);
 		}
 	}
 
 	function deleteCoolText()
 	{
+		callOnHScript("onDeleteCoolText",[]);
 		while (textGroup.members.length > 0)
 		{
 			credGroup.remove(textGroup.members[0], true);
@@ -613,6 +680,8 @@ class TitleState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
+
+		callOnHScript("onBeatHit",[sickBeats]);
 
 		if (logoBl != null)
 			logoBl.animation.play('bump', true);
@@ -637,6 +706,7 @@ class TitleState extends MusicBeatState
 		if (!closedState)
 		{
 			sickBeats++;
+			callOnHScript("onBeatTexts",[sickBeats]);
 			switch (sickBeats)
 			{
 				case 1:
@@ -684,6 +754,7 @@ class TitleState extends MusicBeatState
 
 	function skipIntro():Void
 	{
+		callOnHScript("onSkipIntro",[]);
 		if (!skippedIntro)
 		{
 			#if VIDEOS_ALLOWED
@@ -727,7 +798,9 @@ class TitleState extends MusicBeatState
 					new FlxTimer().start(3.2, function(tmr:FlxTimer)
 					{
 						remove(ngSpr);
+						callOnHScript("onRemove",["ngSpr",ngSpr]);
 						remove(credGroup);
+						callOnHScript("onRemove",["credGroup",credGroup]);
 						FlxG.camera.flash(FlxColor.WHITE, 0.6);
 						transitioning = false;
 					});

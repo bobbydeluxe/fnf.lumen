@@ -81,6 +81,15 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
         end
     end
 
+    if characterType ~= '' then
+        runHaxeCode([[
+            function shaderCheck(object:String) return getLuaObject(object).shader == ]]..characterType..[[.shader;
+            function applyShader(object:String) getLuaObject(object).shader = ]]..characterType..[[.shader;
+            function shaderAtlasCheck(object:String) return game.variables.get(object).shader == ]]..characterType..[[.shader;
+            function applyAtlasShader(object:String) game.variables.get(object).shader = ]]..characterType..[[.shader;
+        ]])
+    end
+
     if characterName ~= '' then
         if _G[characterType..'Name'] ~= characterName then
             destroySpeaker()
@@ -190,6 +199,25 @@ function onUpdatePost(elapsed)
             end
         end
     end
+
+    if characterType ~= '' then    
+        for _, object in ipairs({'AbotSpeaker', 'AbotPupils'}) do
+            if runHaxeFunction('shaderAtlasCheck', {object}) == false then
+                runHaxeFunction('applyAtlasShader', {object})
+            end
+        end
+        for bar = 1, 7 do
+            if runHaxeFunction('shaderCheck', {'AbotSpeakerVisualizer'..bar}) == false then
+                runHaxeFunction('applyShader', {'AbotSpeakerVisualizer'..bar})
+            end
+        end
+        for _, object in ipairs({'AbotSpeakerBG', 'AbotEyes'}) do
+            if runHaxeFunction('shaderCheck', {object}) == false then
+                runHaxeFunction('applyShader', {object})
+            end
+        end
+    end
+    
     --[[
         These make it so the animations stop when they're supposed to be,
         instead of looping endlessly.
