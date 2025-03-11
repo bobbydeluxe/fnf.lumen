@@ -286,7 +286,7 @@ class FreeplayState extends MusicBeatSubstate
 			case 'gfr':
 				backingCard = new GirlfriendCard(currentCharacter);
 			default:
-				backingCard = new BoyfriendCard(currentCharacter);//new BackingCard(currentCharacter);
+				backingCard = new BackingCard(currentCharacter);//new BackingCard(currentCharacter);
 		}
 		}
 		else backingCard = new BoyfriendCard(currentCharacter);

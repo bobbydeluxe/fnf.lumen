@@ -1,4 +1,4 @@
-package mikolka.vslice.freeplay.backcards;
+package mikolka.vslice.freeplay.backcards;//
 
 import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.freeplay.FreeplayState;
@@ -20,6 +20,11 @@ import openfl.display.BlendMode;
 import flixel.group.FlxSpriteGroup;
 import mikolka.compatibility.FunkinPath as Paths;
 
+import backend.Paths as OGPaths;
+
+import crowplexus.iris.Iris;
+import psychlua.HScript;
+
 /**
  * A class for the backing cards so they dont have to be part of freeplayState......
  */
@@ -39,11 +44,64 @@ class BackingCard extends FlxSpriteGroup
 
   public var instance:FreeplayState;
 
+  #if HSCRIPT_ALLOWED
+	public var hscriptArray:Array<HScript> = [];
+	#end
+
+	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+			if(script != null)
+			{
+				if (script.exists(funcToCall)) script.call(funcToCall,args);
+			}
+		#end
+	}
+
+	public function initHScript(file:String)
+	{
+		var newScript:HScript = null;
+		try
+		{
+			newScript = new HScript(null, file);
+			if (newScript.exists('onCreate')) newScript.call('onCreate');
+			trace('initialized hscript interp successfully: $file');
+			hscriptArray.push(newScript);
+		}
+		catch(e:Dynamic)
+		{
+			addTextToDebug('ERROR ON LOADING ($file) - $e', FlxColor.RED);
+			var newScript:HScript = cast (Iris.instances.get(file), HScript);
+			if(newScript != null)
+				newScript.destroy();
+		}
+	}
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	public function addTextToDebug(text:String, color:FlxColor) {
+
+  }
+  #end
+
   public function new(currentCharacter:PlayableCharacter, ?_instance:FreeplayState)
   {
+    var characterNameThingy:String = currentCharacter.getName(); 
+
+    for (folder in Mods.directoriesWithFile(OGPaths.getSharedPath(), 'data/states/HaxeStates/FreePlay/' + characterNameThingy + '/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
+
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
+
     super();
 
     if (_instance != null) instance = _instance;
+
+    callOnHScript("onCreate", []);
 
     cardGlow = new FlxSprite(-30, -30).loadGraphic(Paths.image('freeplay/cardGlow'));
     confirmGlow = new FlxSprite(-30, 240).loadGraphic(Paths.image('freeplay/confirmGlow'));
@@ -64,6 +122,8 @@ class BackingCard extends FlxSpriteGroup
 
     pinkBack.color = 0xFFFFD4E9; // sets it to pink!
     pinkBack.x -= pinkBack.width;
+
+    callOnHScript("onCreatePost", []);
   }
 
   /**
@@ -72,6 +132,7 @@ class BackingCard extends FlxSpriteGroup
    */
   public function applyExitMovers(?exitMovers:FreeplayState.ExitMoverData, ?exitMoversCharSel:FreeplayState.ExitMoverData):Void
   {
+
     if (exitMovers == null)
     {
       exitMovers = _exitMovers;
@@ -134,10 +195,11 @@ class BackingCard extends FlxSpriteGroup
   {
     FlxTween.tween(pinkBack, {x: 0}, 0.6, {ease: FlxEase.quartOut});
     add(pinkBack);
-
+    callOnHScript("onLoad",["pinkBack",pinkBack]);
     add(orangeBackShit);
-
+    callOnHScript("onLoad",["orangeBackShit",orangeBackShit]);
     add(alsoOrangeLOL);
+    callOnHScript("onLoad",["alsoOrangeLOL",alsoOrangeLOL]);
 
     //FlxSpriteUtil.alphaMaskFlxSprite(orangeBackShit, pinkBack, orangeBackShit);
     orangeBackShit.visible = false;
@@ -152,12 +214,13 @@ class BackingCard extends FlxSpriteGroup
     confirmGlow2.visible = false;
 
     add(confirmGlow2);
+    callOnHScript("onLoad",["confirmGlow2",confirmGlow2]);
     add(confirmGlow);
-
+    callOnHScript("onLoad",["confirmGlow",confirmGlow]);
     add(confirmTextGlow);
-
+    callOnHScript("onLoad",["confirmTextGlow",confirmTextGlow]);
     add(backingTextYeah);
-
+    callOnHScript("onLoad",["backingTextYeah",backingTextYeah]);
     cardGlow.blend = BlendMode.ADD;
     cardGlow.visible = false;
 
@@ -170,6 +233,7 @@ class BackingCard extends FlxSpriteGroup
   public function introDone():Void
   {
     if(!VsliceOptions.ALLOW_COLORING) pinkBack.color = 0xFFFFD863;
+    callOnHScript("onIntroDone",[]);
     orangeBackShit.visible = true;
     alsoOrangeLOL.visible = true;
     cardGlow.visible = true;
@@ -182,6 +246,7 @@ class BackingCard extends FlxSpriteGroup
   public function confirm():Void
   {
     FlxTween.color(pinkBack, 0.33, 0xFFFFD0D5, 0xFF171831, {ease: FlxEase.quadOut});
+    callOnHScript("onConfirm", []);
     orangeBackShit.visible = false;
     alsoOrangeLOL.visible = false;
 
@@ -227,7 +292,9 @@ class BackingCard extends FlxSpriteGroup
   /**
    * Called on each beat in freeplay state.
    */
-  public function beatHit(curBeat:Int):Void {}
+  public function beatHit(curBeat:Int):Void {
+    callOnHScript("onBeatHit", [curBeat]);
+  }
 
   /**
    * Called when exiting the freeplay menu.
@@ -235,6 +302,8 @@ class BackingCard extends FlxSpriteGroup
   public function disappear():Void
   {
     FlxTween.color(pinkBack, 0.25, pinkBack.color, 0xFFFFD0D5, {ease: FlxEase.quadOut});
+
+    callOnHScript("onDisappear", []);
 
     cardGlow.visible = true;
     cardGlow.alpha = 1;
