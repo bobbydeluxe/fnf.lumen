@@ -35,6 +35,12 @@ class PlayableCharacter
     return _data?.name ?? "Unknown";
   }
 
+  public function getCodename():String
+  {
+    return _data?.codename ?? "idk";
+  }
+  
+
   /**
    * Retrieve the list of stage character IDs associated with this playable character.
    * @return The list of associated character IDs

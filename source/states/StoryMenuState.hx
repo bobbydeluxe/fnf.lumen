@@ -140,15 +140,16 @@ class StoryMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/states/HaxeStates/StoryMenu/'))
-			for (file in FileSystem.readDirectory(folder))
-			{
+		#if HSCRIPT_ALLOWED
+		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/storyMode.hx');
+		var scriptPath = Paths.getPath('data/haxescript/storyMode.hx', TEXT, null, true);
 
-				#if HSCRIPT_ALLOWED
-				if(file.toLowerCase().endsWith('.hx'))
-					initHScript(folder + file);
-				#end
-			}
+		if (FileSystem.exists(scriptPath)) {
+		    initHScript(scriptPath);
+		} else {
+		    trace('HScript file not found: ' + scriptPath);
+		}
+		#end
 
 		final accept:String = controls.mobileC ? "A" : "ACCEPT";
 		final reject:String = controls.mobileC ? "B" : "BACK";

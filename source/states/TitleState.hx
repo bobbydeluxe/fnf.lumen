@@ -221,15 +221,17 @@ class TitleState extends MusicBeatState
 		#if TITLE_SCREEN_EASTER_EGG easterEggData(); #end
 		Conductor.bpm = musicBPM;
 
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/states/HaxeStates/TitleState/'))
-			for (file in FileSystem.readDirectory(folder))
-			{
+		#if HSCRIPT_ALLOWED
+		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/titleScreen.hx');
+		var scriptPath = Paths.getPath('data/haxescript/titleScreen.hx', TEXT, null, true);
 
-				#if HSCRIPT_ALLOWED
-				if(file.toLowerCase().endsWith('.hx'))
-					initHScript(folder + file);
-				#end
-			}
+		if (FileSystem.exists(scriptPath)) {
+		    initHScript(scriptPath);
+		} else {
+		    trace('HScript file not found: ' + scriptPath);
+		}
+		#end
+
 
 		logoBl = new FlxSprite(logoPosition.x, logoPosition.y);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
@@ -339,6 +341,9 @@ class TitleState extends MusicBeatState
 		callOnHScript("onLoad",["credGroup",credGroup]);
 		add(ngSpr);
 		callOnHScript("onLoad",["ngSpr",ngSpr]);
+
+		callOnHScript("onLoad",["titleTextColors",titleTextColors]);
+		callOnHScript("onLoad",["titleTextAlphas",titleTextAlphas]);
 
 		if (initialized)
 			skipIntro();

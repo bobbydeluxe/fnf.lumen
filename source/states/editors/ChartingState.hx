@@ -693,6 +693,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var autoSaveCap:Int = 2; //in minutes
 	var backupLimit:Int = 10;
 
+	var lilBfResetAnim:Float = 0;
+    var lilOppResetAnim:Float = 0;
+
 	var lastBeatHit:Int = 0;
 	override function update(elapsed:Float)
 	{
@@ -794,6 +797,21 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				if(FlxG.keys.justPressed.F12)
 				{
 					super.update(elapsed);
+					if(lilOppResetAnim > 0) {
+						lilOppResetAnim -= elapsed;
+						if(lilOppResetAnim <= 0) {
+							lilOpp.animation.play('idle');
+							lilOppResetAnim = 0;
+						}
+					}
+					
+					if(lilBfResetAnim > 0) {
+						lilBfResetAnim -= elapsed;
+						if(lilBfResetAnim <= 0) {
+							lilBf.animation.play('idle');
+							lilBfResetAnim = 0;
+						}
+					}
 					openEditorPlayState();
 					lastFocus = PsychUIInputText.focusOn;
 					return;
@@ -937,6 +955,22 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				}
 				else if(FlxG.keys.pressed.W != FlxG.keys.pressed.S || FlxG.mouse.wheel != 0)
 				{
+					if(lilOppResetAnim > 0) {
+						lilOppResetAnim -= elapsed;
+						if(lilOppResetAnim <= 0) {
+							lilOpp.animation.play('idle');
+							lilOppResetAnim = 0;
+						}
+					}
+					
+					if(lilBfResetAnim > 0) {
+						lilBfResetAnim -= elapsed;
+						if(lilBfResetAnim <= 0) {
+							lilBf.animation.play('idle');
+							lilBfResetAnim = 0;
+						}
+					}
+
 					if(FlxG.sound.music.playing)
 						setSongPlaying(false);
 
@@ -963,6 +997,22 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				else if(FlxG.keys.justPressed.SPACE)
 				{
 					setSongPlaying(!FlxG.sound.music.playing);
+
+					if(lilOppResetAnim > 0) {
+						lilOppResetAnim -= elapsed;
+						if(lilOppResetAnim <= 0) {
+							lilOpp.animation.play('idle');
+							lilOppResetAnim = 0;
+						}
+					}
+					
+					if(lilBfResetAnim > 0) {
+						lilBfResetAnim -= elapsed;
+						if(lilBfResetAnim <= 0) {
+							lilBf.animation.play('idle');
+							lilBfResetAnim = 0;
+						}
+					}
 				}
 			}
 
@@ -1489,10 +1539,18 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 						}
 					}
 
-							if(note.mustPress)
-							lilBf.animation.play("" + (note.noteData % 4), true);
-							if(!note.mustPress)
-							lilOpp.animation.play("" + (note.noteData % 4), true);
+					if (!note.noAnimation) {
+                        if (note.mustPress)
+                        {
+                            lilBf.animation.play("" + (note.noteData % 4), true);
+                            lilBfResetAnim = ((Conductor.stepCrochet * 3) + note.sustainLength) / 1000 / playbackRate;
+                        }
+                        else
+                        {
+                            lilOpp.animation.play("" + (note.noteData % 4), true);
+                            lilOppResetAnim = ((Conductor.stepCrochet * 3) + note.sustainLength) / 1000 / playbackRate;
+                        }
+                    }
 				}
 			}
 			forceDataUpdate = false;
