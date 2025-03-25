@@ -278,7 +278,7 @@ class FreeplayState extends MusicBeatSubstate
 		super();
 
 		#if HSCRIPT_ALLOWED
-		var scriptPath = PsychPaths.getPath('data/haxescript/freePlay.hx', TEXT, null, true);
+		var scriptPath = PsychPaths.getPath('data/haxescript/freeplay.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);
