@@ -1,4 +1,4 @@
-package mikolka.vslice.freeplay.backcards;//
+package mikolka.vslice.freeplay.backcards;
 
 import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.freeplay.FreeplayState;
@@ -22,10 +22,19 @@ import mikolka.compatibility.FunkinPath as Paths;
 
 import backend.Paths as PsychPaths;
 
+#if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
+import bobbydx.HScriptVisuals;
+#end
 
 import mikolka.vslice.freeplay.BGScrollingText;
+import flixel.addons.display.FlxBackdrop;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.atlas.FlxAtlas;
+
+import openfl.display.BlendMode;
+import mikolka.compatibility.FreeplayHelpers;
 
 /**
  * A class for the backing cards so they dont have to be part of freeplayState......
@@ -46,47 +55,18 @@ class BackingCard extends FlxSpriteGroup
 
   public var instance:FreeplayState;
 
-  public var characterVariable:PlayableCharacter; // Store the current playable character
+  public var glow:FlxSprite;
+  public var glowDark:FlxSprite;
+
+  public var backPath:String = 'freeplay/backing-text-yeah';
+
+  public var visualUtils:HScriptVisuals;
 
   #if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
-  public var hscriptScrollingTexts:Map<String, BGScrollingText> = new Map(); // Store HScript-created objects
+  public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
+  public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
-
-  public function addBackingText(name:String, x:Float, y:Float, text:String, width:Float, isBold:Bool, size:Int):BGScrollingText {
-    #if HSCRIPT_ALLOWED
-    if (hscriptScrollingTexts.exists(name)) {
-        trace("Warning: BGScrollingText '" + name + "' already exists!");
-        var existingText:BGScrollingText = cast hscriptScrollingTexts.get(name);
-        //existingText.changeText(text);
-        return existingText;
-    }
-
-    var scrollingText = new BGScrollingText(x, y, text, width, isBold, size);
-    add(scrollingText); // Add to FlxGroup
-    hscriptScrollingTexts.set(name, scrollingText); // Store in the map
-    return scrollingText;
-    #end
-  }
-
-
-  public function removeBackingText(name:String):Void {
-    #if HSCRIPT_ALLOWED
-    if (hscriptScrollingTexts.exists(name)) {
-        var textObject:BGScrollingText = hscriptScrollingTexts.get(name);
-        if (textObject != null) {
-            remove(textObject); // Remove from FlxGroup
-            textObject.destroy(); // Properly clean up memory
-            hscriptScrollingTexts.remove(name); // Remove from tracking map
-            trace("Removed BGScrollingText: " + name);
-        } else {
-            trace("Warning: BGScrollingText '" + name + "' is null, but existed in the map!");
-        }
-    } else {
-        trace("Warning: BGScrollingText '" + name + "' does not exist in the map!");
-    }
-    #end
-  }
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
     #if HSCRIPT_ALLOWED
@@ -95,10 +75,8 @@ class BackingCard extends FlxSpriteGroup
             if (script.exists(funcToCall)) {
                 script.call(funcToCall, args);
             }
-
-            // Backing Card Functions
-            script.set("addBackingText", addBackingText);
-            script.set("removeBackingText", removeBackingText);
+            script.set("hxvisual", visualUtils);
+            script.set("hscriptObjects", hscriptObjects);
         }
     }
     #end
@@ -132,6 +110,9 @@ class BackingCard extends FlxSpriteGroup
 
   public function new(currentCharacter:PlayableCharacter, ?_instance:FreeplayState)
   {
+
+    super();
+
     var characterNameThingy:String = currentCharacter.getCodename(); 
 
     #if HSCRIPT_ALLOWED
@@ -144,8 +125,6 @@ class BackingCard extends FlxSpriteGroup
 		    trace('HScript file not found: ' + scriptPath);
 		}
 		#end
-
-    super();
 
     if (_instance != null) instance = _instance;
 
@@ -164,7 +143,7 @@ class BackingCard extends FlxSpriteGroup
     orangeBackShit = new FunkinSprite(84, 440).makeSolidColor(Std.int(pinkBack.width), 75, 0xFFFEDA00);
     alsoOrangeLOL = new FunkinSprite(0, orangeBackShit.y).makeSolidColor(100, Std.int(orangeBackShit.height), 0xFFFFD400);
     confirmGlow2 = new FlxSprite(confirmGlow.x, confirmGlow.y).loadGraphic(Paths.image('freeplay/confirmGlow2'));
-    backingTextYeah = new FlxAtlasSprite(640, 370, Paths.animateAtlas("freeplay/backing-text-yeah"),
+    backingTextYeah = new FlxAtlasSprite(640, 370, Paths.animateAtlas(backPath),
       {
         FrameRate: 24.0,
         Reversed: false,
@@ -281,7 +260,25 @@ class BackingCard extends FlxSpriteGroup
     cardGlow.blend = BlendMode.ADD;
     cardGlow.visible = false;
 
+    glowDark = new FlxSprite(-300, 330).loadGraphic(Paths.image('freeplay/beatglow'));
+    glowDark.blend = BlendMode.MULTIPLY;
+    add(glowDark);
+    callOnHScript("onLoad",["glowDark",glowDark]);
+
+    glow = new FlxSprite(-300, 330).loadGraphic(Paths.image('freeplay/beatglow'));
+    glow.blend = BlendMode.ADD;
+    add(glow);
+    callOnHScript("onLoad",["glow",glow]);
+
+    glowDark.visible = false;
+    glow.visible = false;
+
     add(cardGlow);
+
+    #if HSCRIPT_ALLOWED
+    add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
+    visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
+    #end
   }
 
   /**
@@ -295,6 +292,8 @@ class BackingCard extends FlxSpriteGroup
     alsoOrangeLOL.visible = true;
     cardGlow.visible = true;
     FlxTween.tween(cardGlow, {alpha: 0, "scale.x": 1.2, "scale.y": 1.2}, 0.45, {ease: FlxEase.sineOut});
+    glowDark.visible = true;
+    glow.visible = true;
   }
 
   /**
@@ -303,12 +302,15 @@ class BackingCard extends FlxSpriteGroup
   public function confirm():Void
   {
     FlxTween.color(pinkBack, 0.33, 0xFFFFD0D5, 0xFF171831, {ease: FlxEase.quadOut});
-    callOnHScript("onDisappear", []);
+    callOnHScript("onConfirm", []);
     orangeBackShit.visible = false;
     alsoOrangeLOL.visible = false;
 
     confirmGlow.visible = true;
     confirmGlow2.visible = true;
+
+    glowDark.visible = false;
+    glow.visible = false;
 
     backingTextYeah.anim.play("");
     confirmGlow2.alpha = 0;
@@ -349,8 +351,26 @@ class BackingCard extends FlxSpriteGroup
   /**
    * Called on each beat in freeplay state.
    */
+
+  var beatFreq:Int = 1;
+  var beatFreqList:Array<Int> = [1, 2, 4, 8];
+  
   public function beatHit(curBeat:Int):Void {
+
     callOnHScript("onBeatHit", [curBeat]);
+
+    // increases the amount of beats that need to go by to pulse the glow because itd flash like craazy at high bpms.....
+    beatFreq = beatFreqList[Math.floor(FreeplayHelpers.BPM / 140)];
+
+    if (curBeat % beatFreq != 0) return;
+    FlxTween.cancelTweensOf(glow);
+    FlxTween.cancelTweensOf(glowDark);
+
+    glow.alpha = 0.8;
+    FlxTween.tween(glow, {alpha: 0}, 16 / 24, {ease: FlxEase.quartOut});
+    glowDark.alpha = 0;
+    FlxTween.tween(glowDark, {alpha: 0.6}, 18 / 24, {ease: FlxEase.quartOut});
+
   }
 
   /**
@@ -369,5 +389,14 @@ class BackingCard extends FlxSpriteGroup
 
     orangeBackShit.visible = false;
     alsoOrangeLOL.visible = false;
+
+    glowDark.visible = false;
+    glow.visible = false;
+  }
+
+  override public function update(elapsed:Float):Void
+  {
+    super.update(elapsed);
+    callOnHScript("onUpdate", []);
   }
 }

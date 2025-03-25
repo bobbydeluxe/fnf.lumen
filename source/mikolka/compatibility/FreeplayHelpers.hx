@@ -2,7 +2,6 @@ package mikolka.compatibility;
 
 import mikolka.vslice.components.crash.UserErrorSubstate;
 import openfl.utils.AssetType;
-import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
 import mikolka.vslice.freeplay.pslice.BPMCache;
 import mikolka.vslice.freeplay.FreeplayState;
 import backend.Song;

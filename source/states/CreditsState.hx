@@ -38,40 +38,35 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
-			['MintEngine Stuff'],
+			['MintEngine Contributors'],
 			[
 				'bobbyDX',
 				'bobby',
 				'Created Mint Engine',
 				'https://github.com/bobbydeluxe',
-				'82faa2' // why tf is the formatting like this
-			],
-			[
-				'darnelldotchud',
-				'chud',
-				'Translated the spookykids backing cards code',
-				'https://github.com/Bfjfjvjnc',
-				'7742d4'
+				'FFDD33' // why tf is the formatting like this
 			],
 			['Blantados', 'blantad', 'DD losing icon', 'https://x.com/Blantados', '64b3fe'],
 			[
 				'HollowSoulxs',
 				'hollow',
-				'Designed the icon',
+				'Designed the application icon',
 				'about:blank',
 				'0080ff'
 			],
 			[
 				'betopia',
 				'betpowo',
-				'sillyfont file + gf spritesheets',
+				'sillyfont file + gf spritesheet source',
 				'https://betpowo.github.io/',
 				'f52c6f'
 			],
 			['MrPolo', 'polo', 'IntroVideoState code', 'about:blank', '7a4b37'],
-			['JustDragos', 'dragos', 'help with lil buddies code', 'https://gamebanana.com/tuts/18304', 'FFFFFF'],
 			['JoaDash', 'joadash', 'BF alt dodge anim', 'https://gamebanana.com/members/1816005', '89aae0'],
 			['GoodieBag', 'goodie', 'Press Enter To Begin text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
+			[""],
+			["MintEngine server"],
+			["Join the Server!", "discord", "", "https://discord.gg/2ka77eMXDv", "82FAA2"],
 			[""],
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
@@ -81,8 +76,6 @@ class CreditsState extends MusicBeatState
 			["Fazecarl",			'fazecarl',			'Made the new logo for P-Slice',									'https://gamebanana.com/members/2121406',	'29170a'],
 			["Mykarm",			'mykarm',			'Made the new icon for P-Slice',									'https://x.com/cronviersmeat/status/1849059676467417311?s=46&t=4dcTT7PAMkRJ8zYd4LgTow',	'29170a'],
 			[""],
-			["P-Slice server"],
-			["Join our community",	"ppslice",			"",																"https://discord.gg/9FCyCqEvRf",			"5e36c4"],
 			[""],
 			["Psych Engine Team"],
 			["Shadow Mario",		"shadowmario",		"Main Programmer and Head of Psych Engine",					"https://ko-fi.com/shadowmario",	"444444"],
@@ -99,7 +92,6 @@ class CreditsState extends MusicBeatState
 			["SqirraRNG",			"sqirra",			"Crash Handler and Base code for\nChart Editor's Waveform",	"https://x.com/gedehari",			"E1843A"],
 			["EliteMasterEric",		"mastereric",		"Runtime Shaders support and Other PRs",					"https://x.com/EliteMasterEric",	"FFBD40"],
 			["MAJigsaw77",			"majigsaw",			".MP4 Video Loader Library (hxvlc)",						"https://x.com/MAJigsaw77",			"5F5F5F"],
-			["Tahir Toprak Karabekiroglu",	"tahir",	"Note Splash Editor and Other PRs",							"https://x.com/TahirKarabekir",		"A04397"],
 			["iFlicky",				"flicky",			"Composer of Psync and Tea Time\nAnd some sound effects",	"https://x.com/flicky_i",			"9E29CF"],
 			["KadeDev",				"kade",				"Fixed some issues on Chart Editor and Other PRs",			"https://x.com/kade0912",			"64A250"],
 			["superpowers04",		"superpowers04",	"LUA JIT Fork",												"https://x.com/superpowers04",		"B957ED"],

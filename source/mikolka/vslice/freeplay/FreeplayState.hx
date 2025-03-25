@@ -13,7 +13,6 @@ import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.FunkinCamera;
 import mikolka.vslice.freeplay.pslice.BPMCache;
-import mikolka.vslice.freeplay.pslice.FreeplayColorTweener;
 import mikolka.compatibility.FreeplaySongData;
 import mikolka.compatibility.FreeplayHelpers;
 import mikolka.compatibility.FunkinPath as Paths;
@@ -47,6 +46,13 @@ import options.GameplayChangersSubstate;
 
 using mikolka.funkin.custom.FunkinTools;
 using mikolka.funkin.utils.ArrayTools;
+
+#if HSCRIPT_ALLOWED
+import crowplexus.iris.Iris;
+import psychlua.HScript;
+import bobbydx.HScriptVisuals;
+import backend.Paths as PsychPaths;
+#end
 
 /**
  * Parameters used to initialize the FreeplayState.
@@ -190,6 +196,8 @@ class FreeplayState extends MusicBeatSubstate
 
 	var stickerSubState:Null<StickerSubState> = null;
 
+	public var visualUtils:HScriptVisuals;
+
 	/**
 	 * The difficulty we were on when this menu was last accessed.
 	 */
@@ -218,10 +226,67 @@ class FreeplayState extends MusicBeatSubstate
 
 	var fromCharSelect:Null<Bool> = null;
 
+	#if HSCRIPT_ALLOWED
+	public var hscriptArray:Array<HScript> = [];
+  	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
+  	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
+	#end
+
+	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray) {
+			if (script != null) {
+				if (script.exists(funcToCall)) {
+					script.call(funcToCall, args);
+				}
+				script.set("hxvisual", visualUtils);
+				script.set("hscriptObjects", hscriptObjects);
+			}
+		}
+		#end
+	}
+
+	public function initHScript(file:String)
+	{
+		var newScript:HScript = null;
+		try
+		{
+			newScript = new HScript(null, file);
+			if (newScript.exists('onCreate')) newScript.call('onCreate');
+			trace('initialized hscript interp successfully: $file');
+			hscriptArray.push(newScript);
+		}
+		catch(e:Dynamic)
+		{
+			addTextToDebug('ERROR ON LOADING ($file) - $e', FlxColor.RED);
+			var newScript:HScript = cast (Iris.instances.get(file), HScript);
+			if(newScript != null)
+				newScript.destroy();
+		}
+	}
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	public function addTextToDebug(text:String, color:FlxColor) {
+
+  	}
+  	#end
+
 	public function new(?params:FreeplayStateParams, ?stickers:StickerSubState)
 	{
 		controls.isInSubstate = true;
+
 		super();
+
+		#if HSCRIPT_ALLOWED
+		var scriptPath = PsychPaths.getPath('data/haxescript/freePlay.hx', TEXT, null, true);
+
+		if (FileSystem.exists(scriptPath)) {
+		    initHScript(scriptPath);
+		} else {
+		    trace('HScript file not found: ' + scriptPath);
+		}
+		#end
+
 		var saveBox = VsliceOptions.LAST_MOD;
 		currentCharacterId = saveBox.char_name;
 		// switch to the character's mod to load her registry
@@ -255,9 +320,8 @@ class FreeplayState extends MusicBeatSubstate
 			stickerSubState = stickers;
 		}
 
-		
+		callOnHScript("onCreatePost", []);
 
-		
 	}
 
 	var fadeShader:BlueFade = new BlueFade();
@@ -272,24 +336,8 @@ class FreeplayState extends MusicBeatSubstate
 			ModsHelper.loadModDir(saveBox.mod_dir);
 		// We build a bunch of sprites BEFORE create() so we can guarantee they aren't null later on.
 		//? but doing it here, because psych 0.6.3 can destroy graphics created in the constructor
-		if(VsliceOptions.FP_CARDS){
-			switch (currentCharacterId)
-		{
-			case(PlayerRegistry.instance.hasNewCharacter()) => true:
-				backingCard = new NewCharacterCard(currentCharacter);
-			case 'bf':
-				backingCard = new BoyfriendCard(currentCharacter);
-			case 'pico':
-				backingCard = new PicoCard(currentCharacter);
-			case 'spooky':
-				backingCard = new SpookyCard(currentCharacter);
-			case 'gfr':
-				backingCard = new GirlfriendCard(currentCharacter);
-			default:
-				backingCard = new BackingCard(currentCharacter);//new BackingCard(currentCharacter);
-		}
-		}
-		else backingCard = new BoyfriendCard(currentCharacter);
+		
+		backingCard = new BackingCard(currentCharacter);
 
 		albumRoll = new AlbumRoll();
 		fp = new FreeplayScore(460, 60, 7, 100, styleData);
@@ -381,6 +429,7 @@ class FreeplayState extends MusicBeatSubstate
 		if (backingCard != null)
 		{
 			add(backingCard);
+			callOnHScript("onLoad", ["backingCard", backingCard]);
 			backingCard.init();
 			backingCard.applyExitMovers(exitMovers, exitMoversCharSel);
 			backingCard.instance = this;
@@ -395,6 +444,7 @@ class FreeplayState extends MusicBeatSubstate
 				speed: 0.5
 			});
 			add(dj);
+			callOnHScript("onLoad", ["fpDJ", dj]);
 			exitMoversCharSel.set([dj], {
 				y: -175,
 				speed: 0.8,
@@ -406,6 +456,7 @@ class FreeplayState extends MusicBeatSubstate
 		djTouchHitbox.cameras = dj.cameras;
 		djTouchHitbox.active = false;
 		add(djTouchHitbox);
+		callOnHScript("onLoad", ["djTouchHitbox", djTouchHitbox]);
 
 		bgDad.shader = angleMaskShader;
 		bgDad.visible = false;
@@ -413,6 +464,7 @@ class FreeplayState extends MusicBeatSubstate
 		var blackOverlayBullshitLOLXD:FlxSprite = new FlxSprite(FlxG.width, 0, Paths.image("back"));
 		blackOverlayBullshitLOLXD.alpha = 1; // ? graphic because shareds are shit
 		add(blackOverlayBullshitLOLXD); // used to mask the text lol!
+		callOnHScript("onLoad", ["blackOverlayMask", blackOverlayBullshitLOLXD]);
 
 		// this makes the texture sizes consistent, for the angle shader
 		bgDad.setGraphicSize(0, FlxG.height);
@@ -434,6 +486,7 @@ class FreeplayState extends MusicBeatSubstate
 		});
 
 		add(bgDad);
+		callOnHScript("onLoad", ["bgDad", bgDad]);
 		// ? changed offset
 		FlxTween.tween(blackOverlayBullshitLOLXD, {x: (backingCard.pinkBack.width * 0.74)}, 0.7, {ease: FlxEase.quintOut});
 
@@ -441,18 +494,23 @@ class FreeplayState extends MusicBeatSubstate
 
 		rankBg.makeSolidColor(FlxG.width, FlxG.height, 0xD3000000);
 		add(rankBg);
+		callOnHScript("onLoad", ["rankBg", rankBg]);
 
 		add(grpSongs);
+		callOnHScript("onLoad", ["grpSongs", grpSongs]);
 
 		add(grpCapsules);
+		callOnHScript("onLoad", ["grpCapsules", grpCapsules]);
 
 		grpFallbackDifficulty = new FlxText(70, 90, 250, "AAAAAAAAAAAAAA");
 		grpFallbackDifficulty.setFormat("VCR OSD Mono", 60, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
 		grpFallbackDifficulty.borderSize = 2;
 		add(grpFallbackDifficulty);
+		callOnHScript("onLoad", ["grpFallbackDifficulty", grpFallbackDifficulty]);
 
 		grpDifficulties = new FlxTypedSpriteGroup<DifficultySprite>(-300, 80);
 		add(grpDifficulties);
+		callOnHScript("onLoad", ["grpDifficulties", grpDifficulties]);
 
 		exitMovers.set([grpDifficulties], {
 			x: -300,
@@ -490,6 +548,7 @@ class FreeplayState extends MusicBeatSubstate
 
 		albumRoll.albumId = null;
 		add(albumRoll);
+		callOnHScript("onLoad", ["albumRoll", albumRoll]);
 
 		var overhangStuff:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 164, FlxColor.BLACK);
 		overhangStuff.y -= overhangStuff.height;
@@ -552,6 +611,7 @@ class FreeplayState extends MusicBeatSubstate
 		fnfHighscoreSpr.setGraphicSize(0, Std.int(fnfHighscoreSpr.height * 1));
 		fnfHighscoreSpr.updateHitbox();
 		add(fnfHighscoreSpr);
+		callOnHScript("onLoad", ["fnfHighscoreSpr", fnfHighscoreSpr]);
 
 		new FlxTimer().start(FlxG.random.float(12, 50), function(tmr)
 		{
@@ -561,15 +621,19 @@ class FreeplayState extends MusicBeatSubstate
 
 		fp.visible = false;
 		add(fp);
+		callOnHScript("onLoad", ["fpScore", fp]);
 
 		var clearBoxSprite:FlxSprite = new FlxSprite(1165, 65).loadGraphic(Paths.image('freeplay/clearBox'));
 		clearBoxSprite.visible = false;
 		add(clearBoxSprite);
+		callOnHScript("onLoad", ["clearBoxSprite", clearBoxSprite]);
 
 		txtCompletion.visible = false;
 		add(txtCompletion);
+		callOnHScript("onLoad", ["txtCompletion", txtCompletion]);
 
 		add(letterSort);
+		callOnHScript("onLoad", ["letterSort", letterSort]);
 		letterSort.visible = false;
 
 		exitMovers.set([letterSort], {
@@ -623,16 +687,22 @@ class FreeplayState extends MusicBeatSubstate
 		diffSelLeft.visible = false;
 		diffSelRight.visible = false;
 		add(diffSelLeft);
+		callOnHScript("onLoad", ["diffSelLeft", diffSelLeft]);
 		add(diffSelRight);
+		callOnHScript("onLoad", ["diffSelRight", diffSelRight]);
 
 		// putting these here to fix the layering
 		add(overhangStuff);
+		callOnHScript("onLoad", ["overhangStuff", overhangStuff]);
 		add(fnfFreeplay);
+		callOnHScript("onLoad", ["fnfFreeplay", fnfFreeplay]);
 		add(ostName);
+		callOnHScript("onLoad", ["ostName", ostName]);
 
 		if (PlayerRegistry.instance.hasNewCharacter() == true)
 		{
 			add(charSelectHint);
+			callOnHScript("onLoad", ["charSelectHint", charSelectHint]);
 		}
 
 		// be careful not to "add()" things in here unless it's to a group that's already added to the state
@@ -710,6 +780,8 @@ class FreeplayState extends MusicBeatSubstate
 			{
 				rankAnimStart(fromResultsParams);
 			}
+
+			callOnHScript("onIntroDone", []);
 		};
 
 		if (dj != null)
@@ -732,6 +804,7 @@ class FreeplayState extends MusicBeatSubstate
 		rankVignette.blend = BlendMode.ADD;
 		// rankVignette.cameras = [rankCamera];
 		add(rankVignette);
+		callOnHScript("onLoad", ["rankVignette", rankVignette]);
 		rankVignette.alpha = 0;
 
 		forEach(function(bs)
@@ -781,6 +854,11 @@ class FreeplayState extends MusicBeatSubstate
 			enterFromCharSel();
 			onDJIntroDone();
 		}
+
+		#if HSCRIPT_ALLOWED
+    	add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
+    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
+    	#end
 	}
 
 	var currentFilter:SongFilter = null;
@@ -1000,6 +1078,7 @@ class FreeplayState extends MusicBeatSubstate
 			sparks.setPosition(517, 134);
 			sparks.scale.set(0.5, 0.5);
 			add(sparks);
+			callOnHScript("onLoad", ["sparks", sparks]);
 			sparks.cameras = [rankCamera];
 
 			sparksADD.visible = false;
@@ -1009,6 +1088,7 @@ class FreeplayState extends MusicBeatSubstate
 			sparksADD.blend = BlendMode.ADD;
 			sparksADD.scale.set(0.5, 0.5);
 			add(sparksADD);
+			callOnHScript("onLoad", ["sparksADD", sparksADD]);
 			sparksADD.cameras = [rankCamera];
 
 			switch (fromResults.oldRank)
@@ -1330,6 +1410,7 @@ class FreeplayState extends MusicBeatSubstate
 			wait: 0.1
 		});
 		add(transitionGradient);
+		callOnHScript("onLoad", ["transGradToCS", transitionGradient]);
 		for (index => capsule in grpCapsules.members)
 		{
 			var distFromSelected:Float = Math.abs(index - curSelected) - 1;
@@ -1391,6 +1472,7 @@ class FreeplayState extends MusicBeatSubstate
 			wait: 0.1
 		});
 		add(transitionGradient);
+		callOnHScript("onLoad", ["transGradFromCS", transitionGradient]);
 		changeDiff(0, true);
 		// FlxTween.tween(transitionGradient, {alpha: 0}, 1, {ease: FlxEase.circIn});
 		// for (index => capsule in grpCapsules.members)
@@ -1819,6 +1901,7 @@ class FreeplayState extends MusicBeatSubstate
 	public override function destroy():Void
 	{
 		controls.isInSubstate = false;
+		callOnHScript("onDestroy", []);
 		super.destroy();
 		var daSong:Null<FreeplaySongData> = currentFilteredSongs[curSelected];
 		if (daSong != null)
@@ -2057,6 +2140,8 @@ class FreeplayState extends MusicBeatSubstate
 		busy = true;
 		letterSort.inputEnabled = false;
 
+		callOnHScript("onConfirm", [cap]);
+
 		PlayState.isStoryMode = false;
 
 		var targetSong = cap.songData;
@@ -2178,11 +2263,9 @@ class FreeplayState extends MusicBeatSubstate
 			FlxG.sound.music.pause(); // muting previous track must be done NOW
 			FlxTimer.wait(FADE_IN_DELAY, playCurSongPreview.bind(daSongCapsule)); // Wait a little before trying to pull a Inst file
 
-			tweenCurSongColor(daSongCapsule);
+			//tweenCurSongColor(daSongCapsule);
 			grpCapsules.members[curSelected].selected = true;
 		}
-		else if (prepForNewRank)
-			tweenCurSongColor(daSongCapsule);
 	}
 
 	public function playCurSongPreview(?daSongCapsule:SongMenuItem):Void
@@ -2228,16 +2311,6 @@ class FreeplayState extends MusicBeatSubstate
 					FreeplayHelpers.BPM = newBPM; // ? reimplementing
 				}
 			});
-		}
-	}
-
-	public function tweenCurSongColor(daSongCapsule:SongMenuItem)
-	{ // H1
-		if (Std.isOfType(backingCard, BoyfriendCard))
-		{
-			var newColor:FlxColor = (curSelected == 0) ? 0xFFFFD863 : daSongCapsule.songData.color;
-			var bfCard = cast(backingCard, BoyfriendCard);
-			bfCard.colorEngine?.tweenColor(newColor);
 		}
 	}
 

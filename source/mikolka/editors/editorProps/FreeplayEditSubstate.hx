@@ -5,7 +5,7 @@ import mikolka.vslice.freeplay.BGScrollingText;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import mikolka.funkin.freeplay.FreeplayStyleRegistry;
 import shaders.AngleMask;
-import mikolka.vslice.freeplay.backcards.BoyfriendCard;
+import mikolka.vslice.freeplay.backcards.BackingCard;
 
 class FreeplayEditSubstate extends MusicBeatSubstate
 {
@@ -19,7 +19,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 	var dj:FlxAtlasSprite;
 	var dj_anim:DJAnimPreview;
 
-	var backingCard:BoyfriendCard;
+	var backingCard:BackingCard;
 	var angleMaskShader:AngleMask = new AngleMask();
 	var bgDad:FlxSprite;
 	var ostName:FlxText;
@@ -63,7 +63,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 
 	override function create()
 	{
-		backingCard = new BoyfriendCard(data);
+		backingCard = new BackingCard(data);
 		backingCard.init();
 		add(backingCard);
 

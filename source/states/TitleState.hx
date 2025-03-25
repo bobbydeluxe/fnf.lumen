@@ -18,8 +18,11 @@ import states.MainMenuState;
 import mikolka.vslice.components.ScreenshotPlugin;
 import mikolka.vslice.AttractState;
 
+#if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
+import bobbydx.HScriptVisuals;
+#end
 
 typedef TitleData =
 {
@@ -73,8 +76,12 @@ class TitleState extends MusicBeatState
 
 	public static var updateVersion:String = '';
 
+	public var visualUtils:HScriptVisuals;
+
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
+  	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
+  	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
@@ -83,11 +90,15 @@ class TitleState extends MusicBeatState
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
 		#if HSCRIPT_ALLOWED
-		for (script in hscriptArray)
-			if(script != null)
-			{
-				if (script.exists(funcToCall)) script.call(funcToCall,args);
+		for (script in hscriptArray) {
+			if (script != null) {
+				if (script.exists(funcToCall)) {
+					script.call(funcToCall, args);
+				}
+				script.set("hxvisual", visualUtils);
+				script.set("hscriptObjects", hscriptObjects);
 			}
+		}
 		#end
 	}
 
@@ -203,6 +214,11 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end
+
+		#if HSCRIPT_ALLOWED
+    	add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
+    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
+    	#end
 	}
 
 	var logoBl:FlxSprite;
