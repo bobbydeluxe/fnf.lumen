@@ -18,8 +18,11 @@ import states.MainMenuState;
 import mikolka.vslice.components.ScreenshotPlugin;
 import mikolka.vslice.AttractState;
 
+#if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
+import bobbydx.HScriptVisuals;
+#end
 
 typedef TitleData =
 {
@@ -73,8 +76,12 @@ class TitleState extends MusicBeatState
 
 	public static var updateVersion:String = '';
 
+	public var visualUtils:HScriptVisuals;
+
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
+  	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
+  	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
@@ -83,11 +90,15 @@ class TitleState extends MusicBeatState
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
 		#if HSCRIPT_ALLOWED
-		for (script in hscriptArray)
-			if(script != null)
-			{
-				if (script.exists(funcToCall)) script.call(funcToCall,args);
+		for (script in hscriptArray) {
+			if (script != null) {
+				if (script.exists(funcToCall)) {
+					script.call(funcToCall, args);
+				}
+				script.set("hxvisual", visualUtils);
+				script.set("hscriptObjects", hscriptObjects);
 			}
+		}
 		#end
 	}
 
@@ -203,6 +214,11 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end
+
+		#if HSCRIPT_ALLOWED
+    	add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
+    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
+    	#end
 	}
 
 	var logoBl:FlxSprite;
@@ -221,15 +237,17 @@ class TitleState extends MusicBeatState
 		#if TITLE_SCREEN_EASTER_EGG easterEggData(); #end
 		Conductor.bpm = musicBPM;
 
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/states/HaxeStates/TitleState/'))
-			for (file in FileSystem.readDirectory(folder))
-			{
+		#if HSCRIPT_ALLOWED
+		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/titleScreen.hx');
+		var scriptPath = Paths.getPath('data/haxescript/titleScreen.hx', TEXT, null, true);
 
-				#if HSCRIPT_ALLOWED
-				if(file.toLowerCase().endsWith('.hx'))
-					initHScript(folder + file);
-				#end
-			}
+		if (FileSystem.exists(scriptPath)) {
+		    initHScript(scriptPath);
+		} else {
+		    trace('HScript file not found: ' + scriptPath);
+		}
+		#end
+
 
 		logoBl = new FlxSprite(logoPosition.x, logoPosition.y);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
@@ -339,6 +357,9 @@ class TitleState extends MusicBeatState
 		callOnHScript("onLoad",["credGroup",credGroup]);
 		add(ngSpr);
 		callOnHScript("onLoad",["ngSpr",ngSpr]);
+
+		callOnHScript("onLoad",["titleTextColors",titleTextColors]);
+		callOnHScript("onLoad",["titleTextAlphas",titleTextAlphas]);
 
 		if (initialized)
 			skipIntro();

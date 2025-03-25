@@ -9,9 +9,11 @@ import lime.app.Application;
 import states.editors.MasterEditorMenu;
 import options.OptionsState;
 import backend.Song;
-
+#if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
+import bobbydx.HScriptVisuals;
+#end
 
 class MainMenuState extends MusicBeatState
 {
@@ -23,6 +25,8 @@ class MainMenuState extends MusicBeatState
 
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
+  	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
+  	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -39,25 +43,33 @@ class MainMenuState extends MusicBeatState
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
+
+	var cancelLoad:Bool = false;
+
+	public var visualUtils:HScriptVisuals;
+
 	public function new(isDisplayingRank:Bool = false) {
 
 		//TODO
 		super();
+
+		#if HSCRIPT_ALLOWED
+    	add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
+    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
+    	#end
 	}
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
 		#if HSCRIPT_ALLOWED
-		for (script in hscriptArray)
-			if(script != null)
-			{
+		for (script in hscriptArray) {
+			if (script != null) {
 				if (script.exists(funcToCall)) {
-					if (args != null) 
-						script.call(funcToCall,args);
-					else 
-						script.call(funcToCall);
+					script.call(funcToCall, args);
 				}
-				
+				script.set("hxvisual", visualUtils);
+				script.set("hscriptObjects", hscriptObjects);
 			}
+		}
 		#end
 	}
 
@@ -102,14 +114,16 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/states/HaxeStates/MainMenu/'))
-			for (file in FileSystem.readDirectory(folder))
-			{
-				#if HSCRIPT_ALLOWED
-				if(file.toLowerCase().endsWith('.hx'))
-					initHScript(folder + file);
-				#end
-			}
+		#if HSCRIPT_ALLOWED
+		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/mainMenu.hx');
+		var scriptPath = Paths.getPath('data/haxescript/mainMenu.hx', TEXT, null, true);
+
+		if (FileSystem.exists(scriptPath)) {
+		    initHScript(scriptPath);
+		} else {
+		    trace('HScript file not found: ' + scriptPath);
+		}
+		#end
 
 
 		persistentUpdate = persistentDraw = true;
@@ -247,51 +261,55 @@ class MainMenuState extends MusicBeatState
 					FlxFlicker.flicker(menuItems.members[curSelected], 1, 0.06, false, false, function(flick:FlxFlicker)
 					{
 						callOnHScript("onStart", [optionShit[curSelected]]);
-						switch (optionShit[curSelected])
-						{
-							case 'story_mode':
-								MusicBeatState.switchState(new StoryMenuState());
-							case 'freeplay':{
-								persistentDraw = true;
-								persistentUpdate = false;
-								// Freeplay has its own custom transition
-								FlxTransitionableState.skipNextTransIn = true;
-								FlxTransitionableState.skipNextTransOut = true;
+						if (cancelLoad == false) {
+							switch (optionShit[curSelected])
+							{
+								case 'story_mode':
+									MusicBeatState.switchState(new StoryMenuState());
+								case 'freeplay':
+									persistentDraw = true;
+                    				persistentUpdate = false;
+                    				// Freeplay has its own custom transition
+                    				FlxTransitionableState.skipNextTransIn = true;
+                    				FlxTransitionableState.skipNextTransOut = true;
 
-								openSubState(new FreeplayState());
-								subStateOpened.addOnce(state -> {
-									for (i in 0...menuItems.members.length) {
-										menuItems.members[i].revive();
-										menuItems.members[i].alpha = 1;
-										menuItems.members[i].visible = true;
-										selectedSomethin = false;
+                    				openSubState(new FreeplayState());
+                    				subStateOpened.addOnce(state -> {
+                    				    for (i in 0...menuItems.members.length) {
+                    				        menuItems.members[i].revive();
+                    				        menuItems.members[i].alpha = 1;
+                    				        menuItems.members[i].visible = true;
+                    				        selectedSomethin = false;
+                    				    }
+                    				    changeItem(0);
+                    				});
+	
+								#if MODS_ALLOWED
+								case 'mods':
+									MusicBeatState.switchState(new ModsMenuState());
+								#end
+	
+								#if ACHIEVEMENTS_ALLOWED
+								case 'awards':
+									MusicBeatState.switchState(new AchievementsMenuState());
+								#end
+	
+								case 'credits':
+									MusicBeatState.switchState(new CreditsState());
+								case 'options':
+									MusicBeatState.switchState(new OptionsState());
+									OptionsState.onPlayState = false;
+									if (PlayState.SONG != null)
+									{
+										PlayState.SONG.arrowSkin = null;
+										PlayState.SONG.splashSkin = null;
+										PlayState.stageUI = 'normal';
 									}
-									changeItem(0);
-								});
 							}
-
-							#if MODS_ALLOWED
-							case 'mods':
-								MusicBeatState.switchState(new ModsMenuState());
-							#end
-
-							#if ACHIEVEMENTS_ALLOWED
-							case 'awards':
-								MusicBeatState.switchState(new AchievementsMenuState());
-							#end
-
-							case 'credits':
-								MusicBeatState.switchState(new CreditsState());
-							case 'options':
-								MusicBeatState.switchState(new OptionsState());
-								OptionsState.onPlayState = false;
-								if (PlayState.SONG != null)
-								{
-									PlayState.SONG.arrowSkin = null;
-									PlayState.SONG.splashSkin = null;
-									PlayState.stageUI = 'normal';
-								}
+						} else {
+							
 						}
+						
 					});
 
 					for (i in 0...menuItems.members.length)
@@ -350,6 +368,13 @@ class MainMenuState extends MusicBeatState
 				}
 				else if (eventValue == "options") {
 					MusicBeatState.switchState(new OptionsState());
+					OptionsState.onPlayState = false;
+					if (PlayState.SONG != null)
+					{
+						PlayState.SONG.arrowSkin = null;
+						PlayState.SONG.splashSkin = null;
+						PlayState.stageUI = 'normal';
+					}
 				}
 				else if (eventValue == "awards") {
 					MusicBeatState.switchState(new AchievementsMenuState());

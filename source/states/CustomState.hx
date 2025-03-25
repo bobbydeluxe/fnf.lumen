@@ -63,16 +63,16 @@ class CustomState extends MusicBeatState {
             currentState = "ErrorState";
         }
 
-        for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/states/HaxeStates/'+currentState+'/'))
-			for (file in FileSystem.readDirectory(folder))
-			{
+        #if HSCRIPT_ALLOWED
+		//var scriptPath = Paths.getSharedPath() + 'data/haxescript/'+currentState+'.hx'; // Strict file path
+		var scriptPath = Paths.getPath('data/haxescript/' + currentState + '.hx', TEXT, null, true);
 
-				#if HSCRIPT_ALLOWED
-				if(file.toLowerCase().endsWith('.hx'))
-					initHScript(folder + file);
-                    isScriptFinded = true;
-				#end
-			}
+		if (FileSystem.exists(scriptPath)) {
+		    initHScript(scriptPath);
+		} else {
+		    trace('HScript file not found: ' + scriptPath);
+		}
+		#end
     }
 
     override function update(elapsed:Float) {

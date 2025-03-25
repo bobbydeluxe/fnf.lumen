@@ -1,4 +1,4 @@
-package mikolka.vslice.results;
+package mikolka.vslice.results;//
 
 import mikolka.compatibility.ModsHelper;
 import mikolka.compatibility.VsliceOptions;
@@ -37,6 +37,13 @@ import mikolka.funkin.players.*;
 import mikolka.funkin.players.PlayerData.PlayerFreeplayDJData;
 import mikolka.funkin.custom.VsliceSubState as MusicBeatSubState;
 using mikolka.funkin.custom.FunkinTools;
+
+#if HSCRIPT_ALLOWED
+import crowplexus.iris.Iris;
+import psychlua.HScript;
+import bobbydx.HScriptVisuals;
+import backend.Paths as PsychPaths;
+#end
 
 /**
  * The state for the results screen after a song or week is finished.
@@ -82,9 +89,97 @@ class ResultState extends MusicBeatSubState
   final cameraScroll:FunkinCamera;
   final cameraEverything:FunkinCamera;
 
+  #if HSCRIPT_ALLOWED
+	public var hscriptArray:Array<HScript> = [];
+  public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
+  public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
+	#end
+
+  public var visualUtils:HScriptVisuals;
+
+  public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
+    #if HSCRIPT_ALLOWED
+    for (script in hscriptArray) {
+        if (script != null) {
+            if (script.exists(funcToCall)) {
+                script.call(funcToCall, args);
+            }
+            script.set("hscriptObjects", hscriptObjects);
+            script.set("hxvisual", visualUtils);
+        }
+    }
+    #end
+  }
+
+
+	public function initHScript(file:String)
+	{
+		var newScript:HScript = null;
+		try
+		{
+			newScript = new HScript(null, file);
+      #if HSCRIPT_ALLOWED
+		  newScript.set("hxvisual", visualUtils); // <-- FIX: Set hxvisual before calling anything
+		  #end
+			if (newScript.exists('onCreate')) newScript.call('onCreate');
+			trace('initialized hscript interp successfully: $file');
+			hscriptArray.push(newScript);
+		}
+		catch(e:Dynamic)
+		{
+			addTextToDebug('ERROR ON LOADING ($file) - $e', FlxColor.RED);
+			var newScript:HScript = cast (Iris.instances.get(file), HScript);
+			if(newScript != null)
+				newScript.destroy();
+		}
+	}
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	public function addTextToDebug(text:String, color:FlxColor) {
+
+  }
+  #end
+
   public function new(params:ResultsStateParams)
   {
     super();
+
+    #if HSCRIPT_ALLOWED
+    add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
+    visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
+    #end
+
+    var sngMeta = FreeplayMeta.getMeta(params.songId);
+    
+    if(sngMeta.freeplayCharacter != '' ){
+      playerCharacterId = sngMeta.freeplayCharacter;
+    }
+    else{
+      var mod_char = VsliceOptions.LAST_MOD;
+      playerCharacterId = mod_char.char_name;
+      ModsHelper.loadModDir(mod_char.mod_dir);
+    }
+
+    var characterNameThingy = playerCharacterId ?? 'bf';
+
+
+    #if HSCRIPT_ALLOWED
+    var basePath = 'data/haxescript/results/';
+    var charScript = PsychPaths.getPath(basePath + characterNameThingy + 'Card.hx', TEXT, null, true);
+    var generalScript = PsychPaths.getPath(basePath + 'general.hx', TEXT, null, true);
+    
+    if (FileSystem.exists(generalScript)) {
+      initHScript(generalScript);
+    } else {
+      trace('General HScript not found: ' + generalScript);
+    }
+    
+    if (FileSystem.exists(charScript)) {
+      initHScript(charScript);
+    } else {
+      trace('Character HScript not found: ' + charScript);
+    }    
+    #end
 
     this.params = params;
 
@@ -132,22 +227,27 @@ class ResultState extends MusicBeatSubState
 
     rankBg = new FunkinSprite(0, 0);
 
-    var sngMeta = FreeplayMeta.getMeta(params.songId);
+    //var sngMeta = FreeplayMeta.getMeta(params.songId);
     
-    if(sngMeta.freeplayCharacter != '' ){
+    /*if(sngMeta.freeplayCharacter != '' ){
       playerCharacterId = sngMeta.freeplayCharacter;
     }
     else{
       var mod_char = VsliceOptions.LAST_MOD;
       playerCharacterId = mod_char.char_name;
       ModsHelper.loadModDir(mod_char.mod_dir);
-    }
+    }*/
     //? moved this line so we can edit it in debug options
   }
 
   override function create():Void
   {
     if (FlxG.sound.music != null) FlxG.sound.music.stop();
+
+    #if HSCRIPT_ALLOWED
+    add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
+    visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
+    #end
 
     // We need multiple cameras so we can put one at an angle.
     cameraScroll.angle = -3.8;
@@ -171,12 +271,14 @@ class ResultState extends MusicBeatSubState
     bg.zIndex = 10;
     bg.cameras = [cameraBG];
     add(bg);
+    callOnHScript("onLoad", ["bgSprite", bg]);
 
     bgFlash.scrollFactor.set();
     bgFlash.visible = false;
     bgFlash.zIndex = 20;
     // bgFlash.cameras = [cameraBG];
     add(bgFlash);
+    callOnHScript("onLoad", ["bgSpriteFlash", bgFlash]);
 
     // The sound system which falls into place behind the score text. Plays every time!
     var soundSystem:FlxSprite = FunkinSprite.createSparrow(-15, -180, 'resultScreen/soundSystem');
@@ -188,6 +290,7 @@ class ResultState extends MusicBeatSubState
     });
     soundSystem.zIndex = 1100;
     add(soundSystem);
+    callOnHScript("onLoad", ["soundSystem", soundSystem]);
 
     // Fetch playable character data. Default to BF on the results screen if we can't find it.
     //? changed a little code here
@@ -266,6 +369,7 @@ class ResultState extends MusicBeatSubState
             });
           // Add to the scene.
           add(animation);
+          callOnHScript("onLoad", ["charAnimation", animation]);
         case 'sparrow':
           var animation:FunkinSprite = FunkinSprite.createSparrow(offsets[0], offsets[1], animPath);
           animation.animation.addByPrefix('idle', '', 24, false, false, false);
@@ -290,14 +394,17 @@ class ResultState extends MusicBeatSubState
             });
           // Add to the scene.
           add(animation);
+          callOnHScript("onLoad", ["charAnimation", animation]);
       }
     }
 
     var diffSpr:String = 'diff_${params?.difficultyId ?? 'Normal'}';
     difficulty.loadGraphic(Paths.image("resultScreen/" + diffSpr));
     add(difficulty);
+    callOnHScript("onLoad", ["difficulty", difficulty]);
 
     add(songName);
+    callOnHScript("onLoad", ["songName", songName]);
 
     var angleRad = songName.angle * Math.PI / 180;
     speedOfTween.x = -1.0 * Math.cos(angleRad);
@@ -316,11 +423,13 @@ class ResultState extends MusicBeatSubState
     FlxTween.tween(blackTopBar, {y: 0}, 7 / 24, {ease: FlxEase.quartOut, startDelay: 3 / 24});
     blackTopBar.zIndex = 1010;
     add(blackTopBar);
+    callOnHScript("onLoad", ["blackTopBar", blackTopBar]);
 
     resultsAnim.animation.addByPrefix("result", "results instance 1", 24, false);
     resultsAnim.visible = false;
     resultsAnim.zIndex = 1200;
     add(resultsAnim);
+    callOnHScript("onLoad", ["resultsAnim", resultsAnim]);
     new FlxTimer().start(6 / 24, _ -> {
       resultsAnim.visible = true;
       resultsAnim.animation.play("result");
@@ -330,6 +439,7 @@ class ResultState extends MusicBeatSubState
     ratingsPopin.visible = false;
     ratingsPopin.zIndex = 1200;
     add(ratingsPopin);
+    callOnHScript("onLoad", ["ratingsPopin", ratingsPopin]);
     new FlxTimer().start(21 / 24, _ -> {
       ratingsPopin.visible = true;
       ratingsPopin.animation.play("idle");
@@ -339,6 +449,7 @@ class ResultState extends MusicBeatSubState
     scorePopin.visible = false;
     scorePopin.zIndex = 1200;
     add(scorePopin);
+    callOnHScript("onLoad", ["scorePopin", scorePopin]);
     new FlxTimer().start(36 / 24, _ -> {
       scorePopin.visible = true;
       scorePopin.animation.play("score");
@@ -366,6 +477,7 @@ class ResultState extends MusicBeatSubState
     highscoreNew.updateHitbox();
     highscoreNew.zIndex = 1200;
     add(highscoreNew);
+    callOnHScript("onLoad", ["highscoreNew", highscoreNew]);
 
     new FlxTimer().start(rank.getHighscoreDelay(), _ -> {
       if (params.isNewHighscore ?? false)
@@ -385,6 +497,7 @@ class ResultState extends MusicBeatSubState
     var ratingGrp:FlxTypedGroup<TallyCounter> = new FlxTypedGroup<TallyCounter>();
     ratingGrp.zIndex = 1200;
     add(ratingGrp);
+    callOnHScript("onLoad", ["ratingGrp", ratingGrp]);
 
     /**
      * NOTE: We display how many notes were HIT, not how many notes there were in total.
@@ -419,6 +532,7 @@ class ResultState extends MusicBeatSubState
     score.visible = false;
     score.zIndex = 1200;
     add(score);
+    callOnHScript("onLoad", ["score", score]);
 
     for (ind => rating in ratingGrp.members)
     {
@@ -469,6 +583,7 @@ class ResultState extends MusicBeatSubState
     rankBg.makeSolidColor(FlxG.width, FlxG.height, 0xFF000000);
     rankBg.zIndex = 99999;
     add(rankBg);
+    callOnHScript("onLoad", ["rankBg", rankBg]);
 
     rankBg.alpha = 0;
 
@@ -479,6 +594,7 @@ class ResultState extends MusicBeatSubState
 
   function getMusicPath(playerCharacter:Null<PlayableCharacter>, rank:ScoringRank):String
   {
+    callOnHScript("onMusicPathFound", []);
     return playerCharacter?.getResultsMusicPath(rank) ?? 'resultsNORMAL';
   }
 
@@ -488,6 +604,7 @@ class ResultState extends MusicBeatSubState
 
   function startRankTallySequence():Void
   {
+    callOnHScript("onStartTally", []);
     bgFlash.visible = true;
     FlxTween.tween(bgFlash, {alpha: 0}, 5 / 24);
     var clearPercentFloat = (params.scoreData.accPoints/params.scoreData.totalNotesHit)* 100; //? different rating system 
@@ -543,6 +660,7 @@ class ResultState extends MusicBeatSubState
       });
     clearPercentCounter.zIndex = 450;
     add(clearPercentCounter);
+    callOnHScript("onLoad", ["clearPercentCounter", clearPercentCounter]);
 
     if (ratingsPopin == null)
     {
@@ -575,15 +693,18 @@ class ResultState extends MusicBeatSubState
 
   function displayRankText():Void
   {
+    callOnHScript("onDisplayRankTxt", []);
     bgFlash.visible = true;
     bgFlash.alpha = 1;
     FlxTween.tween(bgFlash, {alpha: 0}, 14 / 24);
 
     var rankTextVert:FlxBackdrop = new FlxBackdrop(Paths.image(rank.getVerTextAsset()), Y, 0, 30);
+    callOnHScript("onLoad", ["playerRank", rank]); // `rank` is the ScoreRank enum
     rankTextVert.x = FlxG.width - 44;
     rankTextVert.y = 100;
     rankTextVert.zIndex = 990;
     add(rankTextVert);
+    callOnHScript("onLoad", ["rankTextVert", rankTextVert]);
 
     FlxFlicker.flicker(rankTextVert, 2 / 24 * 3, 2 / 24, true);
 
@@ -595,12 +716,14 @@ class ResultState extends MusicBeatSubState
     for (i in 0...12)
     {
       var rankTextBack:FlxBackdrop = new FlxBackdrop(Paths.image(rank.getHorTextAsset()), X, 10, 0);
+      callOnHScript("onLoad", ["playerRank", rank]); // `rank` is the ScoreRank enum
       rankTextBack.x = FlxG.width / 2 - 320;
       rankTextBack.y = 50 + (135 * i / 2) + 10;
       // rankTextBack.angle = -3.8;
       rankTextBack.zIndex = 100;
       rankTextBack.cameras = [cameraScroll];
       add(rankTextBack);
+      callOnHScript("onLoad", ["rankTextBack", rankTextBack]);
 
       // Scrolling.
       rankTextBack.velocity.x = (i % 2 == 0) ? -7.0 : 7.0;
@@ -611,6 +734,7 @@ class ResultState extends MusicBeatSubState
 
   function afterRankTallySequence():Void
   {
+    callOnHScript("afterRankTally", []);
     showSmallClearPercent();
 
     for (atlas in characterAtlasAnimations)
@@ -670,6 +794,7 @@ class ResultState extends MusicBeatSubState
     if (clearPercentSmall != null)
     {
       add(clearPercentSmall);
+      callOnHScript("onLoad", ["clearPercentSmall", clearPercentSmall]);
       clearPercentSmall.visible = true;
       clearPercentSmall.flash(true);
       new FlxTimer().start(0.4, _ -> {
@@ -731,6 +856,9 @@ class ResultState extends MusicBeatSubState
     // }
 
     // maskShaderSongName.swagSprX = songName.x; //! monitor this
+
+    callOnHScript("onUpdate", []);
+
     maskShaderDifficulty.swagSprX = difficulty.x;
 
     if (movingSongStuff)
@@ -864,6 +992,8 @@ class ResultState extends MusicBeatSubState
     }
 
     super.update(elapsed);
+
+    callOnHScript("onUpdatePost", []);
   }
 }
 

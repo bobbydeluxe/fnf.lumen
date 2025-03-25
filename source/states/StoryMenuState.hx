@@ -15,8 +15,11 @@ import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 import substates.StickerSubState;
 
+#if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
+import bobbydx.HScriptVisuals;
+#end
 
 import backend.StageData;
 
@@ -50,7 +53,11 @@ class StoryMenuState extends MusicBeatState
 
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
+  	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
+  	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
+
+	public var visualUtils:HScriptVisuals;
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	private var luaDebugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
@@ -58,11 +65,15 @@ class StoryMenuState extends MusicBeatState
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
 		#if HSCRIPT_ALLOWED
-		for (script in hscriptArray)
-			if(script != null)
-			{
-				if (script.exists(funcToCall)) script.call(funcToCall,args);
+		for (script in hscriptArray) {
+			if (script != null) {
+				if (script.exists(funcToCall)) {
+					script.call(funcToCall, args);
+				}
+				script.set("hxvisual", visualUtils);
+				script.set("hscriptObjects", hscriptObjects);
 			}
+		}
 		#end
 	}
 
@@ -107,6 +118,11 @@ class StoryMenuState extends MusicBeatState
 	public function new(?stickers:StickerSubState = null)
 	{
 		super();
+
+		#if HSCRIPT_ALLOWED
+    	add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
+    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
+    	#end
 	  
 		if (stickers != null)
 		{
@@ -140,15 +156,16 @@ class StoryMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/states/HaxeStates/StoryMenu/'))
-			for (file in FileSystem.readDirectory(folder))
-			{
+		#if HSCRIPT_ALLOWED
+		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/storyMode.hx');
+		var scriptPath = Paths.getPath('data/haxescript/storyMode.hx', TEXT, null, true);
 
-				#if HSCRIPT_ALLOWED
-				if(file.toLowerCase().endsWith('.hx'))
-					initHScript(folder + file);
-				#end
-			}
+		if (FileSystem.exists(scriptPath)) {
+		    initHScript(scriptPath);
+		} else {
+		    trace('HScript file not found: ' + scriptPath);
+		}
+		#end
 
 		final accept:String = controls.mobileC ? "A" : "ACCEPT";
 		final reject:String = controls.mobileC ? "B" : "BACK";

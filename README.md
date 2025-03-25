@@ -2,7 +2,7 @@
 
 # Friday Night Funkin | MintEngine
 
-Engine originally used for [FNF MelodyMania](https://gamebanana.com/wips/90861), this minty-fresh fork of [P-Slice Engine](https://github.com/Psych-Slice/P-Slice) is slightly tweaked for my new modding needs, allowing video introductions, a revamped mod folder layout, and the entirety of the base FNF content being done in a modpack.
+Engine literally created because of a Pico Mixes Psych port, this minty-fresh fork of [P-Slice Engine](https://github.com/Psych-Slice/P-Slice) is slightly tweaked for my new modding needs, allowing video introductions, a revamped mod folder layout, and the entirety of the base FNF content being done in a modpack.
 
 ## Installation
 
@@ -19,6 +19,7 @@ The MintEngine mod folder layout is different compared to Psych/P-Slice, so if y
 * BobbyDX - main lead
 * MrPolo - intro video state
 * Betopia - her sillyfont file
+* many more listed in-engine credits
 
 ### Basis Engines
 

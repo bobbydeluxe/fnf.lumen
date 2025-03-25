@@ -26,7 +26,7 @@ end
 ]]
 function onCreatePost()
     addLuaScript('scripts/characters/props/speaker')
-    callScript('scripts/characters/props/speaker', 'createSpeaker', {'gf', 0, 0}) -- {characterName, offsetX, offsetY}
+    callScript('scripts/characters/props/speaker', 'createSpeaker', {'gf', -225, 304}) -- {characterName, offsetX, offsetY}
 end
 
 local comboAnimActive = true

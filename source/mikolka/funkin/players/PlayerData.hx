@@ -17,6 +17,8 @@ class PlayerData
 	 */
 	public var name:String = 'Unknown';
 
+	public var codename:String = 'idk';
+
 	/**
 	 * The character IDs this character is associated with.
 	 * Only songs that use these characters will show up in Freeplay.
