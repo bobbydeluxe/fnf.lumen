@@ -19,6 +19,7 @@ The MintEngine mod folder layout is different compared to Psych/P-Slice, so if y
 * BobbyDX - main lead
 * MrPolo - intro video state
 * Betopia - her sillyfont file
+* many more listed in-engine credits
 
 ### Basis Engines
 
