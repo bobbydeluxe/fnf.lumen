@@ -268,7 +268,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 			input_text3 = new PsychUIInputText(10, 90, 150, data._data.freeplayDJ.text3);
 
 			var currentCharacter = data.getFreeplayDJData();
-			input_text1.onChange = (prev, current) ->
+			/*input_text1.onChange = (prev, current) ->
 			{
 				data.getFreeplayDJData().text1 = current;
 				backingCard.remove(backingCard.funnyScroll);
@@ -313,7 +313,7 @@ class FreeplayEditSubstate extends MusicBeatSubstate
 				backingCard.txtNuts = new BGScrollingText(0, 285, currentCharacter.getFreeplayDJText(3), FlxG.width / 2, true, 43);
 				backingCard.txtNuts.speed = 3.5;
 				backingCard.add(backingCard.txtNuts);
-			}
+			}*/
 		}
 		// DJ EDITOR
 		var dj_editor_desc_txt = new FlxText(10, 10, 400, "Pick frames (start,end)");
