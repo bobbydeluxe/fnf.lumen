@@ -1,0 +1,34 @@
+{
+	"dialogue": [
+		{
+			"nameTag_text": "Senpai",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "pixel",
+			"text": "Ah, uma nova donzela veio em busca do verdadeiro amor!"
+		},
+		{
+			"nameTag_text": "Senpai",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "pixel",
+			"text": "Uma serenata entre cavalheiros decidirá onde seu lindo coração deve residir."
+		},
+		{
+			"nameTag_text": "Boyfriend",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "bf-pixel",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "pixel",
+			"text": "Beep bo bop"
+		}
+	]
+}

@@ -7,6 +7,12 @@ import backend.Highscore;
 import options.OptionsState;
 import mikolka.vslice.freeplay.FreeplayState;
 
+#if HSCRIPT_ALLOWED
+import crowplexus.iris.Iris;
+import psychlua.HScript;
+import bobbydx.HScriptVisuals;
+#end
+
 class CustomState extends MusicBeatState {
 
     var currentState = FlxG.save.data.currentState;
@@ -15,7 +21,11 @@ class CustomState extends MusicBeatState {
     
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
+	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
+	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
+
+	public var visualUtils:HScriptVisuals;
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	private var luaDebugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
@@ -23,11 +33,15 @@ class CustomState extends MusicBeatState {
 
     public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
 		#if HSCRIPT_ALLOWED
-		for (script in hscriptArray)
-			if(script != null)
-			{
-				if (script.exists(funcToCall)) script.call(funcToCall,args);
+		for (script in hscriptArray) {
+			if (script != null) {
+				if (script.exists(funcToCall)) {
+					script.call(funcToCall, args);
+				}
+				script.set("hxvisual", visualUtils);
+				script.set("hscriptObjects", hscriptObjects);
 			}
+		}
 		#end
 	}
 
@@ -58,6 +72,9 @@ class CustomState extends MusicBeatState {
 
     override function create() {
         super.create();
+
+		add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
+    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
 
         if (currentState == null) {
             currentState = "ErrorState";

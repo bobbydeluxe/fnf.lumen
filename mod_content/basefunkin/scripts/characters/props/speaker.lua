@@ -105,17 +105,21 @@ end
 function onUpdatePost(elapsed)
     for property = 1, #propertyTracker do
         if characterType ~= '' then
-            if property < 3 then
-                if propertyTracker[property][2] ~= getProperty(characterType..'.'..propertyTracker[property][1]) then
-                    propertyTracker[property][2] = getProperty(characterType..'.'..propertyTracker[property][1])
-                    setProperty('speaker.'..propertyTracker[property][1], propertyTracker[property][2] + offsetData[property])
-                end
-            else
-                if propertyTracker[property][2] ~= getProperty(characterType..'.'..propertyTracker[property][1]) then
-                    propertyTracker[property][2] = getProperty(characterType..'.'..propertyTracker[property][1])
-                    setProperty('speaker.'..propertyTracker[property][1], propertyTracker[property][2])
+            if propertyTracker[property][2] ~= getProperty(characterType..'.'..propertyTracker[property][1]) then
+                propertyTracker[property][2] = getProperty(characterType..'.'..propertyTracker[property][1])
+            
+                local propName = propertyTracker[property][1]
+            
+                -- Skip alpha update if stage is spookyErect
+                if propName == 'alpha' and string.lower(curStage) == 'spookyerect' then
+                    -- do nothing
+                elseif property < 3 then
+                    setProperty('speaker.'..propName, propertyTracker[property][2] + offsetData[property])
+                else
+                    setProperty('speaker.'..propName, propertyTracker[property][2])
                 end
             end
+            
         end
     end
     if characterType ~= '' then

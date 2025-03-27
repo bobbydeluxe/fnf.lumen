@@ -71,11 +71,19 @@
 			"anim": "singUPmiss",
 			"indices": [],
 			"name": "pico Up note miss"
+		},
+		{
+			"offsets": [39, 2],
+			"loop": false,
+			"fps": 24,
+			"anim": "hey",
+			"indices": [],
+			"name": "Pico HEY dark"
 		}
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,
-	"image": "characters/dark/pico_dark",
+	"image": "characters/dark/pico_dark, characters/dark/picoHey_dark",
 	"position": [0, 300],
 	"healthicon": "pico",
 	"flip_x": true,

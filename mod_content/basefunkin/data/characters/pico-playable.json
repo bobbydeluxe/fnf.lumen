@@ -175,11 +175,43 @@
 			"anim": "burpSmile",
 			"loop": false,
 			"name": "burpsmile"
+		},
+		{
+			"loop": false,
+			"offsets": [-48, 2],
+			"anim": "singRIGHTcensor",
+			"fps": 24,
+			"name": "pico swear right",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [85, -10],
+			"anim": "singLEFTcensor",
+			"fps": 24,
+			"name": "pico swear left",
+			"indices": []
+		},
+		{
+			"offsets": [21, 27],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUPcensor",
+			"indices": [],
+			"name": "pico swear up"
+		},
+		{
+			"offsets": [84, -80],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWNcensor",
+			"indices": [],
+			"name": "pico swear down"
 		}
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,
-	"image": "characters/pico, characters/picoAnims/picoIntroCutscene, characters/picoAnims/picoAttack, characters/picoAnims/picoBurps, characters/picoAnims/picoHey",
+	"image": "characters/pico, characters/picoAnims/picoIntroCutscene, characters/picoAnims/picoAttack, characters/picoAnims/picoBurps, characters/picoAnims/picoHey, characters/picoCensored",
 	"position": [0, 300],
 	"healthicon": "pico",
 	"flip_x": true,

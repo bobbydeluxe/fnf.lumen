@@ -1,0 +1,34 @@
+{
+	"dialogue": [
+		{
+			"nameTag_text": "Senpai",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "pixel",
+			"text": "Ah, a new fair maiden has come in search of true love!"
+		},
+		{
+			"nameTag_text": "Senpai",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "pixel",
+			"text": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
+		},
+		{
+			"nameTag_text": "Boyfriend",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "bf-pixel",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "pixel",
+			"text": "Beep bo bop"
+		}
+	]
+}

@@ -79,11 +79,27 @@
 			"fps": 24,
 			"name": "BF HEY",
 			"indices": []
+		},
+		{
+			"offsets": [-10, -50],
+			"indices": [],
+			"fps": 24,
+			"anim": "singDOWNcensor",
+			"loop": false,
+			"name": "bf swear down"
+		},
+		{
+			"offsets": [-38, -7],
+			"indices": [],
+			"fps": 24,
+			"anim": "singRIGHTcensor",
+			"loop": false,
+			"name": "bf swear right"
 		}
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,
-	"image": "characters/xmas/bfChristmas",
+	"image": "characters/xmas/bfChristmas, characters/xmas/bfChristmasCensored",
 	"position": [0, 350],
 	"healthicon": "bf",
 	"flip_x": true,

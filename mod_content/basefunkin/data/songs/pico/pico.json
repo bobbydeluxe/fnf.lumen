@@ -1566,6 +1566,7 @@
 		"player2": "pico",
 		"song": "Pico",
 		"needsVoices": true,
+		"stage": "philly",
 		"bpm": 150,
 		"speed": 1.4,
 		"format": "psych_v1_convert"

@@ -1,0 +1,25 @@
+{
+	"position": [
+		310,
+		130
+	],
+	"dialogue_pos": "left",
+	"no_antialiasing": true,
+	"scale": 7.5,
+	"image": "spiritPort",
+	"animations": [
+		{
+			"idle_offsets": [
+				-1,
+				-12
+			],
+			"loop_offsets": [
+				0,
+				0
+			],
+			"anim": "talk",
+			"idle_name": "bad",
+			"loop_name": "bad"
+		}
+	]
+}

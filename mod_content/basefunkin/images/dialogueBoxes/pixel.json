@@ -1,0 +1,67 @@
+{
+    "image": "dialogueBoxes/dialogueBox-pixel",
+	"antialiasing": false,
+    "destroyTime": 0.23,
+    "nametags" : true,
+    "nametagsPosition": [-400, 50],
+    "lineWidth": 1040,
+	"boxPosition": [
+		520,
+		330
+	],
+	"textOrigin": [
+		-400,
+		140
+	],
+	"scale": 6,
+    "animations": [
+        {
+			"name": "appear",
+			"fps": 24,
+            "prefix" : "Text Box Appear instance 1",
+            "offsets": [
+                0,
+                0
+            ],
+            "loop": false
+        },
+        {
+			"name": "idle",
+			"fps": 24,
+            "prefix" : "Text Box Appear instance 1",
+			"indices": [
+                4,
+                4
+			],
+            "offsets": [
+                0,
+                0
+            ],
+            "loop": true
+        },
+        {
+			"name": "disappear",
+			"fps": 24,
+            "prefix" : "Text Box Appear instance 1",
+			"indices": [
+                4,
+                3,
+                2,
+                1,
+                0
+			],
+            "offsets": [
+                0,
+                0
+            ],
+            "loop": false
+        }
+
+    ],
+    "states": [
+        {
+            "name": "normal",
+            "prefix": ""
+        }
+    ]
+}

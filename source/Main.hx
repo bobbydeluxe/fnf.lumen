@@ -91,7 +91,6 @@ class Main extends Sprite
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 		}
-
 		setupGame();
 	}
 

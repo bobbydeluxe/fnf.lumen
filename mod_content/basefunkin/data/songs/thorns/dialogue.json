@@ -1,0 +1,64 @@
+{
+	"dialogue": [
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "Direct contact with real humans, after being trapped in here for so long..."
+		},
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "and HER of all people."
+		},
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "I'll make her father pay for what he's done to me and all the others..."
+		},
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "I'll beat you and make you take my place."
+		},
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "You don't mind your bodies being borrowed right? It's only fair..."
+		},
+		{
+			"nameTag_text": "Boyfriend",
+			"sound": "pixelText",
+			"speed": 0.75,
+			"portrait": "bf-pixel",
+			"boxState": "normal",
+			"expression": "uneasy",
+			"use_box": "evil",
+			"text": "..."
+		}
+	]
+}

@@ -1,4 +1,4 @@
-function onCreate()
+function onCreatePost()
     --[[ 
         Needed if you only use this event during a song,
         as the 'Set Camera Zoom' event normally is the one to set up all this.
@@ -65,7 +65,7 @@ end
 
 function onUpdatePost(elapsed)
     if not isRunning('custom_events/Set Camera Zoom') then
-        if getProperty('startedCountdown') == false and getProperty('endingSong') == false then 
+        if getProperty('inCutscene') == false and getProperty('endingSong') == false then 
             if cameraZoomRate > 0 then
                 zoomMultiplier = math.lerp(1, zoomMultiplier, math.exp(-elapsed * 3.125 * camZoomingDecay * playbackRate))
                 setProperty('camGame.zoom', getProperty('defaultCamZoom') * zoomMultiplier)

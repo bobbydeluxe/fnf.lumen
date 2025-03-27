@@ -1,0 +1,64 @@
+{
+	"dialogue": [
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "Contato direto com humanos de verdade, depois de tanto tempo preso aqui..."
+		},
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "e de todos que poderiam ter sido, é ELA."
+		},
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "Vou fazer com que o pai dela pague pelo que fez comigo e os outros..."
+		},
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "Vou te derrotar e fazer você trocar de lugar comigo."
+		},
+		{
+			"nameTag_text": "Spirit",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "spirit",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "evil",
+			"text": "Você não se importaria de me emprestar seu corpo, certo? Nada mais justo..."
+		},
+		{
+			"nameTag_text": "Boyfriend",
+			"sound": "pixelText",
+			"speed": 0.75,
+			"portrait": "bf-pixel",
+			"boxState": "normal",
+			"expression": "uneasy",
+			"use_box": "evil",
+			"text": "..."
+		}
+	]
+}

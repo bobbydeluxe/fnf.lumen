@@ -43,7 +43,7 @@
 		{
 			"loop": false,
 			"offsets": [10, 20],
-			"anim": "singLEFT-miss",
+			"anim": "singLEFTmiss",
 			"fps": 24,
 			"name": "bf miss left",
 			"indices": []
@@ -51,7 +51,7 @@
 		{
 			"loop": false,
 			"offsets": [-20, -18],
-			"anim": "singDOWN-miss",
+			"anim": "singDOWNmiss",
 			"fps": 24,
 			"name": "bf miss down",
 			"indices": []
@@ -59,7 +59,7 @@
 		{
 			"loop": false,
 			"offsets": [-39, 24],
-			"anim": "singRIGHT-miss",
+			"anim": "singRIGHTmiss",
 			"fps": 24,
 			"name": "bf miss right",
 			"indices": []
@@ -67,7 +67,7 @@
 		{
 			"loop": false,
 			"offsets": [-38, 30],
-			"anim": "singUP-miss",
+			"anim": "singUPmiss",
 			"fps": 24,
 			"name": "bf miss up",
 			"indices": []

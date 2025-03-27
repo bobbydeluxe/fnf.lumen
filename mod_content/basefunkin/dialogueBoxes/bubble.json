@@ -1,0 +1,118 @@
+{
+    "image": "dialogueBoxes/speech_bubble",
+	"antialiasing": true,
+    "destroyTime": 0.23,
+    "nametags" : true,
+    "nametagsPosition": [70, 50],
+    "lineWidth": 1040,
+	"boxPosition": [
+		20,
+		330
+	],
+	"textOrigin": [
+		60,
+		140
+	],
+	"scale": 1,
+    "animations": [
+        {
+			"name": "appear-",
+			"fps": 24,
+            "prefix" : "Speech Bubble Normal Open",
+            "offsets": [
+                0,
+                0
+            ],
+            "loop": false
+        },
+        {
+			"name": "idle-",
+			"fps": 24,
+            "prefix" : "speech bubble normal",
+            "offsets": [
+                0,
+                0
+            ],
+            "loop": true
+        },
+        {
+			"name": "appear-angry",
+			"fps": 24,
+            "prefix" : "speech bubble loud open",
+            "offsets": [
+                30,
+                75
+            ],
+            "loop": false
+        },
+        {
+			"name": "idle-angry",
+			"fps": 24,
+            "prefix" : "AHH speech bubble",
+            "offsets": [
+                30,
+                75
+            ],
+            "loop": true
+        },
+        {
+			"name": "appear-middle",
+			"fps": 24,
+            "prefix" : "Speech Bubble Middle Open",
+            "offsets": [
+                0,
+                20
+            ],
+            "loop": false
+        },
+        {
+			"name": "idle-middle",
+			"fps": 24,
+            "prefix" : "speech bubble middle",
+            "offsets": [
+                0,
+                -10
+            ],
+            "loop": true
+        },
+        {
+			"name": "appear-middle-angry",
+			"fps": 24,
+            "prefix" : "speech bubble Middle loud open",
+            "offsets": [
+                -20,
+                45
+            ],
+            "loop": false
+        },
+        {
+			"name": "idle-middle-angry",
+			"fps": 24,
+            "prefix" : "AHH Speech Bubble middle",
+            "offsets": [
+                25,
+                35
+            ],
+            "loop": true
+        }
+
+    ],
+    "states": [
+        {
+            "name": "normal",
+            "prefix": "-"
+        },
+        {
+            "name": "angry",
+            "prefix": "-angry"
+        },
+        {
+            "name": "middle",
+            "prefix": "-middle"
+        },
+        {
+            "name": "middle-angry",
+            "prefix": "-middle-angry"
+        }
+    ]
+}

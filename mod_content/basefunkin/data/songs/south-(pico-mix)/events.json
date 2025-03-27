@@ -1,875 +1,455 @@
 {
 	"events": [
 		[
-			5863,
+			0,
 			[
-				[
-					"SetCameraBop",
-					8,
-					1
-				]
+				["Set Camera Target", "Dad", ""],
+				["Set Camera Bop", "8", "1"]
 			]
 		],
 		[
-			11545,
+			2909.09090909091,
 			[
-				[
-					"SetCameraBop",
-					4,
-					0
-				]
+				["Set Camera Target", "BF", ""]
 			]
 		],
 		[
-			14454,
+			5818.18181818182,
 			[
-				[
-					"SetCameraBop",
-					2,
-					1.1
-				]
+				["Set Camera Target", "Dad", ""],
+				["Set Camera Bop", "8", "3"]
 			]
 		],
 		[
-			14545,
+			5909.09090909091,
 			[
-				[
-					"ZoomCamera",
-					"16,1.1",
-					"expoOut"
-				]
+				["Set Camera Bop", "8", "1"]
 			]
 		],
 		[
-			17090.6363636364,
+			8727.27272727273,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.4,
-					4
-				]
+				["Set Camera Target", "BF", ""]
 			]
 		],
 		[
-			17363,
+			11636.3636363636,
 			[
-				[
-					"SetCameraBop",
-					2,
-					0
-				]
+				["Set Camera Target", "Dad", ""],
+				["Set Camera Bop", "4", "0"]
 			]
 		],
 		[
-			17500,
+			14181.8181818182,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
+				["Set Scroll Speed", "2.6,absolute", "4,cubeInOut"]
 			]
 		],
 		[
-			20000.6363636364,
+			14545.4545454545,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.6,
-					4
-				]
+				["Set Camera Zoom", "1.1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "1.1"]
 			]
 		],
 		[
-			20272,
+			17090.9090909091,
 			[
-				[
-					"SetCameraBop",
-					2,
-					1.1
-				]
+				["Set Scroll Speed", "2.4,absolute", "4,quartInOut"]
 			]
 		],
 		[
-			20363,
+			17454.5454545455,
 			[
-				[
-					"ZoomCamera",
-					"16,1.1",
-					"expoOut"
-				]
+				["Set Camera Target", "BF", ""],
+				["Set Camera Zoom", "1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "0"]
 			]
 		],
 		[
-			22909.6363636364,
+			20000,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.4,
-					4
-				]
+				["Set Scroll Speed", "2.6,absolute", "4,cubeInOut"]
 			]
 		],
 		[
-			23181,
+			20363.6363636364,
 			[
-				[
-					"SetCameraBop",
-					2,
-					0
-				]
+				["Set Camera Zoom", "1.1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "1.1"]
 			]
 		],
 		[
-			23318,
+			22909.0909090909,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
+				["Set Scroll Speed", "2.4,absolute", "4,quartInOut"]
 			]
 		],
 		[
-			25818.6363636364,
+			23272.7272727273,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.6,
-					4
-				]
+				["Set Camera Target", "Dad", ""],
+				["Set Camera Zoom", "1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "0"]
 			]
 		],
 		[
-			26090,
+			25818.1818181818,
 			[
-				[
-					"SetCameraBop",
-					2,
-					1.1
-				]
+				["Set Scroll Speed", "2.6,absolute", "4,cubeInOut"]
 			]
 		],
 		[
-			26181,
+			26181.8181818182,
 			[
-				[
-					"ZoomCamera",
-					"16,1.1",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "1.1"]
 			]
 		],
 		[
-			28727.6363636364,
+			28727.2727272727,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.4,
-					4
-				]
+				["Set Scroll Speed", "2.4,absolute", "4,quartInOut"]
 			]
 		],
 		[
-			29000,
+			29090.9090909091,
 			[
-				[
-					"SetCameraBop",
-					2,
-					0
-				]
+				["Set Camera Target", "BF", ""],
+				["Set Camera Zoom", "1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "0"]
 			]
 		],
 		[
-			29136,
+			30545.4545454546,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.04,stage", "16,expoOut"]
 			]
 		],
 		[
-			30545,
+			30909.0909090909,
 			[
-				[
-					"ZoomCamera",
-					"16,1.04",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.08,stage", "16,expoOut"]
 			]
 		],
 		[
-			30909,
+			31272.7272727273,
 			[
-				[
-					"ZoomCamera",
-					"16,1.08",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1,stage", "16,expoOut"]
 			]
 		],
 		[
-			31272,
+			31636.3636363636,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
-			]
-		],
-		[
-			31636.6363636364,
-			[
-				[
-					"Vslice Scroll Speed",
-					2.6,
-					4
-				]
-			]
-		],
-		[
-			31909,
-			[
-				[
-					"SetCameraBop",
-					2,
-					1.1
-				]
+				["Set Scroll Speed", "2.6,absolute", "4,cubeInOut"]
 			]
 		],
 		[
 			32000,
 			[
-				[
-					"ZoomCamera",
-					"16,1.1",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "1.1"]
 			]
 		],
 		[
-			34181,
+			34181.8181818182,
 			[
-				[
-					"ZoomCamera",
-					"16,1.15",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.15,stage", "16,expoOut"]
 			]
 		],
 		[
-			34954,
+			34909.0909090909,
 			[
-				[
-					"ZoomCamera",
-					"16,0.9",
-					"expoOut"
-				]
+				["Set Camera Target", "Dad,180", ""],
+				["Set Camera Zoom", "0.9,stage", "16,expoOut"]
 			]
 		],
 		[
-			37818,
+			37818.1818181818,
 			[
-				[
-					"ZoomCamera",
-					"16,0.95",
-					"expoOut"
-				]
+				["Set Camera Zoom", "0.95,stage", "16,expoOut"]
 			]
 		],
 		[
-			40772,
+			40727.2727272727,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
+				["Set Camera Target", "BF", ""],
+				["Set Camera Zoom", "1,stage", "16,expoOut"]
 			]
 		],
 		[
-			42181,
+			42181.8181818182,
 			[
-				[
-					"ZoomCamera",
-					"16,1.04",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.04,stage", "16,expoOut"]
 			]
 		],
 		[
-			43636,
+			43636.3636363637,
 			[
-				[
-					"ZoomCamera",
-					"16,1.08",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.08,stage", "16,expoOut"]
 			]
 		],
 		[
-			44181,
+			44181.8181818182,
 			[
-				[
-					"ZoomCamera",
-					"16,1.12",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.12,stage", "16,expoOut"]
 			]
 		],
 		[
-			45000,
+			45090.9090909091,
 			[
-				[
-					"SetCameraBop",
-					1,
-					1.2
-				]
+				["Set Camera Zoom", "1.16,stage", "16,expoOut"],
+				["Set Camera Bop", "1", "1.2"]
 			]
 		],
 		[
-			45090,
+			45454.5454545455,
 			[
-				[
-					"ZoomCamera",
-					"16,1.16",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.2,stage", "16,expoOut"]
 			]
 		],
 		[
-			45454,
+			45818.1818181818,
 			[
-				[
-					"ZoomCamera",
-					"16,1.2",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.24,stage", "16,expoOut"]
 			]
 		],
 		[
-			45818,
+			46181.8181818182,
 			[
-				[
-					"ZoomCamera",
-					"16,1.24",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.1,stage", "16,expoOut"]
 			]
 		],
 		[
-			46454,
+			46545.4545454546,
 			[
-				[
-					"SetCameraBop",
-					2,
-					1.1
-				]
+				["Set Camera Target", "Dad", ""],
+				["Set Camera Bop", "2", "1.1"]
 			]
 		],
 		[
-			51317,
+			51272.7272727273,
 			[
-				[
-					"ZoomCamera",
-					"16,0.9",
-					"expoOut"
-				]
+				["Set Camera Target", "Dad,180", ""],
+				["Set Camera Zoom", "0.9,stage", "16,expoOut"]
 			]
 		],
 		[
-			52408,
+			52363.6363636364,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
+				["Set Camera Target", "BF", ""],
+				["Set Camera Zoom", "1,stage", "16,expoOut"]
 			]
 		],
 		[
-			53817,
+			53818.1818181818,
 			[
-				[
-					"ZoomCamera",
-					"16,1.04",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.04,stage", "16,expoOut"]
 			]
 		],
 		[
-			55272,
+			55272.7272727273,
 			[
-				[
-					"ZoomCamera",
-					"16,1.08",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.08,stage", "16,expoOut"]
 			]
 		],
 		[
-			55817,
+			55818.1818181818,
 			[
-				[
-					"ZoomCamera",
-					"16,1.12",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.12,stage", "16,expoOut"]
 			]
 		],
 		[
-			56636,
+			56727.2727272728,
 			[
-				[
-					"SetCameraBop",
-					1,
-					1.2
-				]
+				["Set Camera Zoom", "1.16,stage", "16,expoOut"],
+				["Set Camera Bop", "1", "1.2"]
 			]
 		],
 		[
-			56726,
+			57090.9090909091,
 			[
-				[
-					"ZoomCamera",
-					"16,1.16",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.2,stage", "16,expoOut"]
 			]
 		],
 		[
-			57090,
+			57454.5454545455,
 			[
-				[
-					"ZoomCamera",
-					"16,1.2",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.24,stage", "16,expoOut"]
 			]
 		],
 		[
-			57454,
+			57818.1818181818,
 			[
-				[
-					"ZoomCamera",
-					"16,1.24",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.1,stage", "16,expoOut"],
+				["Set Scroll Speed", "2.4,absolute", "4,quartInOut"]
 			]
 		],
 		[
-			57817,
+			58181.8181818182,
 			[
-				[
-					"ZoomCamera",
-					"16,1.1",
-					"expoOut"
-				]
+				["Set Camera Target", "Dad", ""],
+				["Set Camera Zoom", "1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "0"]
 			]
 		],
 		[
-			57818.6363636364,
+			60727.2727272728,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.4,
-					4
-				]
+				["Set Scroll Speed", "2.6,absolute", "4,cubeInOut"]
 			]
 		],
 		[
-			58090,
+			61090.9090909091,
 			[
-				[
-					"SetCameraBop",
-					2,
-					0
-				]
+				["Set Camera Zoom", "1.1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "1.1"]
 			]
 		],
 		[
-			58227,
+			61454.5454545455,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
+				["Set Camera Target", "Dad,180", ""],
+				["Set Camera Zoom", "0.9,stage", "16,expoOut"]
 			]
 		],
 		[
-			60727.6363636364,
+			63636.3636363637,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.6,
-					4
-				]
+				["Set Scroll Speed", "2.4,absolute", "4,quartInOut"]
 			]
 		],
 		[
-			61000,
+			64000,
 			[
-				[
-					"SetCameraBop",
-					2,
-					1.1
-				]
+				["Set Camera Target", "BF", ""],
+				["Set Camera Zoom", "1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "0"]
 			]
 		],
 		[
-			61090,
+			66545.4545454546,
 			[
-				[
-					"ZoomCamera",
-					"16,1.1",
-					"expoOut"
-				]
+				["Set Scroll Speed", "2.6,absolute", "4,cubeInOut"]
 			]
 		],
 		[
-			61499,
+			66909.0909090909,
 			[
-				[
-					"ZoomCamera",
-					"16,0.9",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "1.1"]
 			]
 		],
 		[
-			63636.6363636364,
+			69454.5454545455,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.4,
-					4
-				]
+				["Set Scroll Speed", "2.4,absolute", "4,quartInOut"]
 			]
 		],
 		[
-			63909,
+			69818.1818181819,
 			[
-				[
-					"SetCameraBop",
-					2,
-					0
-				]
+				["Set Camera Target", "Dad", ""],
+				["Set Camera Zoom", "1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "0"]
 			]
 		],
 		[
-			64045,
+			71272.7272727273,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
-			]
-		],
-		[
-			66545.6363636364,
-			[
-				[
-					"Vslice Scroll Speed",
-					2.6,
-					4
-				]
-			]
-		],
-		[
-			66818,
-			[
-				[
-					"SetCameraBop",
-					2,
-					1.1
-				]
-			]
-		],
-		[
-			66909,
-			[
-				[
-					"ZoomCamera",
-					"16,1.1",
-					"expoOut"
-				]
-			]
-		],
-		[
-			69454.6363636364,
-			[
-				[
-					"Vslice Scroll Speed",
-					2.4,
-					4
-				]
-			]
-		],
-		[
-			69727,
-			[
-				[
-					"SetCameraBop",
-					2,
-					0
-				]
-			]
-		],
-		[
-			69863,
-			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
-			]
-		],
-		[
-			71317,
-			[
-				[
-					"ZoomCamera",
-					"16,0.9",
-					"expoOut"
-				]
+				["Set Camera Target", "Dad,180", ""],
+				["Set Camera Zoom", "0.9,stage", "16,expoOut"]
 			]
 		],
 		[
 			72363.6363636364,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.6,
-					4
-				]
+				["Set Scroll Speed", "2.6,absolute", "4,cubeInOut"]
 			]
 		],
 		[
-			72636,
+			72727.2727272728,
 			[
-				[
-					"SetCameraBop",
-					2,
-					1.1
-				]
+				["Set Camera Bop", "2", "1.1"]
 			]
 		],
 		[
-			74909,
+			74181.8181818182,
 			[
-				[
-					"ZoomCamera",
-					"16,0.95",
-					"expoOut"
-				]
+				["Set Camera Zoom", "0.95,stage", "16,expoOut"]
 			]
 		],
 		[
-			75272.6363636364,
+			75272.7272727273,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.4,
-					4
-				]
+				["Set Scroll Speed", "2.4,absolute", "4,quartInOut"]
 			]
 		],
 		[
-			75545,
+			75636.3636363637,
 			[
-				[
-					"SetCameraBop",
-					2,
-					0
-				]
+				["Set Camera Target", "BF", ""],
+				["Set Camera Zoom", "1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "0"]
 			]
 		],
 		[
-			75681,
+			77090.9090909091,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.04,stage", "16,expoOut"]
 			]
 		],
 		[
-			77090,
+			77454.5454545455,
 			[
-				[
-					"ZoomCamera",
-					"16,1.04",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1.08,stage", "16,expoOut"]
 			]
 		],
 		[
-			77454,
+			77818.1818181819,
 			[
-				[
-					"ZoomCamera",
-					"16,1.08",
-					"expoOut"
-				]
+				["Set Camera Zoom", "1,stage", "16,expoOut"]
 			]
 		],
 		[
-			77817,
+			78181.8181818182,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
+				["Set Scroll Speed", "2.6,absolute", "4,cubeInOut"]
 			]
 		],
 		[
-			78181.6363636364,
+			78545.4545454546,
 			[
-				[
-					"Vslice Scroll Speed",
-					2.6,
-					4
-				]
+				["Set Camera Zoom", "1.1,stage", "16,expoOut"],
+				["Set Camera Bop", "2", "1.1"]
 			]
 		],
 		[
-			78454,
+			81454.5454545455,
 			[
-				[
-					"SetCameraBop",
-					2,
-					1.1
-				]
+				["Set Camera Zoom", "1,stage", "16,expoOut"]
 			]
 		],
 		[
-			78545,
+			84363.6363636364,
 			[
-				[
-					"ZoomCamera",
-					"16,1.1",
-					"expoOut"
-				]
+				["Set Camera Bop", "2", "0"]
 			]
 		],
 		[
-			81454,
+			85818.1818181819,
 			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
-			]
-		],
-		[
-			84272,
-			[
-				[
-					"SetCameraBop",
-					2,
-					0
-				]
-			]
-		],
-		[
-			85672.9090909091,
-			[
-				[
-					"Play Animation",
-					"burpShit",
-					"boyfriend"
-				]
-			]
-		],
-		[
-			85818,
-			[
-				[
-					"ZoomCamera",
-					"16,0.95",
-					"expoOut"
-				]
-			]
-		],
-		[
-			87854.6363636364,
-			[
-				[
-					"Play Animation",
-					"burpSmileLong",
-					"boyfriend"
-				]
+				["Set Camera Zoom", "0.95,stage", "16,expoOut"],
+				["Play Animation", "burpShit", "BF"]
 			]
 		],
 		[
 			88000,
 			[
-				[
-					"ZoomCamera",
-					"16,0.9",
-					"expoOut"
-				]
-			]
-		],
-		[
-			46181,
-			[
-				[
-					"ZoomCamera",
-					"16,1.1",
-					"expoOut"
-				]
-			]
-		],
-		[
-			22545,
-			[
-				[
-					"ZoomCamera",
-					"16,1",
-					"expoOut"
-				]
-			]
-		],
-		[
-			14181.6363636364,
-			[
-				[
-					"Vslice Scroll Speed",
-					2.6,
-					4
-				]
-			]
-		],
-		[
-			5727,
-			[
-				[
-					"SetCameraBop",
-					8,
-					3
-				]
-			]
-		],
-		[
-			45,
-			[
-				[
-					"SetCameraBop",
-					8,
-					1
-				]
+				["Set Camera Zoom", "0.9,stage", "16,expoOut"],
+				["Play Animation", "burpSmile", "BF"]
 			]
 		]
 	],
-	"format": "psych_v1_convert"
+	"format": "psych_v1"
 }

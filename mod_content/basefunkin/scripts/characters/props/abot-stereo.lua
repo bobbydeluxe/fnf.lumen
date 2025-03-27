@@ -26,14 +26,14 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
         characterType = getCharacterType(attachedCharacter)
     end
 
-    makeLuaSprite('AbotSpeakerBG', 'abot//stereoBG')
+    makeLuaSprite('AbotSpeakerBG', 'abot/stereoBG')
     if characterType ~= '' then
         setObjectOrder('AbotSpeakerBG', getObjectOrder(characterType..'Group'))
     end
     addLuaSprite('AbotSpeakerBG')
 
     for bar = 1, 7 do
-        makeAnimatedLuaSprite('AbotSpeakerVisualizer'..bar, 'abot//aBotViz')
+        makeAnimatedLuaSprite('AbotSpeakerVisualizer'..bar, 'abot/aBotViz')
         addAnimationByPrefix('AbotSpeakerVisualizer'..bar, 'idle', 'viz'..bar, 24, false)
         if characterType ~= '' then
             setObjectOrder('AbotSpeakerVisualizer'..bar, getObjectOrder(characterType..'Group'))
@@ -49,7 +49,7 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
     addLuaSprite('AbotEyes')
 
     makeFlxAnimateSprite('AbotPupils')
-    loadAnimateAtlas('AbotPupils', 'abot//systemEyes')
+    loadAnimateAtlas('AbotPupils', 'abot/systemEyes')
     if characterType ~= '' then
         setObjectOrder('AbotPupils', getObjectOrder(characterType..'Group'))
     end
@@ -65,7 +65,7 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
     end
     
     makeFlxAnimateSprite('AbotSpeaker')
-    loadAnimateAtlas('AbotSpeaker', 'abot//abotSystem')
+    loadAnimateAtlas('AbotSpeaker', 'abot/abotSystem')
     if characterType ~= '' then
         setObjectOrder('AbotSpeaker', getObjectOrder(characterType..'Group'))
     end
@@ -187,16 +187,9 @@ end
 
 function onUpdatePost(elapsed)
     for property = 1, #propertyTracker do
-        if characterType ~= '' then
-            if propertyTracker[property][2] ~= getProperty(characterType..'.'..propertyTracker[property][1]) then
-                propertyTracker[property][2] = getProperty(characterType..'.'..propertyTracker[property][1])
-                setAbotSpeakerProperty(propertyTracker[property][1], propertyTracker[property][2])
-            end
-        else
-            if propertyTracker[property][2] ~= getProperty('AbotSpeaker.'..propertyTracker[property][1]) then
-                propertyTracker[property][2] = getProperty('AbotSpeaker.'..propertyTracker[property][1])
-                setAbotSpeakerProperty(propertyTracker[property][1], propertyTracker[property][2])
-            end
+        if propertyTracker[property][2] ~= getProperty(characterType..'.'..propertyTracker[property][1]) then
+            propertyTracker[property][2] = getProperty(characterType..'.'..propertyTracker[property][1])
+            setAbotSpeakerProperty(propertyTracker[property][1], propertyTracker[property][2])
         end
     end
 
@@ -282,17 +275,27 @@ function setAbotSpeakerProperty(property, value)
         setProperty('AbotEyes.'..property, getProperty('AbotSpeaker.'..property) + 230)
         setProperty('AbotPupils.'..property, getProperty('AbotSpeaker.'..property) - 492)
     else
+        -- Only apply non-x/y properties to speaker & parts
+        -- EXCEPT for alpha during spookyErect stage
         if characterType ~= '' then
-            setProperty('AbotSpeaker.'..property, value)
+            if not (property == 'alpha' and curStage == 'spookyErect') then
+                setProperty('AbotSpeaker.'..property, value)
+            end
         end
+    
         for bar = 1, 7 do
-            setProperty('AbotSpeakerVisualizer'..bar..'.'..property, value)
+            if not (property == 'alpha' and curStage == 'spookyErect') then
+                setProperty('AbotSpeakerVisualizer'..bar..'.'..property, value)
+            end
         end
-        setProperty('AbotSpeakerBG.'..property, value)
-        setProperty('AbotEyes.'..property, value)
-        setProperty('AbotPupils.'..property, value)
+    
+        if not (property == 'alpha' and curStage == 'spookyErect') then
+            setProperty('AbotSpeakerBG.'..property, value)
+            setProperty('AbotEyes.'..property, value)
+            setProperty('AbotPupils.'..property, value)
+        end
     end
-end
+end    
 
 --[[ Old version of the function above.
 function updateSpeaker(property)

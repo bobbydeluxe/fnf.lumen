@@ -1,0 +1,38 @@
+{
+	"dialogue_pos": "right",
+	"position": [
+		-200,
+		105
+	],
+	"no_antialiasing": true,
+	"scale": 7.75,
+	"animations": [
+		{
+			"anim": "talk",
+			"loop_offsets": [
+				0,
+				0
+			],
+			"idle_offsets": [
+				0,
+				0
+			],
+			"loop_name": "normal",
+			"idle_name": "normal"
+		},
+		{
+			"idle_offsets": [
+				0,
+				0
+			],
+			"anim": "uneasy",
+			"loop_offsets": [
+				0,
+				0
+			],
+			"idle_name": "shaking",
+			"loop_name": "shaking"
+		}
+	],
+	"image": "bfPIxelPort"
+}

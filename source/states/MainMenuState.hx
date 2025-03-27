@@ -20,7 +20,7 @@ class MainMenuState extends MusicBeatState
 	public static var mintEngineVersion:String = '0.1';
 	public static var psychEngineVersion:String = '1.0'; // This is also used for Discord RPC
 	public static var pSliceVersion:String = '2.2.2'; 
-	public static var funkinVersion:String = '0.5.3'; // Version of funkin' we are emulationg
+	public static var funkinVersion:String = '0.2.8';
 	public static var curSelected:Int = 0;
 
 	#if HSCRIPT_ALLOWED
@@ -177,16 +177,19 @@ class MainMenuState extends MusicBeatState
 			menuItem.screenCenter(X);
 		}
 
-		var psychVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, "Psych Engine " + psychEngineVersion, 12);
-		var fnfVer:FlxText = new FlxText(0, FlxG.height - 18, FlxG.width, 'v${funkinVersion} (P-Slice ${pSliceVersion}, MintEngine ${mintEngineVersion})', 12);
-
-		psychVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		fnfVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		
+		var mintVer:FlxText = new FlxText(12, FlxG.height - 64, 0, "MintEngine v" + mintEngineVersion + " (P-Slice " + pSliceVersion + ")", 12);
+		mintVer.scrollFactor.set();
+		mintVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(mintVer);
+		var psychVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
 		psychVer.scrollFactor.set();
-		fnfVer.scrollFactor.set();
+		psychVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(psychVer);
+		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' v" + funkinVersion, 12);
+		fnfVer.scrollFactor.set();
+		fnfVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(fnfVer);
+
 		//var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' ", 12);
 	
 		changeItem();

@@ -1,0 +1,74 @@
+{
+    "image": "dialogueBoxes/dialogueBox-evil",
+	"antialiasing": true,
+    "destroyTime": 0.23,
+    "nametags" : true,
+    "nametagsPosition": [-400, 50],
+    "lineWidth": 1040,
+	"boxPosition": [
+		520,
+		330
+	],
+	"textOrigin": [
+		-400,
+		140
+	],
+	"scale": 6,
+    "animations": [
+        {
+			"name": "appear-",
+			"fps": 24,
+            "prefix" : "Spirit Textbox spawn instance 1",
+            "offsets": [
+                0,
+                0
+            ],
+            "loop": false
+        },
+        {
+			"name": "idle-",
+			"fps": 24,
+            "prefix" : "Spirit Textbox spawn instance 1",
+			"indices": [
+                11,
+                11
+			],
+            "offsets": [
+                0,
+                0
+            ],
+            "loop": true
+        },
+        {
+			"name": "disappear-",
+			"fps": 24,
+            "prefix" : "Spirit Textbox spawn instance 1",
+			"indices": [
+                11,
+                10,
+                9,
+                8,
+                7,
+                6,
+                5,
+                4,
+                3,
+                2,
+                1,
+                0
+			],
+            "offsets": [
+                0,
+                0
+            ],
+            "loop": false
+        }
+
+    ],
+    "states": [
+        {
+            "name": "normal",
+            "prefix": "-"
+        }
+    ]
+}

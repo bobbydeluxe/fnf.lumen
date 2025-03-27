@@ -738,9 +738,9 @@ class TitleState extends MusicBeatState
 					#end
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
-					createCoolText(['Funkin Crew Inc', 'Shadow Mario', 'mikolka9144', 'bobbyDX']);
+					createCoolText(['MintEngine by']);
 				case 4:
-					addMoreText('present');
+					addMoreText('bobbyDX');
 				case 5:
 					deleteCoolText();
 				case 6:

@@ -215,7 +215,5 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<assets path='icons/iconOG.png' rename='icon.png' if="linux" />
 	
 	<icon path="icons/icon16.png" size='16'/>
-	<icon path="icons/icon32.png" size='32'/>
-	<icon path="icons/icon64.png" size='64'/>
 	<icon path="icons/iconOG.png" />
 </project>

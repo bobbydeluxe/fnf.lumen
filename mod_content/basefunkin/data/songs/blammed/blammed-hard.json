@@ -2434,6 +2434,7 @@
 		"player2": "pico",
 		"song": "Blammed",
 		"needsVoices": true,
+		"stage": "philly",
 		"bpm": 165,
 		"speed": 2.3,
 		"format": "psych_v1_convert"

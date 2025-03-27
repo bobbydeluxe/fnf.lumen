@@ -31,20 +31,46 @@ function onCreatePost()
     createInstance(characterType..'Light', 'objects.Character', {characterPos.x, characterPos.y, characterName:gsub('-dark', ''), isPlayer})
     setObjectOrder(characterType..'Light', getObjectOrder(characterType..'Group'))
     addInstance(characterType..'Light')
+
+    addLuaScript('scripts/characters/props/speaker')
+    callScript('scripts/characters/props/speaker', 'createSpeaker', {'gf-dark', 0, 304}) -- {characterName, offsetX, offsetY}
 end
 
 function onUpdatePost(elapsed)
     for property = 1, #propertyTracker do
-        if propertyTracker[property][2] ~= getProperty(characterType..'.'..propertyTracker[property][1]) then
-            propertyTracker[property][2] = getProperty(characterType..'.'..propertyTracker[property][1])
-            setProperty(characterType..'Light.'..propertyTracker[property][1], propertyTracker[property][2])
+        local propName = propertyTracker[property][1]
+        local currentValue = getProperty(characterType..'.'..propName)
+
+        if propertyTracker[property][2] ~= currentValue then
+            propertyTracker[property][2] = currentValue
+
+            -- Add +225 if x
+            if propName == 'x' then
+                setProperty(characterType..'Light.x', currentValue + 225)
+
+            -- Skip alpha if stage is spookyErect
+            elseif propName == 'alpha' and curStage == 'spookyErect' then
+                -- Do nothing (skip syncing alpha)
+
+            -- Sync everything else
+            else
+                setProperty(characterType..'Light.'..propName, currentValue)
+            end
         end
     end
+
     if getObjectOrder(characterType..'Light') ~= getObjectOrder(characterType..'Group') - 1 then
         setObjectOrder(characterType..'Light', getObjectOrder(characterType..'Group'))
     end
-    playAnim(characterType..'Light', getProperty(characterType..'.animation.name'), true, getProperty(characterType..'.animation.curAnim.reversed'), getProperty(characterType..'.animation.curAnim.curFrame'))
+
+    playAnim(characterType..'Light',
+        getProperty(characterType..'.animation.name'),
+        true,
+        getProperty(characterType..'.animation.curAnim.reversed'),
+        getProperty(characterType..'.animation.curAnim.curFrame')
+    )
 end
+
 
 function getCharacterType(characterName)
     if boyfriendName == characterName then

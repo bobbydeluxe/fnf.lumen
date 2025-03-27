@@ -1,6 +1,6 @@
 {
     "name": "Base FNF",
-    "description": "Assets and Songs from the vanilla game, ported to MintEngine",
+    "description": "Assets and songs from the original Friday Night Funkin', now in a mod folder!\nONLY WORKS ON MINTENGINE",
     "restart":false,
     "runsGlobally": true,
     "color": [0, 255, 128]

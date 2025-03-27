@@ -1,0 +1,51 @@
+{
+	"position": [
+		260,
+		140
+	],
+	"dialogue_pos": "left",
+	"no_antialiasing": true,
+	"scale": 7.5,
+	"image": "senpaiPort",
+	"animations": [
+		{
+			"idle_offsets": [
+				0,
+				0
+			],
+			"loop_offsets": [
+				0,
+				0
+			],
+			"anim": "talk",
+			"idle_name": "normal",
+			"loop_name": "normal"
+		},
+		{
+			"idle_offsets": [
+				0,
+				0
+			],
+			"anim": "pissed",
+			"loop_offsets": [
+				0,
+				0
+			],
+			"idle_name": "angry",
+			"loop_name": "angry"
+		},
+		{
+			"loop_offsets": [
+				0,
+				0
+			],
+			"anim": "question",
+			"idle_offsets": [
+				0,
+				0
+			],
+			"loop_name": "hmm",
+			"idle_name": "hmm"
+		}
+	]
+}

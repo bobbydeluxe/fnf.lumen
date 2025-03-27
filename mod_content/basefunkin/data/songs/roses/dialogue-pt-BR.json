@@ -1,0 +1,34 @@
+{
+	"dialogue": [
+		{
+			"nameTag_text": "Senpai",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai",
+			"boxState": "normal",
+			"expression": "pissed",
+			"use_box": "pixel",
+			"text": "Nada mal para um verme como você."
+		},
+		{
+			"nameTag_text": "Senpai",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "senpai",
+			"boxState": "normal",
+			"expression": "pissed",
+			"use_box": "pixel",
+			"text": "Só que dessa vez, eu vou arrancar suas bolas assim que sua namorada engolir as minhas."
+		},
+		{
+			"nameTag_text": "Boyfriend",
+			"sound": "pixelText",
+			"speed": 0.05,
+			"portrait": "bf-pixel",
+			"boxState": "normal",
+			"expression": "talk",
+			"use_box": "pixel",
+			"text": "Bop beep be be skdoo bep"
+		}
+	]
+}

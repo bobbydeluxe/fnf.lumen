@@ -44,7 +44,7 @@ class CreditsState extends MusicBeatState
 				'bobby',
 				'Created Mint Engine',
 				'https://github.com/bobbydeluxe',
-				'FFDD33' // why tf is the formatting like this
+				'FFFB33' // why tf is the formatting like this
 			],
 			['Blantados', 'blantad', 'DD losing icon', 'https://x.com/Blantados', '64b3fe'],
 			[
