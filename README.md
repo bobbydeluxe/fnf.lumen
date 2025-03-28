@@ -12,6 +12,8 @@ Refer to Psych Engine's [Building Instructions](https://github.com/ShadowMario/F
 
 The MintEngine mod folder layout is different compared to Psych/P-Slice, so if you want to make a mod on here, then use [this template](https://github.com/bobbydeluxe/funkin-mint-basemod).
 
+Additionally, for efficiency in porting, the base game content modpack is separate from the main mod. [here](https://github.com/bobbydeluxe/fnf-mintport)'s the repo for the base FNF content modpack.
+
 ## Credits:
 
 ### MintEngine
