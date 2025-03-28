@@ -1,2 +1,0 @@
-Kawai_Sprite
-fabs,_PhantomArcade

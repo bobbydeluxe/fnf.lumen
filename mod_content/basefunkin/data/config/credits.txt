@@ -1,6 +1,0 @@
-Base Funkin' Recode
-Ledonic::ledonic::Ported Weekend 1, Erect Remixes, and some charts for Pico Mixes::http://www.youtube.com/@ledonic852::0061D8
-cyachao::::Provided the updated rain shader\nObtained at the Psych Ward (Official Psych Discord Server)::::A1A1A1
-bobbyDX::bobby::Made the recode::::FFFB33
-skellix::skellix::credits and dialogue scripts::https://gamebanana.com/members/2294895::42FF75
-Gostar64::::Provided the Dadbattle Spotlight Lua Recreation that I modified::https://gamebanana.com/tools/11052::A1A1A1
