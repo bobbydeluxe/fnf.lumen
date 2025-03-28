@@ -286,7 +286,7 @@ class BackingCard extends FlxSpriteGroup
    */
   public function introDone():Void
   {
-    if(!VsliceOptions.ALLOW_COLORING) pinkBack.color = 0xFFFFD863;
+    pinkBack.color = 0xFFFFD863;
     callOnHScript("onIntroDone",[]);
     orangeBackShit.visible = true;
     alsoOrangeLOL.visible = true;

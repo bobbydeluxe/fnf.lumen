@@ -141,7 +141,7 @@ class UserErrorSubstate extends MusicBeatSubstate
         function printError(error:CrashData)
         {
             var star = #if CHECK_FOR_UPDATES "" #else "*" #end;
-            printToTrace('MintEngine$star  (${error.message})');
+            printToTrace('FnF MintEngine$star  (${error.message})');
             textNextY += 35;
             FlxTimer.wait(1 / 24, () ->
             {

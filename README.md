@@ -23,6 +23,7 @@ The MintEngine mod folder layout is different compared to Psych/P-Slice, so if y
 
 ### Basis Engines
 
+* SadeceNicat - Hybrid Engine [HScrip]
 * mikolka9144 - P-Slice Engine
 * ShadowMario - Psych Engine
 * Funkin' Crew - Vanilla FNF [thank you for this game!]

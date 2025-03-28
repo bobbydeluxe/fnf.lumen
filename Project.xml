@@ -5,7 +5,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' | Mint Engine" file="MintEngine" packageName="com.bobbydx.psfunkinmint" package="com.bobbydx.psfunkinmint" main="Main" version="0.1.0" company="bobbyDX" />
+	<app title="Friday Night Funkin' | Mint Engine" file="MintEngine" packageName="com.bobbydx.funkinfm" package="com.bobbydx.funkinfm" main="Main" version="0.1.0" company="bobbyDX" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />

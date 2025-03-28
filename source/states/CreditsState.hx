@@ -62,6 +62,7 @@ class CreditsState extends MusicBeatState
 				'f52c6f'
 			],
 			['MrPolo', 'polo', 'IntroVideoState code', 'about:blank', '7a4b37'],
+			["TheWolfLovers", "ace", "added winning icons compatibility", "https://bsky.app/profile/thewolflovers.bsky.social", "fff700"],
 			['JoaDash', 'joadash', 'BF alt dodge anim', 'https://gamebanana.com/members/1816005', '89aae0'],
 			['GoodieBag', 'goodie', 'Press Enter To Begin text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
 			[""],
