@@ -25,7 +25,7 @@ Additionally, for efficiency in porting, the base game content modpack is separa
 
 ### Basis Engines
 
-* SadeceNicat - Hybrid Engine [HScrip]
+* SadeceNicat - Hybrid Engine [HScript support]
 * mikolka9144 - P-Slice Engine
 * ShadowMario - Psych Engine
 * Funkin' Crew - Vanilla FNF [thank you for this game!]
