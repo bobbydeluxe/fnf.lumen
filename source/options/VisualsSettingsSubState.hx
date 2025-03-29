@@ -7,7 +7,7 @@ import objects.Alphabet;
 
 class VisualsSettingsSubState extends BaseOptionsMenu
 {
-	public static var pauseMusics:Array<String> = ['None', 'Tea Time', 'Breakfast', 'Breakfast (Pico)'];
+	public static var pauseMusics:Array<String> = ['None', 'Tea Time', 'Breakfast'];
 	var noteOptionID:Int = -1;
 	var notes:FlxTypedGroup<StrumNote>;
 	var splashes:FlxTypedGroup<NoteSplash>;
@@ -302,7 +302,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 
 	override function destroy()
 	{
-		if(changedMusic && !OptionsState.onPlayState) FlxG.sound.playMusic(Paths.music('freakyMenu'), 1, true);
+		if(changedMusic && !OptionsState.onPlayState) FlxG.sound.playMusic(Paths.music('artisticExpression'), 1, true);
 		super.destroy();
 	}
 

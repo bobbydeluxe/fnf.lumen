@@ -17,7 +17,7 @@ import bobbydx.HScriptVisuals;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var mintEngineVersion:String = '0.1';
+	public static var mintEngineVersion:String = '0.1.1';
 	public static var psychEngineVersion:String = '1.0'; // This is also used for Discord RPC
 	public static var pSliceVersion:String = '2.2.2'; 
 	public static var funkinVersion:String = '0.2.8';

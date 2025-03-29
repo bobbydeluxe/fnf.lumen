@@ -1796,7 +1796,15 @@ class FreeplayState extends MusicBeatSubstate
 		if(FlxG.keys.justPressed.CONTROL #if TOUCH_CONTROLS_ALLOWED || touchPad.buttonX.justPressed #end)
 		{
 			persistentUpdate = false;
-			openSubState(new GameplayChangersSubstate());
+			
+			var uiCam = new FlxCamera();
+			uiCam.bgColor = FlxColor.TRANSPARENT;
+			FlxG.cameras.add(uiCam, false);	
+			
+			var sub = new GameplayChangersSubstate();
+			sub.cameras = [uiCam]; // Fix: assign default camera to ensure it renders above
+			openSubState(sub);
+		
 			#if TOUCH_CONTROLS_ALLOWED
 			removeTouchPad();//
 			#end

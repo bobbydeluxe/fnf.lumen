@@ -38,7 +38,7 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
-			['MintEngine Contributors'],
+			['MintEngine Code Contributors'],
 			[
 				'bobbyDX',
 				'bobby',
@@ -65,6 +65,16 @@ class CreditsState extends MusicBeatState
 			["TheWolfLovers", "ace", "added winning icons compatibility", "https://bsky.app/profile/thewolflovers.bsky.social", "fff700"],
 			['JoaDash', 'joadash', 'BF alt dodge anim', 'https://gamebanana.com/members/1816005', '89aae0'],
 			['GoodieBag', 'goodie', 'Press Enter To Begin text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
+			[""],
+			['MintEngine Art Contributors'],
+			[
+				'HollowSoulxs',
+				'hollow',
+				'Designed the application icon',
+				'about:blank',
+				'0080ff'
+			],
+			['skellix', 'skellix', 'Designed the engine logo', 'https://gamebanana.com/members/2294895', '42FF75'],
 			[""],
 			["MintEngine server"],
 			["Join the Server!", "discord", "", "https://discord.gg/2ka77eMXDv", "82FAA2"],
