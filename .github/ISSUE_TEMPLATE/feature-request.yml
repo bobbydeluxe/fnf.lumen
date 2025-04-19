@@ -1,9 +1,0 @@
-name: Feature Request
-description: Request something to be added to MintEngine
-labels: [enhancement]
-body:
-  - type: textarea
-    attributes:
-      label: What feature do you want to get added on **MintEngine**?
-    validations:
-      required: true
