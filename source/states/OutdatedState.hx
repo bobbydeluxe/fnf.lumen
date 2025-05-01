@@ -16,15 +16,15 @@ class OutdatedState extends MusicBeatState
 
 		if (controls.mobileC) {
 			guh = "Sup kiddo, looks like you're running an   \n
-			outdated version of MintEngine (" + MainMenuState.mintEngineVersion + "),\n
-			please update to " + TitleState.updateVersion + "!\n
+			outdated version of MintEngine (" + MainMenuState.lumenEngineVersion + "),\n
+			please update to " + MainMenuState.lumenEngineVersion + "!\n
 			Press B to proceed anyway.\n
 			\n
 			Thank you for using the Engine!";
 		} else {
 			guh = "Sup bro, looks like you're running an   \n
-			outdated version of MintEngine (" + MainMenuState.mintEngineVersion + "),\n
-			please update to " + TitleState.updateVersion + "!\n
+			outdated version of MintEngine (" + MainMenuState.lumenEngineVersion + "),\n
+			please update to " + MainMenuState.lumenEngineVersion + "!\n
 			Press ESCAPE to proceed anyway.\n
 			\n
 			Thank you for using the Engine!";

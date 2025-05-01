@@ -41,7 +41,6 @@ using mikolka.funkin.custom.FunkinTools;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
-import bobbydx.HScriptVisuals;
 import backend.Paths as PsychPaths;
 #end
 
@@ -67,6 +66,8 @@ class ResultState extends MusicBeatSubState
 
   final bgFlash:FlxSprite;
 
+  public var songNameRecolor:Bool = false;
+
   final highscoreNew:FlxSprite;
   final score:ResultScore;
 
@@ -91,11 +92,7 @@ class ResultState extends MusicBeatSubState
 
   #if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
-  public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
-  public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
-
-  public var visualUtils:HScriptVisuals;
 
   public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
     #if HSCRIPT_ALLOWED
@@ -104,8 +101,6 @@ class ResultState extends MusicBeatSubState
             if (script.exists(funcToCall)) {
                 script.call(funcToCall, args);
             }
-            script.set("hscriptObjects", hscriptObjects);
-            script.set("hxvisual", visualUtils);
         }
     }
     #end
@@ -118,9 +113,6 @@ class ResultState extends MusicBeatSubState
 		try
 		{
 			newScript = new HScript(null, file);
-      #if HSCRIPT_ALLOWED
-		  newScript.set("hxvisual", visualUtils); // <-- FIX: Set hxvisual before calling anything
-		  #end
 			if (newScript.exists('onCreate')) newScript.call('onCreate');
 			trace('initialized hscript interp successfully: $file');
 			hscriptArray.push(newScript);
@@ -144,11 +136,6 @@ class ResultState extends MusicBeatSubState
   {
     super();
 
-    #if HSCRIPT_ALLOWED
-    add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
-    visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
-    #end
-
     var sngMeta = FreeplayMeta.getMeta(params.songId);
     
     if(sngMeta.freeplayCharacter != '' ){
@@ -164,9 +151,9 @@ class ResultState extends MusicBeatSubState
 
 
     #if HSCRIPT_ALLOWED
-    var basePath = 'data/haxescript/results/';
+    var basePath = 'scripts/hxstates/results/';
     var charScript = PsychPaths.getPath(basePath + characterNameThingy + 'Card.hx', TEXT, null, true);
-    var generalScript = PsychPaths.getPath(basePath + 'general.hx', TEXT, null, true);
+    var generalScript = PsychPaths.getPath(basePath + 'main.hx', TEXT, null, true);
     
     if (FileSystem.exists(generalScript)) {
       initHScript(generalScript);
@@ -193,7 +180,8 @@ class ResultState extends MusicBeatSubState
     // This prevents having to do `null` checks everywhere.
 
     var fontLetters:String = "AaBbCcDdEeFfGgHhiIJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz:1234567890";
-    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheet"), fontLetters, FlxPoint.get(49, 62)));
+
+    songName = new FlxBitmapText(FlxBitmapFont.fromMonospace(Paths.image("resultScreen/tardlingSpritesheetYellow"), fontLetters, FlxPoint.get(49, 62)));
     songName.text = params.title;
     songName.letterSpacing = -15;
     songName.angle = -4.4;
@@ -243,11 +231,6 @@ class ResultState extends MusicBeatSubState
   override function create():Void
   {
     if (FlxG.sound.music != null) FlxG.sound.music.stop();
-
-    #if HSCRIPT_ALLOWED
-    add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
-    visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
-    #end
 
     // We need multiple cameras so we can put one at an angle.
     cameraScroll.angle = -3.8;

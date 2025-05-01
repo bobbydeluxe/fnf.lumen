@@ -5,7 +5,7 @@ import mikolka.compatibility.FunkinControls;
 import mikolka.vslice.charSelect.CharSelectSubState;
 import openfl.filters.ShaderFilter;
 import mikolka.funkin.freeplay.FreeplayStyleRegistry;
-import mikolka.vslice.freeplay.backcards.*;
+import mikolka.vslice.freeplay.BackingCard;
 import shaders.BlueFade;
 import mikolka.funkin.freeplay.FreeplayStyle;
 import mikolka.vslice.freeplay.DJBoyfriend.FreeplayDJ;
@@ -50,7 +50,6 @@ using mikolka.funkin.utils.ArrayTools;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
-import bobbydx.HScriptVisuals;
 import backend.Paths as PsychPaths;
 #end
 
@@ -196,8 +195,6 @@ class FreeplayState extends MusicBeatSubstate
 
 	var stickerSubState:Null<StickerSubState> = null;
 
-	public var visualUtils:HScriptVisuals;
-
 	/**
 	 * The difficulty we were on when this menu was last accessed.
 	 */
@@ -228,8 +225,6 @@ class FreeplayState extends MusicBeatSubstate
 
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
-  	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
-  	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
@@ -239,8 +234,6 @@ class FreeplayState extends MusicBeatSubstate
 				if (script.exists(funcToCall)) {
 					script.call(funcToCall, args);
 				}
-				script.set("hxvisual", visualUtils);
-				script.set("hscriptObjects", hscriptObjects);
 			}
 		}
 		#end
@@ -278,7 +271,7 @@ class FreeplayState extends MusicBeatSubstate
 		super();
 
 		#if HSCRIPT_ALLOWED
-		var scriptPath = PsychPaths.getPath('data/haxescript/freeplay.hx', TEXT, null, true);
+		var scriptPath = PsychPaths.getPath('scripts/hxstates/freeplay.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);
@@ -855,10 +848,6 @@ class FreeplayState extends MusicBeatSubstate
 			onDJIntroDone();
 		}
 
-		#if HSCRIPT_ALLOWED
-    	add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
-    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
-    	#end
 	}
 
 	var currentFilter:SongFilter = null;
@@ -1428,7 +1417,12 @@ class FreeplayState extends MusicBeatSubstate
 		FlxG.sound.music.fadeOut(0.9, 0);
 		new FlxTimer().start(0.9, _ ->
 		{
-			FlxG.switchState(new CharSelectSubState());
+			if (PlayerRegistry.instance.countUnlockedCharacters() > 1) {
+				FlxG.switchState(new CharSelectSubState());
+			} else {
+				trace('Not enough characters unlocked to open character select!');
+				FunkinSound.playOnce(Paths.sound('cancelMenu'));
+			}
 		});
 		for (grpSpr in exitMoversCharSel.keys())
 		{

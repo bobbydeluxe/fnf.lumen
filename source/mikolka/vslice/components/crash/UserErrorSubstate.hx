@@ -140,8 +140,8 @@ class UserErrorSubstate extends MusicBeatSubstate
     
         function printError(error:CrashData)
         {
-            var star = #if CHECK_FOR_UPDATES "" #else "*" #end;
-            printToTrace('FnF MintEngine$star  (${error.message})');
+            var star = "";
+            printToTrace('LumenEngine$star  (${error.message})');
             textNextY += 35;
             FlxTimer.wait(1 / 24, () ->
             {
@@ -172,9 +172,9 @@ class UserErrorSubstate extends MusicBeatSubstate
                 printToTrace('RUNTIME INFORMATION');
                 var date_split = error.date.split(" ");
                 printToTrace('TIME:${date_split[1].rpad(" ",9)} DATE:${date_split[0]}');
-                printToTrace('MOD:${error.activeMod.rpad(" ",10)} VER:${MainMenuState.mintEngineVersion.rpad(" ", 5)} SYS:${error.systemName}');
+                printToTrace('MOD:${error.activeMod.rpad(" ",10)} VER: WHATEVER SYS:${error.systemName}');
                 printSpaceToTrace();
-                if(isCritical) printToTrace('REPORT TO GITHUB.COM/BOBBYDELUXE/PSLICE.MINT');
+                if(isCritical) printToTrace('REPORT TO GITHUB.COM/BOBBYDELUXE/FNF.LUMEN');
                 else printToTrace('');
                 if(isCritical){
                     if(controls.mobileC) printToTrace('TAP ANYWHERE TO RESTART');
@@ -195,7 +195,7 @@ class UserErrorSubstate extends MusicBeatSubstate
             var star = #if CHECK_FOR_UPDATES "" #else "*" #end;
             dateNow = dateNow.replace(' ', '_');
             dateNow = dateNow.replace(':', "'");
-            errMsg += 'MintEngine ${MainMenuState.mintEngineVersion}$star\n';
+            errMsg += 'LumenEngine ${MainMenuState.lumenEngineVersion}$star\n';
             errMsg += '\nUncaught Error: ' + error.message + "\n";
             for (x in error.extendedTrace)
             {
@@ -205,13 +205,13 @@ class UserErrorSubstate extends MusicBeatSubstate
             errMsg += 'Active mod: ${error.activeMod}\n';
             errMsg += 'Platform: ${error.systemName}\n';
             errMsg += '\n';
-            errMsg += '\nPlease report this error to the GitHub page: https://github.com/bobbydeluxe/pslice.mint\n\n> Crash Handler written by: sqirra-rng';
+            errMsg += '\nPlease report this error to the GitHub page: https://github.com/bobbydeluxe/fnf.lumen\n\n> Crash Handler written by: sqirra-rng';
     
             #if !LEGACY_PSYCH
             @:privateAccess // lazy
             backend.CrashHandler.saveErrorMessage(errMsg + '\n');
             #else
-            var path = './crash/' + 'MintEngine_' + dateNow + '.txt';
+            var path = './crash/' + 'LumenEngine_' + dateNow + '.txt';
             File.saveContent(path, errMsg + '\n');
             Sys.println(errMsg);
             #end

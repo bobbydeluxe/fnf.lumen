@@ -12,12 +12,12 @@ import backend.Song;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
-import bobbydx.HScriptVisuals;
 #end
 
 class MainMenuState extends MusicBeatState
 {
-	public static var mintEngineVersion:String = '0.1.1h';
+	public static var lumenEngineVersion:String = '1.0'; // Similar to DuskieWhy's NightmareVision engine, Lumen Engine does not follow a strict versioning system, so 1.0 acts as a placeholder.
+	public static var isLumen:Bool = true; // This is used for Lua functions to check if the engine is Lumen Engine or not.
 	public static var psychEngineVersion:String = '1.0'; // This is also used for Discord RPC
 	public static var pSliceVersion:String = '2.2.2'; 
 	public static var funkinVersion:String = '0.2.8';
@@ -25,10 +25,9 @@ class MainMenuState extends MusicBeatState
 
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
-  	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
-  	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
 
+	var menuItemsBack:FlxTypedGroup<FlxSprite>;
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	var optionShit:Array<String> = [
@@ -46,17 +45,9 @@ class MainMenuState extends MusicBeatState
 
 	var cancelLoad:Bool = false;
 
-	public var visualUtils:HScriptVisuals;
-
 	public function new(isDisplayingRank:Bool = false) {
-
 		//TODO
 		super();
-
-		#if HSCRIPT_ALLOWED
-    	add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
-    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
-    	#end
 	}
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
@@ -66,8 +57,6 @@ class MainMenuState extends MusicBeatState
 				if (script.exists(funcToCall)) {
 					script.call(funcToCall, args);
 				}
-				script.set("hxvisual", visualUtils);
-				script.set("hscriptObjects", hscriptObjects);
 			}
 		}
 		#end
@@ -116,7 +105,7 @@ class MainMenuState extends MusicBeatState
 
 		#if HSCRIPT_ALLOWED
 		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/mainMenu.hx');
-		var scriptPath = Paths.getPath('data/haxescript/mainMenu.hx', TEXT, null, true);
+		var scriptPath = Paths.getPath('scripts/hxstates/mainMenu.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);
@@ -153,6 +142,10 @@ class MainMenuState extends MusicBeatState
 		add(magenta);
 		callOnHScript("onLoad",["magenta",magenta]);
 
+		menuItemsBack = new FlxTypedGroup<FlxSprite>();
+		add(menuItemsBack);
+		callOnHScript("onLoad",["menuItemsBack",menuItemsBack]);
+
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
@@ -177,10 +170,10 @@ class MainMenuState extends MusicBeatState
 			menuItem.screenCenter(X);
 		}
 
-		var mintVer:FlxText = new FlxText(12, FlxG.height - 64, 0, "MintEngine v" + mintEngineVersion + " (P-Slice " + pSliceVersion + ")", 12);
-		mintVer.scrollFactor.set();
-		mintVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(mintVer);
+		var lumenVer:FlxText = new FlxText(12, FlxG.height - 64, 0, "Lumen Engine (P-Slice " + pSliceVersion + ")", 12);
+		lumenVer.scrollFactor.set();
+		lumenVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(lumenVer);
 		var psychVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
 		psychVer.scrollFactor.set();
 		psychVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -309,10 +302,7 @@ class MainMenuState extends MusicBeatState
 										PlayState.stageUI = 'normal';
 									}
 							}
-						} else {
-							
 						}
-						
 					});
 
 					for (i in 0...menuItems.members.length)
@@ -342,29 +332,29 @@ class MainMenuState extends MusicBeatState
 		callOnHScript("onUpdatePost",[elapsed]);
 	}
 
-	function triggerEvent(eventName:String,eventValue:Dynamic = 1,eventValue2:Dynamic = 1) {
+	function triggerEvent(eventName:String,eventValue:Dynamic = 1,eventValue2:Dynamic = 1, songStoryMode:Bool = false) {
 		switch (eventName) {
 			case "ChangeState" :
 				if (eventValue == "storymode") {
 					MusicBeatState.switchState(new StoryMenuState());
 				}
 				else if (eventValue == "freeplay") {
-                    persistentDraw = true;
-                    persistentUpdate = false;
-                    // Freeplay has its own custom transition
-                    FlxTransitionableState.skipNextTransIn = true;
-                    FlxTransitionableState.skipNextTransOut = true;
+					persistentDraw = true;
+					persistentUpdate = false;
+					// Freeplay has its own custom transition
+					FlxTransitionableState.skipNextTransIn = true;
+					FlxTransitionableState.skipNextTransOut = true;
 
-                    openSubState(new FreeplayState());
-                    subStateOpened.addOnce(state -> {
-                        for (i in 0...menuItems.members.length) {
-                            menuItems.members[i].revive();
-                            menuItems.members[i].alpha = 1;
-                            menuItems.members[i].visible = true;
-                            selectedSomethin = false;
-                        }
-                        changeItem(0);
-                    });
+					openSubState(new FreeplayState());
+					subStateOpened.addOnce(state -> {
+						for (i in 0...menuItems.members.length) {
+							menuItems.members[i].revive();
+							menuItems.members[i].alpha = 1;
+							menuItems.members[i].visible = true;
+							selectedSomethin = false;
+						}
+						changeItem(0);
+					});
 				}
 				else if (eventValue == "credits") {
 					MusicBeatState.switchState(new CreditsState());
@@ -395,7 +385,7 @@ class MainMenuState extends MusicBeatState
 				try
 				{
 					Song.loadFromJson(poop, songLowercase);
-					PlayState.isStoryMode = false;
+					PlayState.isStoryMode = songStoryMode;
 					PlayState.storyDifficulty = eventValue2;
 				}
 

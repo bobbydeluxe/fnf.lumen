@@ -18,7 +18,6 @@ import substates.StickerSubState;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
-import bobbydx.HScriptVisuals;
 #end
 
 import backend.StageData;
@@ -53,11 +52,7 @@ class StoryMenuState extends MusicBeatState
 
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
-  	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
-  	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
-
-	public var visualUtils:HScriptVisuals;
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	private var luaDebugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
@@ -70,8 +65,6 @@ class StoryMenuState extends MusicBeatState
 				if (script.exists(funcToCall)) {
 					script.call(funcToCall, args);
 				}
-				script.set("hxvisual", visualUtils);
-				script.set("hscriptObjects", hscriptObjects);
 			}
 		}
 		#end
@@ -119,11 +112,6 @@ class StoryMenuState extends MusicBeatState
 	{
 		super();
 
-		#if HSCRIPT_ALLOWED
-    	add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
-    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
-    	#end
-	  
 		if (stickers != null)
 		{
 			stickerSubState = stickers;
@@ -157,14 +145,14 @@ class StoryMenuState extends MusicBeatState
 		#end
 
 		#if HSCRIPT_ALLOWED
-		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/storyMode.hx');
-		var scriptPath = Paths.getPath('data/haxescript/storyMode.hx', TEXT, null, true);
-
-		if (FileSystem.exists(scriptPath)) {
-		    initHScript(scriptPath);
-		} else {
-		    trace('HScript file not found: ' + scriptPath);
+		var defaultScript = Paths.getPath('scripts/hxstates/storyMode/default.hx', TEXT, null, true);
+		if (FileSystem.exists(defaultScript)) {
+			initHScript(defaultScript);
+			trace('Loaded default HScript: ' + defaultScript);
 		}
+		else {
+			trace('Default HScript not found: ' + defaultScript);
+		}		
 		#end
 
 		final accept:String = controls.mobileC ? "A" : "ACCEPT";
@@ -605,7 +593,28 @@ class StoryMenuState extends MusicBeatState
 			curDifficulty = newPos;
 		}
 		updateText();
-		callOnHScript("onChangeWeek",[curWeek,leWeek,curDifficulty,bgSprite]);
+		callOnHScript("onChangeWeek",[curWeek,leWeek,curDifficulty]);
+		callOnHScript("onChangeDifficulty",[sprDifficulty,curDifficulty]);
+		#if HSCRIPT_ALLOWED
+		// Clear existing HScript interpreters
+		for (script in hscriptArray) {
+			if (script != null) script.destroy();
+		}
+		hscriptArray = [];
+		
+		// Reload default script
+		var defaultScript = Paths.getPath('scripts/hxstates/storyMode/default.hx', TEXT, null, true);
+		if (FileSystem.exists(defaultScript)) {
+			initHScript(defaultScript);
+		}
+		
+		// Load override if it exists
+		var weekScript = Paths.getPath('scripts/hxstates/storyMode/' + leWeek.fileName + '.hx', TEXT, null, true);
+		if (FileSystem.exists(weekScript)) {
+			initHScript(weekScript);
+			trace('Loaded week-specific HScript: ' + weekScript);
+		}
+		#end
 	}
 
 	function weekIsLocked(name:String):Bool {

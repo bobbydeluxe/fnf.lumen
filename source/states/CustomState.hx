@@ -2,16 +2,12 @@ package states;
 
 import psychlua.HScript;
 import crowplexus.iris.Iris;
+
 import backend.Song;
 import backend.Highscore;
 import options.OptionsState;
 import mikolka.vslice.freeplay.FreeplayState;
-
-#if HSCRIPT_ALLOWED
-import crowplexus.iris.Iris;
-import psychlua.HScript;
-import bobbydx.HScriptVisuals;
-#end
+import states.PlayState;
 
 class CustomState extends MusicBeatState {
 
@@ -21,11 +17,7 @@ class CustomState extends MusicBeatState {
     
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
-	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
-	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
-
-	public var visualUtils:HScriptVisuals;
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	private var luaDebugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
@@ -38,8 +30,6 @@ class CustomState extends MusicBeatState {
 				if (script.exists(funcToCall)) {
 					script.call(funcToCall, args);
 				}
-				script.set("hxvisual", visualUtils);
-				script.set("hscriptObjects", hscriptObjects);
 			}
 		}
 		#end
@@ -73,16 +63,12 @@ class CustomState extends MusicBeatState {
     override function create() {
         super.create();
 
-		add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
-    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
-
         if (currentState == null) {
             currentState = "ErrorState";
         }
 
         #if HSCRIPT_ALLOWED
-		//var scriptPath = Paths.getSharedPath() + 'data/haxescript/'+currentState+'.hx'; // Strict file path
-		var scriptPath = Paths.getPath('data/haxescript/' + currentState + '.hx', TEXT, null, true);
+		var scriptPath = Paths.getPath('scripts/hxstates/' + currentState + '.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);
@@ -103,28 +89,34 @@ class CustomState extends MusicBeatState {
         }
     }
 
-    function triggerEvent(eventName:String,eventValue:Dynamic = 1,eventValue2:Dynamic = 1) {
+    function triggerEvent(eventName:String,eventValue:Dynamic = 1,eventValue2:Dynamic = 1, songStoryMode:Bool = false)
+	{
 		switch (eventName) {
 			case "ChangeState" :
 				if (eventValue == "storymode") {
 					MusicBeatState.switchState(new StoryMenuState());
 				}
 				else if (eventValue == "freeplay") {
-                    MusicBeatState.switchState(new FreeplayState());
+					MusicBeatState.switchState(new FreeplayState());
 				}
 				else if (eventValue == "credits") {
 					MusicBeatState.switchState(new CreditsState());
 				}
 				else if (eventValue == "options") {
 					MusicBeatState.switchState(new OptionsState());
+					OptionsState.onPlayState = false;
+					if (PlayState.SONG != null)
+					{
+						PlayState.SONG.arrowSkin = null;
+						PlayState.SONG.splashSkin = null;
+						PlayState.stageUI = 'normal';
+					}
 				}
 				else if (eventValue == "awards") {
 					MusicBeatState.switchState(new AchievementsMenuState());
 				}
 				else if (eventValue == "mods") {
 					MusicBeatState.switchState(new ModsMenuState());
-                } else if (eventValue == "mainmenu") {
-                    MusicBeatState.switchState(new MainMenuState());
 				} else {
 					FlxG.save.data.currentState = eventValue;
 					MusicBeatState.switchState(new CustomState());
@@ -136,14 +128,14 @@ class CustomState extends MusicBeatState {
 				try
 				{
 					Song.loadFromJson(poop, songLowercase);
-					PlayState.isStoryMode = false;
+					PlayState.isStoryMode = songStoryMode;
 					PlayState.storyDifficulty = eventValue2;
 				}
 
 				if (FlxG.save.data.isTransition == false) {
 					MusicBeatState.switchState(new PlayState());
 				} else {
-                    LoadingState.loadAndSwitchState(new PlayState());
+					LoadingState.loadAndSwitchState(new PlayState());
 				}
 			default :
 				trace("Null Value");

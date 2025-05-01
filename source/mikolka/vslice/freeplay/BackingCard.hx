@@ -1,4 +1,4 @@
-package mikolka.vslice.freeplay.backcards;
+package mikolka.vslice.freeplay;
 
 import mikolka.compatibility.VsliceOptions;
 import mikolka.vslice.freeplay.FreeplayState;
@@ -25,7 +25,6 @@ import backend.Paths as PsychPaths;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
-import bobbydx.HScriptVisuals;
 #end
 
 import mikolka.vslice.freeplay.BGScrollingText;
@@ -60,12 +59,8 @@ class BackingCard extends FlxSpriteGroup
 
   public var backPath:String = 'freeplay/backing-text-yeah';
 
-  public var visualUtils:HScriptVisuals;
-
   #if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
-  public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
-  public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
@@ -75,8 +70,6 @@ class BackingCard extends FlxSpriteGroup
             if (script.exists(funcToCall)) {
                 script.call(funcToCall, args);
             }
-            script.set("hxvisual", visualUtils);
-            script.set("hscriptObjects", hscriptObjects);
         }
     }
     #end
@@ -117,7 +110,7 @@ class BackingCard extends FlxSpriteGroup
 
     #if HSCRIPT_ALLOWED
    // var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/backingCards/' + characterNameThingy + 'Card.hx');
-   var scriptPath = PsychPaths.getPath('data/haxescript/backingCards/' + characterNameThingy + 'Card.hx', TEXT, null, true);
+   var scriptPath = PsychPaths.getPath('scripts/hxstates/backingCards/' + characterNameThingy + 'Card.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);
@@ -274,11 +267,6 @@ class BackingCard extends FlxSpriteGroup
     glow.visible = false;
 
     add(cardGlow);
-
-    #if HSCRIPT_ALLOWED
-    add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
-    visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
-    #end
   }
 
   /**

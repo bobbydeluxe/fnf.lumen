@@ -21,7 +21,6 @@ import mikolka.vslice.AttractState;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
-import bobbydx.HScriptVisuals;
 #end
 
 typedef TitleData =
@@ -60,9 +59,9 @@ class TitleState extends MusicBeatState
 	var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
 	var titleTextAlphas:Array<Float> = [1, .64];
 
-	var curWacky:Array<String> = [];
+	var cancelLoad:Bool = false;
 
-	var wackyImage:FlxSprite;
+	var curWacky:Array<String> = [];
 
 	#if TITLE_SCREEN_EASTER_EGG
 	final easterEggKeys:Array<String> = [
@@ -72,16 +71,8 @@ class TitleState extends MusicBeatState
 	var easterEggKeysBuffer:String = '';
 	#end
 
-	var mustUpdate:Bool = false;
-
-	public static var updateVersion:String = '';
-
-	public var visualUtils:HScriptVisuals;
-
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
-  	public var hscriptObjects:Map<String, Dynamic> = new Map(); // add this at the top
-  	public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
@@ -95,8 +86,6 @@ class TitleState extends MusicBeatState
 				if (script.exists(funcToCall)) {
 					script.call(funcToCall, args);
 				}
-				script.set("hxvisual", visualUtils);
-				script.set("hscriptObjects", hscriptObjects);
 			}
 		}
 		#end
@@ -140,32 +129,7 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
-		#if CHECK_FOR_UPDATES
-		if (ClientPrefs.data.checkForUpdates && !closedState)
-		{
-			trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/bobbydeluxe/pslice.mint/main/gitVersion.txt");
-
-			http.onData = function(data:String)
-			{
-				updateVersion = data.split('\n')[0].trim();
-				var curVersion:String = MainMenuState.mintEngineVersion.trim();
-				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
-				if (updateVersion != curVersion)
-				{
-					trace('versions arent matching!');
-					mustUpdate = true;
-				}
-			}
-
-			http.onError = function(error)
-			{
-				trace('error: $error');
-			}
-
-			http.request();
-		}
-		#end
+		// lumen doesn't have a versioning system, its just whatever, so no need to check for updates
 
 		if(!initialized)
 		{
@@ -214,11 +178,6 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end
-
-		#if HSCRIPT_ALLOWED
-    	add(hscriptLayer); // <-- NEW: Add hscript visuals LAST so they render on top
-    	visualUtils = new HScriptVisuals(hscriptLayer, hscriptObjects, callOnHScript); // <-- Pass hscriptLayer
-    	#end
 	}
 
 	var logoBl:FlxSprite;
@@ -239,7 +198,7 @@ class TitleState extends MusicBeatState
 
 		#if HSCRIPT_ALLOWED
 		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/titleScreen.hx');
-		var scriptPath = Paths.getPath('data/haxescript/titleScreen.hx', TEXT, null, true);
+		var scriptPath = Paths.getPath('scripts/hxstates/titleScreen.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);
@@ -357,9 +316,6 @@ class TitleState extends MusicBeatState
 		callOnHScript("onLoad",["credGroup",credGroup]);
 		add(ngSpr);
 		callOnHScript("onLoad",["ngSpr",ngSpr]);
-
-		callOnHScript("onLoad",["titleTextColors",titleTextColors]);
-		callOnHScript("onLoad",["titleTextAlphas",titleTextAlphas]);
 
 		if (initialized)
 			skipIntro();
@@ -556,20 +512,13 @@ class TitleState extends MusicBeatState
 
 				enterTimer = new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
-					if (mustUpdate)
-					{
-						MusicBeatState.switchState(new OutdatedState());
-					}
-					else
-					{
-						if (cheatActive)
+					if (cheatActive)
 						{
 							FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 							FlxG.sound.music.fadeIn(4, 0, 0.7);
 						}
 						FlxTransitionableState.skipNextTransIn = true;
 						MusicBeatState.switchState(new MainMenuState());
-					}
 
 					closedState = true;
 				});
@@ -728,45 +677,48 @@ class TitleState extends MusicBeatState
 		{
 			sickBeats++;
 			callOnHScript("onBeatTexts",[sickBeats]);
-			switch (sickBeats)
-			{
-				case 1:
-					// FlxG.sound.music.stop();
-					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-					#if VIDEOS_ALLOWED
-						FlxG.sound.music.onComplete = moveToAttract;
-					#end
-					FlxG.sound.music.fadeIn(4, 0, 0.7);
-				case 2:
-					createCoolText(['MintEngine by']);
-				case 4:
-					addMoreText('bobbyDX');
-				case 5:
-					deleteCoolText();
-				case 6:
-					createCoolText(['Not associated', 'with'], -40);
-				case 8:
-					addMoreText('newgrounds', -40);
-					ngSpr.visible = true;
-				case 9:
-					deleteCoolText();
-					ngSpr.visible = false;
-				case 10:
-					createCoolText([curWacky[0]]);
-				case 12:
-					addMoreText(curWacky[1]);
-				case 13:
-					deleteCoolText();
-				case 14:
-					addMoreText('Friday');
-				case 15:
-					addMoreText('Night');
-				case 16:
-					addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+				if (cancelLoad == false)
+				{
+					switch (sickBeats)
+					{
+						case 1:
+							// FlxG.sound.music.stop();
+							FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+							#if VIDEOS_ALLOWED
+								FlxG.sound.music.onComplete = moveToAttract;
+							#end
+							FlxG.sound.music.fadeIn(4, 0, 0.7);
+						case 2:
+							createCoolText(['Lumen Engine by']);
+						case 4:
+							addMoreText('bobbyDX');
+						case 5:
+							deleteCoolText();
+						case 6:
+							createCoolText(['Not associated', 'with'], -40);
+						case 8:
+							addMoreText('newgrounds', -40);
+							ngSpr.visible = true;
+						case 9:
+							deleteCoolText();
+							ngSpr.visible = false;
+						case 10:
+							createCoolText([curWacky[0]]);
+						case 12:
+							addMoreText(curWacky[1]);
+						case 13:
+							deleteCoolText();
+						case 14:
+							addMoreText('Friday');
+						case 15:
+							addMoreText('Night');
+						case 16:
+							addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
 
-				case 17:
-					skipIntro();
-			}
+						case 17:
+							skipIntro();
+					}
+				}
 		}
 	}
 
