@@ -12,7 +12,7 @@ haxelib install openfl 9.3.3
 haxelib install flixel 5.6.1
 haxelib install flixel-addons 3.2.2
 haxelib install flixel-tools 1.5.1
-haxelib install hscript-iris 1.1.0
+haxelib install hscript-iris 1.1.3
 haxelib install tjson 1.4.0
 haxelib install hxdiscord_rpc 1.2.4
 haxelib git flxanimate https://github.com/Psych-Slice/FlxAnimate.git 18091dfeb629ba2805a5f3e10f5de80433080359
