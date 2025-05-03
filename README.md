@@ -6,6 +6,8 @@ basically an customized old version of [p-slice](https://github.com/Psych-Slice/
   <img src="./art/readmeLogo.png" width=400>
 </p>
 
+precompiled builds can be downloaded from github actions. you need a github account, though.
+
 this engine is tailored for **my own mods**, with features, shortcuts, and quirks that only really make sense in that context.
 
 if you're here, chances are you're digging through one of my example mods and got curious or whatever the reason may be. welcome.
