@@ -170,14 +170,13 @@ class Main extends Sprite
 		#end
 
 		#if !html5
-		var boxWidth:Float = Math.max(fpsVar.width, memoryCounter.width);
-		var boxHeight:Float = (fpsVar.height + memoryCounter.height);
-		// we use division due to 1/6th being a repeating decimal
+		var boxWidth:Float = Math.max(fpsVar.width, memoryCounter.width) * 0.35;
+		var boxHeight:Float = (fpsVar.height + memoryCounter.height) * (1 / 6);
 		#else
 		var boxWidth:Float = fpsVar.width;
 		var boxHeight:Float = fpsVar.height;
-		// ive never tinkered with lumen on web so i have no idea if this is correct or not
-		// anyone who wantes to give me a hand with this, please do so via pull request or issue
+		// ive never tinkered with lumen on html5 so idk if this is correct or not
+		// if anyone wants to help, please do so via pull request or something
 		#end
 		backgroundBox = new Sprite();
 		backgroundBox.graphics.beginFill(0x000000, 0.5); // Translucent black

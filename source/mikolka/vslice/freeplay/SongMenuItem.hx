@@ -62,7 +62,7 @@ class SongMenuItem extends FlxSpriteGroup
   // var diffRatingSprite:FlxSprite;
   public var bpmText:FlxSprite;
   public var difficultyText:FlxSprite;
-  public var weekType:FlxSprite;
+  //public var weekType:FlxSprite;
 
   public var newText:FlxSprite;
 
@@ -71,7 +71,7 @@ class SongMenuItem extends FlxSpriteGroup
 
   public var smallNumbers:Array<CapsuleNumber> = [];
 
-  public var weekNumbers:Array<CapsuleNumber> = [];
+  // public var weekNumbers:Array<CapsuleNumber> = [];
 
   var impactThing:FunkinSprite;
 
@@ -98,6 +98,7 @@ class SongMenuItem extends FlxSpriteGroup
     difficultyText.setGraphicSize(Std.int(difficultyText.width * 0.9));
     add(difficultyText);
 
+    /*
     weekType = new FlxSprite(291, 87);
     weekType.frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/weektypes');
 
@@ -106,6 +107,9 @@ class SongMenuItem extends FlxSpriteGroup
 
     weekType.setGraphicSize(Std.int(weekType.width * 0.9));
     add(weekType);
+    */
+    // in lumen i'm removing the week type text as i don't really like how it labels mixes individually
+    // lets say week 1 pico mix would be labeled as week 9 or whatever, i don't like that
 
     newText = new FlxSprite(454, 9);
     newText.frames = Paths.getSparrowAtlas('freeplay/freeplayCapsule/new');
@@ -222,7 +226,7 @@ class SongMenuItem extends FlxSpriteGroup
     favIcon.blend = BlendMode.ADD;
     add(favIcon);
 
-    //? Added another week num. I should really make 3 of them
+    /*
     var weekNumber:CapsuleNumber = new CapsuleNumber(355, 88.5, false, 0);
     var weekNumber2:CapsuleNumber = new CapsuleNumber(365, 88.5, false, 0);
     add(weekNumber);
@@ -230,6 +234,7 @@ class SongMenuItem extends FlxSpriteGroup
 
     weekNumbers.push(weekNumber);
     weekNumbers.push(weekNumber2);
+    */
 
     setVisibleGrp(false);
   }
@@ -248,41 +253,7 @@ class SongMenuItem extends FlxSpriteGroup
   // negative values mean weekends
   function checkWeek(id:Int):Void
   {
-    // trace(name);
-    var weekNum:Int = id;
-
-    
-    //? code to handle multiple week digits
-    if (weekNum == 0)
-    {
-      weekType.visible = false;
-      weekNumbers[0].visible = false;
-      weekNumbers[1].visible = false;
-    }
-    else if(weekNum<10)
-    {
-      weekType.visible = true;
-      weekNumbers[0].visible = true;
-      weekNumbers[1].visible = false;
-      weekNumbers[0].digit = Std.int(Math.abs(weekNum));
-    }
-    else 
-    {
-      weekType.visible = true;
-      weekNumbers[0].visible = true;
-      weekNumbers[1].visible = true;
-      weekNumbers[1].digit = Std.int(Math.abs(weekNum%10));
-      weekNumbers[0].digit = Std.int(Math.abs(weekNum/10));
-    }
-    if (weekNum > 0)
-    {
-      weekType.animation.play('WEEK', true);
-    }
-    else
-    {
-      weekType.animation.play('WEEKEND', true);
-      weekNumbers[0].offset.x -= 35;
-    }
+    // it does nothing in lumen
   }
 
   /**

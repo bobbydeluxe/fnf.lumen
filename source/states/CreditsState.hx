@@ -49,7 +49,7 @@ class CreditsState extends MusicBeatState
 			['Rozebud', 'roze', 'Created the Lil Buddies [from FPS+]', '', 'FFB3D9'],
 			['SadeceNicat', 'sadecenicat', 'Created Hybrid Engine', 'https://github.com/SadeceNicat', '4B8EFF'],
 			['Ledonic', 'ledonic', 'created the change character event fix script', 'https://youtube.com/@ledonic852', '3897FF'],
-			['HollowSoulxs', 'hollow', 'made the lumen engine icon', '', '0xA23FFF'],
+			['HollowSoulxs', 'hollow', 'made the lumen engine icon', '', 'A23FFF'],
 			[""],
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
