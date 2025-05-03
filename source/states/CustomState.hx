@@ -9,6 +9,9 @@ import options.OptionsState;
 import mikolka.vslice.freeplay.FreeplayState;
 import states.PlayState;
 
+// This code is from Hybrid Engine, it was too good I added it to Lumen Engine
+// Credits to SadeceNicat for the Hybrid Engine code
+
 class CustomState extends MusicBeatState {
 
     var currentState = FlxG.save.data.currentState;
@@ -68,7 +71,9 @@ class CustomState extends MusicBeatState {
         }
 
         #if HSCRIPT_ALLOWED
-		var scriptPath = Paths.getPath('scripts/hxstates/' + currentState + '.hx', TEXT, null, true);
+		var scriptPath = Paths.getPath('scripts/registry/states/' + currentState + '.hx', TEXT, null, true);
+		// this script path parodies the `data/registry` path, but in the scripts folder we have haxe script files instead of json files
+		// if you were to make the code for your `JukeboxState` for example, you would place the file in `scripts/registry/states/JukeboxState.hx`
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);
@@ -117,6 +122,9 @@ class CustomState extends MusicBeatState {
 				}
 				else if (eventValue == "mods") {
 					MusicBeatState.switchState(new ModsMenuState());
+				}
+				else if (eventValue == "mainmenu") {
+					MusicBeatState.switchState(new MainMenuState());
 				} else {
 					FlxG.save.data.currentState = eventValue;
 					MusicBeatState.switchState(new CustomState());

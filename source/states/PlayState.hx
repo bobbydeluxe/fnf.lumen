@@ -143,6 +143,10 @@ class PlayState extends MusicBeatState
 	public static var altInstrumentals:String = null;
 	public static var storyDifficultyColor = FlxColor.GRAY;
 
+	// new lumen stuff
+	public static var skipResults:Bool = false;
+	public static var mainMenuTrans:Bool = false;
+
 	public var spawnTime:Float = 2000;
 
 	public var inst:FlxSound;
@@ -1909,15 +1913,55 @@ class PlayState extends MusicBeatState
 
 	// Health icon updaters
 	public dynamic function updateIconsScale(elapsed:Float)
-	{
-		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, Math.exp(-elapsed * 9 * playbackRate));
-		iconP1.scale.set(mult, mult);
-		iconP1.updateHitbox();
-
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
-		iconP2.scale.set(mult, mult);
-		iconP2.updateHitbox();
-	}
+		{
+			// icon bop from henry's wrath, an fnf mod i worked on. this bop style is now in lumen - bobbydx
+	
+			// Calculate the duration of 4 beats
+			var beatDuration:Float = Conductor.stepCrochet / 1000; // Duration of one beat in seconds
+			var totalDuration:Float = beatDuration * 4; // Duration of 4 beats
+		
+			// Normalize elapsed time to a range (0 to 1) over 4 beats
+			var normalizedTime:Float = FlxMath.bound(elapsed / totalDuration, 0, 1);
+		
+			// Custom easing map: blend of Psych Engine easing and Henry's Wrath easing
+			var easeFactor:Float = blendedIconEasing(normalizedTime, elapsed);
+		
+			// Use the easing factor to interpolate the scale for iconP1
+			var mult:Float = FlxMath.lerp(1, iconP1.scale.x, easeFactor);
+			iconP1.scale.set(mult, mult);
+			iconP1.updateHitbox();
+		
+			// Use the easing factor to interpolate the scale for iconP2
+			mult = FlxMath.lerp(1, iconP2.scale.x, easeFactor);
+			iconP2.scale.set(mult, mult);
+			iconP2.updateHitbox();
+		}
+		
+		// Blended easing function for Henry Type Icon Bop v2
+		private function blendedIconEasing(t:Float, elapsed:Float):Float
+		{
+			// Psych Engine easing: exponential decay
+			var psychEase:Float = Math.exp(-elapsed * 9 * playbackRate);
+		
+			// Henry's Wrath easing: hybrid of exponential decay and stretched quartOut
+			var henryEase:Float = customIconEasing(t);
+		
+			// Blend the two easing types with a bias toward Henry's Wrath for a smoother tail
+			return FlxMath.lerp(psychEase, henryEase, 0.52); // Adjust blending weight for desired effect
+		}
+		
+		// Custom easing function for Henry's Wrath easing
+		private function customIconEasing(t:Float):Float
+		{
+			// Exponential decay for the initial drop-off
+			var expoDecay:Float = Math.exp(-t * 6); // Adjust the multiplier for a slower decay
+		
+			// Stretched quartOut easing for the long tail
+			var quartOut:Float = 1 - Math.pow(1 - t, 4); // Classic quartOut easing
+		
+			// Blend the two easing types with a bias toward quartOut for a smoother tail
+			return FlxMath.lerp(expoDecay, quartOut, t * 0.8); // Adjust blending weight for a satisfying transition
+		}
 
 	public dynamic function updateIconsPosition()
 	{
@@ -2573,10 +2617,10 @@ class PlayState extends MusicBeatState
           		score: songScore,
 		  		accPoints: accPts,
 				
-          		sick: ratingsData[0].hits,
-            	good: ratingsData[1].hits,
-              	bad: ratingsData[2].hits,
-          		shit: ratingsData[3].hits,
+				sick: ratingsData[0].hits,
+				good: ratingsData[1].hits,
+				bad: ratingsData[2].hits,
+				shit: ratingsData[3].hits,
           		missed: songMisses,
           		combo: combo,
             	maxCombo: maxCombo,
@@ -2693,10 +2737,13 @@ class PlayState extends MusicBeatState
    function zoomIntoResultsScreen(isNewHighscore:Bool,scoreData:SaveScoreData,prevScoreRank:ScoringRank):Void
 	{
 		var botplay = ClientPrefs.getGameplaySetting('botplay');
-		if(!ClientPrefs.data.vsliceResults || botplay){
+		if (botplay) {
+			skipResults = true;
+		}
+		if (skipResults) {
 			var resultingAccuracy = Math.min(1,scoreData.accPoints/scoreData.totalNotesHit); 
 			var fpRank = Scoring.calculateRankFromData(scoreData.score,resultingAccuracy,scoreData.missed == 0) ?? SHIT;
-			if(isNewHighscore && !isStoryMode){
+			if(isNewHighscore && !isStoryMode && !mainMenuTrans){
 				
 				camOther.fade(FlxColor.BLACK, 0.6,false,() -> {
 					FlxTransitionableState.skipNextTransOut = true;
@@ -2715,7 +2762,7 @@ class PlayState extends MusicBeatState
                   }));
 				});
 			}
-			else if (!isStoryMode){
+			else if (!isStoryMode && !mainMenuTrans){
 				openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(
 					{
 					  {
@@ -2730,8 +2777,11 @@ class PlayState extends MusicBeatState
 					  }
 					}, sticker)));
 			}
-			else {
+			else if (!mainMenuTrans) {
 				openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+			}
+			else {
+				openSubState(new StickerSubState(null, (sticker) -> new MainMenuState(sticker)));
 			}
 			return;
 		}

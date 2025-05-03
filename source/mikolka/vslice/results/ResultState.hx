@@ -151,7 +151,7 @@ class ResultState extends MusicBeatSubState
 
 
     #if HSCRIPT_ALLOWED
-    var basePath = 'scripts/hxstates/results/';
+    var basePath = 'scripts/registry/ResultState/';
     var charScript = PsychPaths.getPath(basePath + characterNameThingy + 'Card.hx', TEXT, null, true);
     var generalScript = PsychPaths.getPath(basePath + 'main.hx', TEXT, null, true);
     

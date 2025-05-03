@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://lime.openfl.org/project/1.0.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:config="http://openfl.org/project/1.0.0/config"
-	xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
-
+<project
+xmlns="http://lime.openfl.org/project/1.0.4"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 
 	<app title="LumenEngine" file="LumenEngine" packageName="com.bobbydx.lumenengine" package="com.bobbydx.lumenengine" main="Main" version="0.0.1" company="bobbyDX" />
+
+	<!--Switch Export with Unique ApplicationID and Icon-->
+	<set name="APP_ID" value="0x0100f6c013bbc000" />
 
 	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
 	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC -->
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
+	<!-- <app preloader="Preloader" resizable="true" /> -->
 	<app preloader="flixel.system.FlxPreloader" />
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
-
-	<!-- ______________________ Psych Engine Customization ______________________ -->
+	
+	<!-- ______________________ PSYCH ENGINE CUSTOMIZATION ______________________ -->
 
 	<!-- Compiles mod support for Lumen Engine. Feel free to disable if you're making a source mod -->
 	<define name="MODS_ALLOWED" if="desktop || mobile" />
@@ -27,15 +32,9 @@
 
 	<!-- Enables Discord's Rich Presence integration-->
 	<define name="DISCORD_ALLOWED" if="desktop" unless="hl"/>
-	
-	<!-- Adds a Base game content to your build. Feel free to disable if you're making a source mod. -->
-	<!-- <define name="BASE_GAME_FILES" /> -->
 
 	<!-- Adds support for touchscreen devices (like mobiles)-->
-	<define name="TOUCH_CONTROLS_ALLOWED" if="mobile || web || debug" />
-
-	<!-- Do you want to check for Lumen Engine updates?-->
-	<define name="CHECK_FOR_UPDATES" unless="web"/>
+	<define name="TOUCH_CONTROLS_ALLOWED" if="mobile || web" />
 
 	<!-- Do you want to support playing videos in your build?-->
 	<define name="VIDEOS_ALLOWED" if="desktop || mobile" unless="32bits"/> 
@@ -61,16 +60,20 @@
 	<window if="html5" resizable="true" />
 
 	<!--Desktop-specific-->
-	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
+	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false" allow-shaders="true" require-shaders="true" allow-high-dpi="true" />
+
+	<!--Switch-specific-->
+	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
+
 	<source path="source" />
 	<assets path="assets" />
 
@@ -85,15 +88,16 @@
 	<!-- Assets -->
 	<assets path="assets/fonts" />
 	<assets path="assets/mobile" 		rename="assets/shared/mobile" if="TOUCH_CONTROLS_ALLOWED" />
-	<assets path="assets/shared"        exclude="*.mp3" if="web"/>
+	<assets path="assets/shared"        exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"        exclude="*.mp3" unless="web"/>
-	<assets path="assets/embed"         exclude="*.mp3" if="web" embed="true"/>
+	<assets path="assets/embed"         exclude="*.ogg" if="web" embed="true"/>
 	<assets path="assets/embed"         exclude="*.mp3" unless="web" embed="true"/>
 	<assets path="assets/videos"        if="VIDEOS_ALLOWED"/>
-	<assets path="assets/songs"         exclude="*.mp3" if="web"/>
+	<assets path="assets/songs"         exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/week_assets"   rename="assets" exclude="*.mp3" if="web"/>
+	<assets path="assets/week_assets"   rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/week_assets"   rename="assets" exclude="*.mp3" unless="web"/>
+	
 	<section if="TITLE_SCREEN_EASTER_EGG">
 		<assets path="assets/secrets" rename="assets/shared" exclude="*.ogg" if="web"/>
 		<assets path="assets/secrets" rename="assets/shared" exclude="*.mp3"  unless="web"/>
@@ -104,16 +108,8 @@
 		<assets path="assets/translations" rename="assets" exclude="*.mp3"  unless="web"/>
 	</section>
 
-	<section if="BASE_GAME_FILES">
-		<assets path="assets/base_game/shared/weeks" rename="assets/shared/weeks" embed='true' if="web"/>
-		<assets path="assets/base_game/shared/data" rename="assets/shared/data" embed='true' if="web"/>
-		<assets path="assets/base_game/shared/registry" rename="assets/shared/registry" embed='true' if="web"/>
-		<assets path="assets/base_game" rename="assets" exclude="*.mp3" embed='false' if="web"/>
-		<assets path="assets/base_game" rename="assets" exclude="*.mp3"  unless="web"/>
-	</section>
-
 	<section if="MODS_ALLOWED">
-		<assets path='example_mods' rename='mods' embed='false' />
+		<assets path='mods-content' rename='mods' embed='false' />
 	</section>
 
 	<!-- _______________________________ Libraries ______________________________ -->
@@ -146,7 +142,7 @@
 	<section if="debug">
 		<!--These defines are mostly for testing (aren't required to be used)-->
 		<haxelib name="hxcpp-debug-server" />
-		<haxelib name="flixel-studio" />
+		<!-- <haxelib name="flixel-studio" /> -->
 		<haxedef name="HXVLC_VERBOSE" value="2" />
 		<haxedef name="HXVLC_LOGGING" />
 	</section>
@@ -212,8 +208,4 @@
 	<!-- more verbose HScript-->
 	<define name="IRIS_DEBUG" if="debug"/>
 	<haxedef name="hscriptPos" if="HSCRIPT_ALLOWED"/>
-
-	<!-- _________________________________ Custom _______________________________ -->
-
-	<!--Place custom nodes like icons here-->
 </project>

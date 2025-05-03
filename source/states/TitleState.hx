@@ -198,7 +198,7 @@ class TitleState extends MusicBeatState
 
 		#if HSCRIPT_ALLOWED
 		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/titleScreen.hx');
-		var scriptPath = Paths.getPath('scripts/hxstates/titleScreen.hx', TEXT, null, true);
+		var scriptPath = Paths.getPath('scripts/registry/states/TitleState.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);

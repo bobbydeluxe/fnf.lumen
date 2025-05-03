@@ -9,6 +9,7 @@ import lime.app.Application;
 import states.editors.MasterEditorMenu;
 import options.OptionsState;
 import backend.Song;
+import substates.StickerSubState;
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import psychlua.HScript;
@@ -44,10 +45,16 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 
 	var cancelLoad:Bool = false;
-
-	public function new(isDisplayingRank:Bool = false) {
-		//TODO
+	
+	var stickerSubState:StickerSubState;
+	public function new(?stickers:StickerSubState = null, isDisplayingRank:Bool = false)
+	{
 		super();
+
+		if (stickers != null)
+		{
+			stickerSubState = stickers;
+		}
 	}
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
@@ -91,7 +98,16 @@ class MainMenuState extends MusicBeatState
 	override function create()
 	{
 		Paths.clearUnusedMemory();
-		ModsHelper.clearStoredWithoutStickers();
+
+		if (stickerSubState != null)
+		{
+		  //this.persistentUpdate = true;
+		  //this.persistentDraw = true
+		  openSubState(stickerSubState);
+		  ModsHelper.clearStoredWithoutStickers();
+		  stickerSubState.degenStickers();
+		  FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		}
 		
 		#if MODS_ALLOWED
 		Mods.pushGlobalMods();
@@ -105,7 +121,7 @@ class MainMenuState extends MusicBeatState
 
 		#if HSCRIPT_ALLOWED
 		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/mainMenu.hx');
-		var scriptPath = Paths.getPath('scripts/hxstates/mainMenu.hx', TEXT, null, true);
+		var scriptPath = Paths.getPath('scripts/registry/states/MainMenuState.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);
@@ -174,16 +190,17 @@ class MainMenuState extends MusicBeatState
 		lumenVer.scrollFactor.set();
 		lumenVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(lumenVer);
+		callOnHScript("onLoad",["lumenVerText",lumenVer]);
 		var psychVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
 		psychVer.scrollFactor.set();
 		psychVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(psychVer);
+		callOnHScript("onLoad",["psychVerText",psychVer]);
 		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' v" + funkinVersion, 12);
 		fnfVer.scrollFactor.set();
 		fnfVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(fnfVer);
-
-		//var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' ", 12);
+		callOnHScript("onLoad",["fnfVerText",fnfVer]);
 	
 		changeItem();
 

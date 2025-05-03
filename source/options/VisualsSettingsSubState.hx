@@ -312,6 +312,8 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			Main.fpsVar.visible = ClientPrefs.data.showFPS;
 		if(Main.memoryCounter != null)
 			Main.memoryCounter.visible = ClientPrefs.data.showFPS;
+		if(Main.backgroundBox != null)
+			Main.backgroundBox.visible = ClientPrefs.data.showFPS;
 	}
 
 	#if sys

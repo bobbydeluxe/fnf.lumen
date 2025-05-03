@@ -39,25 +39,17 @@ class CreditsState extends MusicBeatState
 
 		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			['Lumen Contributors'],
-			[
-				'bobbyDX',
-				'bobby',
-				'Created Mint Engine',
-				'https://github.com/bobbydeluxe',
-				'FFFB33' // why tf is the formatting like this
-			],
+			['bobbyDX','bobby','Created Lumen Engine','https://github.com/bobbydeluxe','FFFB33'],
 			['Blantados', 'blantad', 'DD losing icon', 'https://x.com/Blantados', '64b3fe'],
-			[
-				'betopia',
-				'betty',
-				'sillyfont file + gf spritesheet source',
-				'https://betpowo.github.io/',
-				'f52c6f'
-			],
+			['betopia','betty','sillyfont file + gf spritesheet source','https://betpowo.github.io/','f52c6f'],
 			['MrPolo', 'polo', 'IntroVideoState code', 'about:blank', '7a4b37'],
-			["TheWolfLovers", "ace", "added winning icons compatibility", "https://bsky.app/profile/thewolflovers.bsky.social", "fff700"],
+			["TheWolfLovers", "ace", "added winning icons compatibility [from xythe engine]", "https://bsky.app/profile/thewolflovers.bsky.social", "fff700"],
 			['JoaDash', 'joadash', 'BF alt dodge anim', 'https://gamebanana.com/members/1816005', '89aae0'],
 			['GoodieBag', 'goodie', 'Press Enter To Begin text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
+			['Rozebud', 'roze', 'Created the Lil Buddies [from FPS+]', '', 'FFB3D9'],
+			['SadeceNicat', 'sadecenicat', 'Created Hybrid Engine', 'https://github.com/SadeceNicat', '4B8EFF'],
+			['Ledonic', 'ledonic', 'created the change character event fix script', 'https://youtube.com/@ledonic852', '3897FF'],
+			['HollowSoulxs', 'hollow', 'made the lumen engine icon', '', '0xA23FFF'],
 			[""],
 			['P-Slice Engine Team'],
 			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],

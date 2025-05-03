@@ -43,6 +43,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import options.GameplayChangersSubstate;
+import substates.ResetScoreSubState;
 
 using mikolka.funkin.custom.FunkinTools;
 using mikolka.funkin.utils.ArrayTools;
@@ -271,7 +272,7 @@ class FreeplayState extends MusicBeatSubstate
 		super();
 
 		#if HSCRIPT_ALLOWED
-		var scriptPath = PsychPaths.getPath('scripts/hxstates/freeplay.hx', TEXT, null, true);
+		var scriptPath = PsychPaths.getPath('scripts/registry/states/FreeplayState.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);
@@ -1795,13 +1796,27 @@ class FreeplayState extends MusicBeatSubstate
 			uiCam.bgColor = FlxColor.TRANSPARENT;
 			FlxG.cameras.add(uiCam, false);	
 			
-			var sub = new GameplayChangersSubstate();
-			sub.cameras = [uiCam]; // Fix: assign default camera to ensure it renders above
-			openSubState(sub);
+			var gcsub = new GameplayChangersSubstate();
+			gcsub.cameras = [uiCam]; // Fix: assign default camera to ensure it renders above
+			openSubState(gcsub);
 		
 			#if TOUCH_CONTROLS_ALLOWED
 			removeTouchPad();//
 			#end
+		}
+		else if(controls.RESET)
+		{
+			persistentUpdate = false;
+			
+			var uiCam = new FlxCamera();
+			uiCam.bgColor = FlxColor.TRANSPARENT;
+			FlxG.cameras.add(uiCam, false);	
+
+			var resetsub = new ResetScoreSubState(songs[curSelected].songName, diffIdsCurrent.indexOf(currentDifficulty), songs[curSelected].songCharacter);
+			resetsub.cameras = [uiCam]; // Fix: assign default camera to ensure it renders above
+			openSubState(resetsub);
+			
+			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
 		if (controls.BACK && !busy)
 		{
@@ -2324,9 +2339,9 @@ class FreeplayState extends MusicBeatSubstate
 	{
 		var result:MainMenuState;
 		if (params?.fromResults?.playRankAnim)
-			result = new MainMenuState(true);
+			result = new MainMenuState(null, true);
 		else
-			result = new MainMenuState(false);
+			result = new MainMenuState(null, false);
 		result.openSubState(new FreeplayState(params, stickers));
 		result.persistentUpdate = false;
 		result.persistentDraw = true;

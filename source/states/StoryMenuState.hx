@@ -145,7 +145,7 @@ class StoryMenuState extends MusicBeatState
 		#end
 
 		#if HSCRIPT_ALLOWED
-		var defaultScript = Paths.getPath('scripts/hxstates/storyMode/default.hx', TEXT, null, true);
+		var defaultScript = Paths.getPath('scripts/registry/states/StoryMenuState/default.hx', TEXT, null, true);
 		if (FileSystem.exists(defaultScript)) {
 			initHScript(defaultScript);
 			trace('Loaded default HScript: ' + defaultScript);
@@ -178,7 +178,7 @@ class StoryMenuState extends MusicBeatState
 		txtWeekTitle.alpha = 0.7;
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		var bgYellow:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 386, 0xFFF9CF51);
+		var bgYellow:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 386, 0xFFFFFFFF /*formerly 0xFFF9CF51*/);
 		bgSprite = new FlxSprite(0, 56);
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
@@ -603,13 +603,13 @@ class StoryMenuState extends MusicBeatState
 		hscriptArray = [];
 		
 		// Reload default script
-		var defaultScript = Paths.getPath('scripts/hxstates/storyMode/default.hx', TEXT, null, true);
+		var defaultScript = Paths.getPath('scripts/registry/states/StoryMenuState/default.hx', TEXT, null, true);
 		if (FileSystem.exists(defaultScript)) {
 			initHScript(defaultScript);
 		}
 		
 		// Load override if it exists
-		var weekScript = Paths.getPath('scripts/hxstates/storyMode/' + leWeek.fileName + '.hx', TEXT, null, true);
+		var weekScript = Paths.getPath('scripts/registry/states/StoryMenuState/' + leWeek.fileName + '.hx', TEXT, null, true);
 		if (FileSystem.exists(weekScript)) {
 			initHScript(weekScript);
 			trace('Loaded week-specific HScript: ' + weekScript);

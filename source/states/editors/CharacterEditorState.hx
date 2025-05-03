@@ -418,16 +418,16 @@ class CharacterEditorState extends MusicBeatState implements PsychUIEventHandler
 			final _template:CharacterFile =
 			{
 				animations: [
-					newAnim('idle', 'BF idle dance'),
-					newAnim('singLEFT', 'BF NOTE LEFT0'),
-					newAnim('singDOWN', 'BF NOTE DOWN0'),
-					newAnim('singUP', 'BF NOTE UP0'),
-					newAnim('singRIGHT', 'BF NOTE RIGHT0')
+					newAnim('idle', 'bf idle'),
+					newAnim('singLEFT', 'bf left'),
+					newAnim('singDOWN', 'bf down'),
+					newAnim('singUP', 'bf up'),
+					newAnim('singRIGHT', 'bf right')
 				],
 				no_antialiasing: false,
 				flip_x: false,
 				healthicon: 'face',
-				image: 'characters/bf',
+				image: 'characters/bf_assets',
 				sing_duration: 4,
 				scale: 1,
 				healthbar_colors: [161, 161, 161],

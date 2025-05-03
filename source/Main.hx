@@ -14,7 +14,7 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 
-import states.TitleState;
+import states.IntroVideoState;
 
 #if COPYSTATE_ALLOWED
 import states.CopyState;
@@ -37,7 +37,7 @@ class Main extends Sprite
 	var game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
-		initialState: TitleState, // initial game state
+		initialState: IntroVideoState, // initial game state
 		zoom: -1.0, // game state bounds
 		framerate: 60, // default framerate
 		skipSplash: true, // if the default flixel splash screen should be skipped
@@ -46,6 +46,7 @@ class Main extends Sprite
 
 	public static var fpsVar:FPS;
 	public static var memoryCounter:MemoryCounter;
+    public static var backgroundBox:Sprite; // Background box for FPS and memory counters
 	public static final platform:String = #if mobile "Phones" #else "PCs" #end;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
@@ -167,6 +168,32 @@ class Main extends Sprite
 			memoryCounter.visible = ClientPrefs.data.showFPS;
 		}
 		#end
+
+		#if !html5
+		var boxWidth:Float = Math.max(fpsVar.width, memoryCounter.width);
+		var boxHeight:Float = (fpsVar.height + memoryCounter.height);
+		// we use division due to 1/6th being a repeating decimal
+		#else
+		var boxWidth:Float = fpsVar.width;
+		var boxHeight:Float = fpsVar.height;
+		// ive never tinkered with lumen on web so i have no idea if this is correct or not
+		// anyone who wantes to give me a hand with this, please do so via pull request or issue
+		#end
+		backgroundBox = new Sprite();
+		backgroundBox.graphics.beginFill(0x000000, 0.5); // Translucent black
+		backgroundBox.graphics.drawRect(5, 0, boxWidth, boxHeight);
+		backgroundBox.graphics.endFill();
+		#if mobile
+		var layerIndex:Int = Std.int(Math.min(FlxG.game.getChildIndex(fpsVar), FlxG.game.getChildIndex(memoryCounter)));
+		FlxG.game.addChildAt(backgroundBox, layerIndex);
+		#else
+		var layerIndex:Int = Std.int(Math.min(getChildIndex(fpsVar), getChildIndex(memoryCounter)));
+		addChildAt(backgroundBox, layerIndex);
+		#end
+		if (backgroundBox != null)
+		{
+			backgroundBox.visible = ClientPrefs.data.showFPS;
+		}
 
 		
 
