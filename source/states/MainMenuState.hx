@@ -31,13 +31,15 @@ class MainMenuState extends MusicBeatState
 	var menuItemsBack:FlxTypedGroup<FlxSprite>;
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
+	public static var menuItemCenter:Bool = true;
+	public static var menuItemOffset:Float = 0;
+
 	var optionShit:Array<String> = [
 		'story_mode',
 		'freeplay',
 		#if MODS_ALLOWED 'mods', #end
 		#if ACHIEVEMENTS_ALLOWED 'awards', #end
 		'credits',
-		#if !switch 'donate', #end
 		'options'
 	];
 
@@ -120,14 +122,15 @@ class MainMenuState extends MusicBeatState
 		#end
 
 		#if HSCRIPT_ALLOWED
-		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/mainMenu.hx');
-		var scriptPath = Paths.getPath('scripts/registry/states/MainMenuState.hx', TEXT, null, true);
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/mainmenu/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
 
-		if (FileSystem.exists(scriptPath)) {
-		    initHScript(scriptPath);
-		} else {
-		    trace('HScript file not found: ' + scriptPath);
-		}
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
 		#end
 
 
@@ -170,7 +173,7 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
+			var menuItem:FlxSprite = new FlxSprite(menuItemOffset, (i * 140) + offset);
 			menuItem.antialiasing = ClientPrefs.data.antialiasing;
 			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
@@ -183,7 +186,8 @@ class MainMenuState extends MusicBeatState
 				scr = 0;
 			menuItem.scrollFactor.set(0, scr);
 			menuItem.updateHitbox();
-			menuItem.screenCenter(X);
+			if (menuItemCenter == true)
+				menuItem.screenCenter(X);
 		}
 
 		var lumenVer:FlxText = new FlxText(12, FlxG.height - 64, 0, "Lumen Engine (P-Slice " + pSliceVersion + ")", 12);
@@ -421,7 +425,8 @@ class MainMenuState extends MusicBeatState
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 		menuItems.members[curSelected].animation.play('idle');
 		menuItems.members[curSelected].updateHitbox();
-		menuItems.members[curSelected].screenCenter(X);
+		if (menuItemCenter == true)
+			menuItems.members[curSelected].screenCenter(X);
 
 		curSelected += huh;
 
@@ -432,7 +437,8 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.members[curSelected].animation.play('selected');
 		menuItems.members[curSelected].centerOffsets();
-		menuItems.members[curSelected].screenCenter(X);
+		if (menuItemCenter == true)
+			menuItems.members[curSelected].screenCenter(X);
 
 		camFollow.setPosition(menuItems.members[curSelected].getGraphicMidpoint().x,
 			menuItems.members[curSelected].getGraphicMidpoint().y - (menuItems.length > 4 ? menuItems.length * 8 : 0));

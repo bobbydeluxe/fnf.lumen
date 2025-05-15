@@ -47,7 +47,7 @@ class MasterEditorMenu extends MusicBeatState
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.scrollFactor.set();
-		bg.color = 0xFF4CAF50;
+		bg.color = 0xFF5F5FF0;
 		add(bg);
 
 		grpTexts = new FlxTypedGroup<Alphabet>();
@@ -127,8 +127,6 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
 				case 'Character Editor':
 					LoadingState.loadAndSwitchState(new CharacterEditorState(Character.DEFAULT_CHARACTER, false));
-				case 'Stage Editor':
-					LoadingState.loadAndSwitchState(new StageEditorState());
 				case 'Week Editor':
 					MusicBeatState.switchState(new WeekEditorState());
 				case 'Menu Character Editor':
@@ -139,6 +137,8 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
 				case 'Note Splash Editor':
 					MusicBeatState.switchState(new NoteSplashEditorState());
+				case 'Stage Editor':
+					MusicBeatState.switchState(new StageEditorState());
 				case 'Test stickers':
 					MusicBeatState.switchState(new StickerTest());
 				case 'Player editor':
@@ -187,7 +187,8 @@ class MasterEditorMenu extends MusicBeatState
 			scoreData: {
 				score: 1_234_567,
 				accPoints: lol,
-				sick: 199,
+				epic: 100,
+				sick: 99,
 				good: 0,
 				bad: 0,
 				shit: 0,

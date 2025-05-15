@@ -1,7 +1,7 @@
 /* FNF Lumen Engine - Pico Results Recolor
  * by bobbyDX
  * This script modifies the background and rank text of Pico's results screen as he has a blue freeplay card as opposed to BF's yellow one.
- * place this file in `mods/<mod_name>/scripts/registry/ResultState/picoCard.hx`
+ * place this file in `mods/<mod_name>/scripts/registry/results/picoCard.hx`
  * [or `[playerCodename]Card.hx` for any character specific recolor or `main.hx` for a general recolor]
  */
 

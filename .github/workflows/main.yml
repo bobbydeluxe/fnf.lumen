@@ -28,7 +28,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.4
+          haxe-version: 4.3.7
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
@@ -47,7 +47,7 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: linuxBuild
+          name: lumen.linux
           path: 'export/release/linux/bin'
   buildWindows:
     runs-on: windows-latest
@@ -58,7 +58,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.4
+          haxe-version: 4.3.7
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
@@ -76,5 +76,5 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: windowsBuild
+          name: lumen.windows
           path: export/release/windows/bin

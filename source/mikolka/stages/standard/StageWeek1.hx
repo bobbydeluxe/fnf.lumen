@@ -1,10 +1,11 @@
 package mikolka.stages.standard;
 
 import mikolka.compatibility.VsliceOptions;
-#if !LEGACY_PSYCH
-import objects.Character;
-import objects.Note;
-#end
+
+// DCE prevention imports
+import mikolka.stages.objects.TankmenBG;
+import shaders.AdjustColorScreenspace;
+import shaders.AdjustColorShader;
 
 class StageWeek1 extends BaseStage
 {

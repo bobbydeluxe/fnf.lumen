@@ -1,11 +1,7 @@
 package mikolka.funkin;
 
 import mikolka.vslice.results.Tallies.SaveScoreData;
-#if LEGACY_PSYCH
-import Highscore;
-#else
-import backend.Highscore; // making exception for this one: identical in both versions
-#end
+import backend.Highscore;
 /**
  * Which system to use when scoring and judging notes.
  */

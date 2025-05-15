@@ -57,6 +57,7 @@ class FunkinTools
 			bad: 0,
 			good: 0,
 			sick: 0,
+			epic: 0,
 			totalNotes: 0,
 			totalNotesHit: 0,
 			maxCombo: 0

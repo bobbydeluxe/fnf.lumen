@@ -120,14 +120,7 @@ class AttractState extends MusicBeatSubstate
     super.update(elapsed);
 
     // If the user presses any button, skip the video.
-    #if LEGACY_PSYCH
-    if (TouchUtil.justPressed || FlxG.keys.justPressed.ANY && 
-      !FlxG.keys.anyJustPressed(TitleState.muteKeys) && 
-      !FlxG.keys.anyJustPressed(TitleState.volumeDownKeys) && 
-      !FlxG.keys.anyJustPressed(TitleState.volumeUpKeys))
-    #else
     if (TouchUtil.justPressed || FlxG.keys.justPressed.ANY && !controls.justPressed("volume_up") && !controls.justPressed("volume_down") && !controls.justPressed("volume_mute"))
-    #end
     {
       onAttractEnd();
     }
@@ -163,11 +156,7 @@ class AttractState extends MusicBeatSubstate
     }
     else{
       FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
-      #if LEGACY_PSYCH
-      FlxG.switchState(new TitleState());
-      #else
       FlxG.switchState(() -> new states.TitleState());
-      #end
     }
   }
 }

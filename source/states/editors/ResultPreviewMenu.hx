@@ -116,7 +116,8 @@ class ResultPreviewMenu extends MusicBeatState
 			scoreData: {
 				score: 1_234_567,
 				accPoints: lol,
-				sick: 199,
+				epic: 100,
+				sick: 99,
 				good: 0,
 				bad: 0,
 				shit: 0,

@@ -3,7 +3,7 @@
 # REMINDER THAT YOU NEED HAXE INSTALLED PRIOR TO USING THIS
 # https://haxe.org/download
 cd ..
-echo Makking the main haxelib and setuping folder in same time..
+echo Making the main haxelib and setting up folder at the same time...
 mkdir ~/haxelib && haxelib setup ~/haxelib
 echo Installing dependencies...
 echo This might take a few moments depending on your internet speed.

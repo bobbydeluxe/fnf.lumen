@@ -126,7 +126,7 @@ class PauseSubState extends MusicBeatSubstate
 		add(levelDifficulty);
 
 		
-		var ballsTxt = inVid ? '$cutscene_branding Paused' : Language.getPhrase("blueballed", "{1} Blue Balls", [PlayState.deathCounter]);
+		var ballsTxt = inVid ? '$cutscene_branding Paused' : Language.getPhrase("blueballed", "{1} Failed Attempts", [PlayState.deathCounter]);
 		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, ballsTxt , 32);
 		blueballedTxt.scrollFactor.set();
 		blueballedTxt.setFormat(Paths.font('vcr.ttf'), 32);

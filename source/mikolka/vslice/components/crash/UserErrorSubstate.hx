@@ -1,8 +1,6 @@
 package mikolka.vslice.components.crash;
 
-#if !LEGACY_PSYCH
 import states.TitleState;
-#end
 import mikolka.compatibility.ModsHelper;
 import haxe.CallStack.StackItem;
 import flixel.util.typeLimit.OneOfTwo;
@@ -120,15 +118,8 @@ class UserErrorSubstate extends MusicBeatSubstate
                 }
                 TitleState.initialized = false;
                 TitleState.closedState = false;
-                #if LEGACY_PSYCH
-                if (Main.fpsVar != null) Main.fpsVar.visible = ClientPrefs.showFPS;
-                if (Main.memoryCounter != null) Main.memoryCounter.visible = ClientPrefs.showFPS;
-                if (Main.backgroundBox != null) Main.backgroundBox.visible = ClientPrefs.showFPS;
-                #else
                 if (Main.fpsVar != null) Main.fpsVar.visible = ClientPrefs.data.showFPS;
-                if (Main.memoryCounter != null) Main.memoryCounter.visible = ClientPrefs.data.showFPS;
                 if (Main.backgroundBox != null) Main.backgroundBox.visible = ClientPrefs.data.showFPS;
-                #end
                 FlxG.sound.pause();
                 FlxTween.globalManager.clear();
                 FlxG.resetGame();
@@ -209,15 +200,10 @@ class UserErrorSubstate extends MusicBeatSubstate
             errMsg += '\n';
             errMsg += '\nPlease report this error to the GitHub page: https://github.com/bobbydeluxe/fnf.lumen\n\n> Crash Handler written by: sqirra-rng';
     
-            #if !LEGACY_PSYCH
-            @:privateAccess // lazy
-            backend.CrashHandler.saveErrorMessage(errMsg + '\n');
-            #else
             var path = './crash/' + 'LumenEngine_' + dateNow + '.txt';
             File.saveContent(path, errMsg + '\n');
             Sys.println(errMsg);
-            #end
-            Sys.println(errMsg);
+            //Sys.println(errMsg);
         }
     
         var textNextY = 5;

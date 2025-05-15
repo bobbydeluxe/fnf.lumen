@@ -44,7 +44,7 @@ class WeekEditorState extends MusicBeatState implements PsychUIEventHandler.Psyc
 		txtWeekTitle.alpha = 0.7;
 		
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		var bgYellow:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 386, 0xFFF9CF51);
+		var bgYellow:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 386, 0xFFFFFFFF);
 		bgSprite = new FlxSprite(0, 56);
 		bgSprite.antialiasing = ClientPrefs.data.antialiasing;
 

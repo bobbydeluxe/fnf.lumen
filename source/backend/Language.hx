@@ -11,7 +11,7 @@ class Language
 	{
 		#if TRANSLATIONS_ALLOWED
 		var langFile:String = ClientPrefs.data.language;
-		var loadedText:Array<String> = Mods.mergeAllTextsNamed('data/$langFile.lang');
+		var loadedText:Array<String> = Mods.mergeAllTextsNamed('data/locale/$langFile.txt');
 		//trace(loadedText);
 
 		phrases.clear();

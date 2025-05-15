@@ -23,14 +23,14 @@ class LanguageSubState extends MusicBeatSubstate
 
 		languages.push(ClientPrefs.defaultData.language); //English (US)
 		displayLanguages.set(ClientPrefs.defaultData.language, Language.defaultLangName);
-		var directories:Array<String> = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/');
+		var directories:Array<String> = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/locale/');
 		for (directory in directories)
 		{
 			for (file in FileSystem.readDirectory(directory))
 			{
-				if(file.toLowerCase().endsWith('.lang'))
+				if(file.toLowerCase().endsWith('.txt'))
 				{
-					var langFile:String = file.substring(0, file.length - '.lang'.length).trim();
+					var langFile:String = file.substring(0, file.length - '.txt'.length).trim();
 					if(!languages.contains(langFile))
 						languages.push(langFile);
 

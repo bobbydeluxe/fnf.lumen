@@ -270,7 +270,7 @@ class Character extends FlxSprite
 
 		switch(curCharacter)
 		{
-			case 'pico-shoot-week7':
+			case "pico-speaker":
 				if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
 				{
 					var noteData:Int = 1;
@@ -409,7 +409,7 @@ class Character extends FlxSprite
 	{
 		try
 		{
-			var songData:SwagSong = Song.getChart('picospeaker', Paths.formatToSongPath(Song.loadedSongName));
+			var songData:SwagSong = Song.getChart('shooterchart', Paths.formatToSongPath(Song.loadedSongName));
 			if(songData != null)
 				for (section in songData.notes)
 					for (songNotes in section.sectionNotes)

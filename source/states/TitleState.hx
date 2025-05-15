@@ -13,7 +13,6 @@ import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import shaders.ColorSwap;
 import states.StoryMenuState;
-import states.OutdatedState;
 import states.MainMenuState;
 import mikolka.vslice.components.ScreenshotPlugin;
 import mikolka.vslice.AttractState;
@@ -197,14 +196,15 @@ class TitleState extends MusicBeatState
 		Conductor.bpm = musicBPM;
 
 		#if HSCRIPT_ALLOWED
-		//var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/titleScreen.hx');
-		var scriptPath = Paths.getPath('scripts/registry/states/TitleState.hx', TEXT, null, true);
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/titlestate/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
 
-		if (FileSystem.exists(scriptPath)) {
-		    initHScript(scriptPath);
-		} else {
-		    trace('HScript file not found: ' + scriptPath);
-		}
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
 		#end
 
 

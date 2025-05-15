@@ -1,15 +1,8 @@
 package mikolka.editors;
 
 import mikolka.vslice.components.crash.UserErrorSubstate;
-#if LEGACY_PSYCH
-import openfl.events.Event;
-import openfl.events.IOErrorEvent;
-import openfl.net.FileReference;
-import editors.MasterEditorMenu;
-#else
 import states.editors.content.FileDialogHandler;
 import states.editors.MasterEditorMenu;
-#end
 
 import mikolka.compatibility.FunkinControls;
 import mikolka.editors.editorProps.CharJson;
@@ -34,9 +27,7 @@ using mikolka.funkin.custom.FunkinTools;
 class CharSelectEditor extends MusicBeatState
 {
 	var activePlayer:PlayableCharacter;
-	#if !LEGACY_PSYCH
 	var fileDialog = new FileDialogHandler();
-	#end
 	
 	var playerId:String;
 
@@ -139,11 +130,7 @@ class CharSelectEditor extends MusicBeatState
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				FlxG.mouse.visible = false;
 				persistentUpdate = false;
-				#if LEGACY_PSYCH
-				MusicBeatState.switchState(new MasterEditorMenu());
-				#else
 				MusicBeatState.startTransition(new MasterEditorMenu());
-				#end
 			}
 			else if(#if TOUCH_CONTROLS_ALLOWED touchPad.buttonF.justPressed || #end FlxG.keys.justPressed.F1){
 				persistentUpdate = false;
@@ -279,11 +266,7 @@ class CharSelectEditor extends MusicBeatState
 
 		btn_reload = new PsychUIButton(150, 20, "Reload", () ->
 		{
-			#if LEGACY_PSYCH
-			MusicBeatState.switchState(new CharSelectEditor(input_playerId.text));
-			#else
 			MusicBeatState.startTransition(new CharSelectEditor(input_playerId.text));
-			#end
 		});
 
 		input_playerName = new PsychUIInputText(20, 60, 100, activePlayer._data.name);
@@ -392,10 +375,6 @@ class CharSelectEditor extends MusicBeatState
 		var charData = CharJson.saveCharacter(activePlayer);
 		#if mobile
 		StorageUtil.saveContent('${playerId}.json', charData);
-		#elseif LEGACY_PSYCH
-			var file = new FileReference();
-			file.addEventListener(IOErrorEvent.IO_ERROR, function(x) openSubState(new UserErrorSubstate('Error on saving character!',"")));
-			file.save(charData, '${playerId}.json');
 		#else
 		fileDialog.save('${playerId}.json', charData, null, null, function() openSubState(new UserErrorSubstate('Error on saving character!','')));
 		#end

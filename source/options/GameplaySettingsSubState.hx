@@ -80,14 +80,14 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 30;
 		addOption(option);
 
-		var option:Option = new Option('Sick! Hit Window',
-			'Changes the amount of time you have\nfor hitting a "Sick!" in milliseconds.',
-			'sickWindow',
+		var option:Option = new Option('Epic! Hit Window',
+			'Changes the amount of time you have\nfor hitting a "Epic!" in milliseconds.',
+			'epicWindow',
 			INT);
 		option.displayFormat = '%vms';
 		option.scrollSpeed = 15;
 		option.minValue = 15;
-		option.maxValue = 45;
+		option.maxValue = 22;
 		addOption(option);
 
 		var option:Option = new Option('Good Hit Window',

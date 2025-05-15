@@ -1,6 +1,6 @@
 /* FNF Lumen Engine - Title Screen Recreation
  * by bobbyDX
- * place this file in `mods/<mod_name>/scripts/registry/states/TitleState.hx`
+ * place this file in `mods/<mod_name>/scripts/states/titlestate/` as a `.hx` file
  */
 
 // === GLOBALS ===

@@ -1,7 +1,6 @@
 package;
 
-import openfl.display.FPS;
-import mikolka.vslice.components.MemoryCounter;
+import backend.FPSCounter;
 import mikolka.GameBorder;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
@@ -14,11 +13,7 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 
-#if windows
 import states.IntroVideoState;
-#else
-import states.TitleState;
-#end
 
 #if COPYSTATE_ALLOWED
 import states.CopyState;
@@ -41,16 +36,15 @@ class Main extends Sprite
 	var game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
-		initialState: #if windows IntroVideoState #else TitleState #end, // initial state to start the game with
+		initialState: IntroVideoState, // initial state to load
 		zoom: -1.0, // game state bounds
 		framerate: 60, // default framerate
 		skipSplash: true, // if the default flixel splash screen should be skipped
 		startFullscreen: false // if the game should start at fullscreen mode
 	};
 
-	public static var fpsVar:FPS;
-	public static var memoryCounter:MemoryCounter;
-    public static var backgroundBox:Sprite; // Background box for FPS and memory counters
+	public static var fpsVar:FPSCounter;
+	public static var backgroundBox:Sprite;
 	public static final platform:String = #if mobile "Phones" #else "PCs" #end;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
@@ -143,7 +137,7 @@ class Main extends Sprite
 
 		addChild(gameObject);
 
-		fpsVar = new FPS(10, 3, 0xFFFFFF);
+		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
 		#if mobile
 		FlxG.game.addChild(fpsVar);
 	  	#else
@@ -159,50 +153,21 @@ class Main extends Sprite
 			fpsVar.visible = ClientPrefs.data.showFPS;
 		}
 
-		#if !html5
-		// TODO: disabled on HTML5 (todo: find another method that works?)
-		memoryCounter = new MemoryCounter(10, 13, 0xFFFFFF);
-		#if mobile
-		FlxG.game.addChild(memoryCounter);
-	  	#else
-		addChild(memoryCounter);
-		#end
-		if (memoryCounter != null)
-		{
-			memoryCounter.visible = ClientPrefs.data.showFPS;
-		}
-		#end
-
-		#if !html5
-		var boxWidth:Float = Math.max(fpsVar.width, memoryCounter.width) * 0.35;
-		var boxHeight:Float = (fpsVar.height + memoryCounter.height) * (1 / 6);
-		#else
-		var boxWidth:Float = fpsVar.width;
-		var boxHeight:Float = fpsVar.height;
-		// ive never tinkered with lumen on html5 so idk if this is correct or not
-		// if anyone wants to help, please do so via pull request or something
-		#end
 		backgroundBox = new Sprite();
 		backgroundBox.graphics.beginFill(0x000000, 0.5); // Translucent black
-		backgroundBox.graphics.drawRect(5, 0, boxWidth, boxHeight);
+		backgroundBox.graphics.drawRect(5, 0, fpsVar.width * 5.25, fpsVar.height * 1.15);
 		backgroundBox.graphics.endFill();
 		#if mobile
-		var layerIndex:Int = Std.int(Math.min(FlxG.game.getChildIndex(fpsVar), FlxG.game.getChildIndex(memoryCounter)));
+		var layerIndex:Int = Std.int(FlxG.game.getChildIndex(fpsVar));
 		FlxG.game.addChildAt(backgroundBox, layerIndex);
 		#else
-		var layerIndex:Int = Std.int(Math.min(getChildIndex(fpsVar), getChildIndex(memoryCounter)));
+		var layerIndex:Int = Std.int(getChildIndex(fpsVar));
 		addChildAt(backgroundBox, layerIndex);
 		#end
 		if (backgroundBox != null)
 		{
 			backgroundBox.visible = ClientPrefs.data.showFPS;
 		}
-
-		
-
-		// #if debug
-		// flixel.addons.studio.FlxStudio.create();
-		// #end
 
 		#if html5
 		FlxG.autoPause = false;

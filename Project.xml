@@ -5,7 +5,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' | Lumen Engine" file="LumenEngine" packageName="com.bobbydx.fnflumen" package="com.bobbydx.fnflumen" main="Main" version="0.0.1" company="bobbyDX" />
+	<app title="Friday Night Funkin' | Lumen Engine" file="LumenEngine" packageName="com.bobbydx.funkindotlumen" package="com.bobbydx.funkindotlumen" main="Main" version="0.0.1" company="bobbyDX" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -81,8 +81,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 
 	<!--FNF is changing openAL config, because the default one is broken. lol. -->
 	<section if="desktop">
-		<assets path="alsoft.txt" rename="plugins/alsoft.ini" type="text" if="windows"/>
-		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
+		<assets path="setup/alsoft.txt" rename="plugins/alsoft.ini" type="text" if="windows"/>
+		<assets path="setup/alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
 	</section>
 
 	<!-- Assets -->
@@ -104,12 +104,12 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	</section>
 
 	<section if="TRANSLATIONS_ALLOWED">
-		<assets path="assets/translations" rename="assets" exclude="*.ogg" if="web"/>
-		<assets path="assets/translations" rename="assets" exclude="*.mp3"  unless="web"/>
+		<assets path="assets/locale/shared" rename="assets/shared" exclude="*.ogg" if="web"/>
+		<assets path="assets/locale/shared" rename="assets/shared" exclude="*.mp3"  unless="web"/>
 	</section>
 
 	<section if="MODS_ALLOWED">
-		<assets path='mods-content' rename='mods' embed='false' />
+		<assets path='mods'/>
 	</section>
 
 	<!-- _______________________________ Libraries ______________________________ -->
@@ -195,9 +195,6 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<!-- Haxe 4.3.0+: Enable pretty syntax errors and stuff. -->
 	<!-- pretty (haxeflixel default), indent, classic (haxe compiler default) -->
 	<haxedef name="message.reporting" value="pretty" />
-
-	<!-- Do whatever you want I'm tired uninstall and install everytime -->
-	<certificate path="key.keystore" password="pslice" alias="psliceport" alias-password="pslice" if="android" unless="debug" />
 
 	<!--Macro fixes-->
 	<haxeflag name="--macro" value="allowPackage('flash')" />

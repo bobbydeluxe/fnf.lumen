@@ -196,6 +196,8 @@ class FreeplayState extends MusicBeatSubstate
 
 	var stickerSubState:Null<StickerSubState> = null;
 
+	var randomSelected:Bool = false; // used to prevent crashing when resetting score on random
+
 	/**
 	 * The difficulty we were on when this menu was last accessed.
 	 */
@@ -272,13 +274,15 @@ class FreeplayState extends MusicBeatSubstate
 		super();
 
 		#if HSCRIPT_ALLOWED
-		var scriptPath = PsychPaths.getPath('scripts/registry/states/FreeplayState.hx', TEXT, null, true);
+		for (folder in Mods.directoriesWithFile(PsychPaths.getSharedPath(), 'scripts/states/freeplay/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
 
-		if (FileSystem.exists(scriptPath)) {
-		    initHScript(scriptPath);
-		} else {
-		    trace('HScript file not found: ' + scriptPath);
-		}
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
 		#end
 
 		var saveBox = VsliceOptions.LAST_MOD;
@@ -1804,7 +1808,7 @@ class FreeplayState extends MusicBeatSubstate
 			removeTouchPad();//
 			#end
 		}
-		else if(controls.RESET)
+		else if(controls.RESET && randomSelected == false)
 		{
 			persistentUpdate = false;
 			
@@ -2297,6 +2301,7 @@ class FreeplayState extends MusicBeatSubstate
 				overrideExisting: true,
 				restartTrack: false
 			});
+			randomSelected = true;
 			FlxG.sound.music.fadeIn(2, 0, 0.8);
 		}
 		else
@@ -2328,6 +2333,7 @@ class FreeplayState extends MusicBeatSubstate
 					FreeplayHelpers.BPM = newBPM; // ? reimplementing
 				}
 			});
+			randomSelected = false;
 		}
 	}
 

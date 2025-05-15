@@ -1914,55 +1914,23 @@ class PlayState extends MusicBeatState
 
 	// Health icon updaters
 	public dynamic function updateIconsScale(elapsed:Float)
-		{
-			// icon bop from henry's wrath, an fnf mod i worked on. this bop style is now in lumen - bobbydx
+	{
+		var PHI = (1 + Math.pow(5, 0.5)) / 2;
+
+		var customExponential = Math.pow(PHI + 1.5, -elapsed * 9 * playbackRate);
+
+		var cubicEase = Math.pow(1 - (elapsed * 9 * playbackRate), 3);
+
+		var iconBopEasing = FlxMath.lerp(customExponential, cubicEase, 0.25);
+
+		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, iconBopEasing);
+		iconP1.scale.set(mult, mult);
+		iconP1.updateHitbox();
 	
-			// Calculate the duration of 4 beats
-			var beatDuration:Float = Conductor.stepCrochet / 1000; // Duration of one beat in seconds
-			var totalDuration:Float = beatDuration * 4; // Duration of 4 beats
-		
-			// Normalize elapsed time to a range (0 to 1) over 4 beats
-			var normalizedTime:Float = FlxMath.bound(elapsed / totalDuration, 0, 1);
-		
-			// Custom easing map: blend of Psych Engine easing and Henry's Wrath easing
-			var easeFactor:Float = blendedIconEasing(normalizedTime, elapsed);
-		
-			// Use the easing factor to interpolate the scale for iconP1
-			var mult:Float = FlxMath.lerp(1, iconP1.scale.x, easeFactor);
-			iconP1.scale.set(mult, mult);
-			iconP1.updateHitbox();
-		
-			// Use the easing factor to interpolate the scale for iconP2
-			mult = FlxMath.lerp(1, iconP2.scale.x, easeFactor);
-			iconP2.scale.set(mult, mult);
-			iconP2.updateHitbox();
-		}
-		
-		// Blended easing function for Henry Type Icon Bop v2
-		private function blendedIconEasing(t:Float, elapsed:Float):Float
-		{
-			// Psych Engine easing: exponential decay
-			var psychEase:Float = Math.exp(-elapsed * 9 * playbackRate);
-		
-			// Henry's Wrath easing: hybrid of exponential decay and stretched quartOut
-			var henryEase:Float = customIconEasing(t);
-		
-			// Blend the two easing types with a bias toward Henry's Wrath for a smoother tail
-			return FlxMath.lerp(psychEase, henryEase, 0.52); // Adjust blending weight for desired effect
-		}
-		
-		// Custom easing function for Henry's Wrath easing
-		private function customIconEasing(t:Float):Float
-		{
-			// Exponential decay for the initial drop-off
-			var expoDecay:Float = Math.exp(-t * 6); // Adjust the multiplier for a slower decay
-		
-			// Stretched quartOut easing for the long tail
-			var quartOut:Float = 1 - Math.pow(1 - t, 4); // Classic quartOut easing
-		
-			// Blend the two easing types with a bias toward quartOut for a smoother tail
-			return FlxMath.lerp(expoDecay, quartOut, t * 0.8); // Adjust blending weight for a satisfying transition
-		}
+		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, iconBopEasing);
+		iconP2.scale.set(mult, mult);
+		iconP2.updateHitbox();
+	}
 
 	public dynamic function updateIconsPosition()
 	{
@@ -2618,10 +2586,11 @@ class PlayState extends MusicBeatState
           		score: songScore,
 		  		accPoints: accPts,
 				
-				sick: ratingsData[0].hits,
-				good: ratingsData[1].hits,
-				bad: ratingsData[2].hits,
-				shit: ratingsData[3].hits,
+				epic: ratingsData[0].hits,
+				sick: ratingsData[1].hits,
+				good: ratingsData[2].hits,
+				bad: ratingsData[3].hits,
+				shit: ratingsData[4].hits,
           		missed: songMisses,
           		combo: combo,
             	maxCombo: maxCombo,

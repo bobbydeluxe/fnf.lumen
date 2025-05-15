@@ -1,10 +1,8 @@
---[[
-This script fixes the issue where the Change Character event does not hide previous characters with shaders applied.
-To use this script in a song, don't run it globally. Instead call it in the song-specific script `onCreate` function.
-Do so by using `addLuaScript("changeCharShaderFix")`.
-]]
+-- SCRIPT CREATED BY LEDONIC [github.com/ledonic852], CREDIT HIM IF YOU USE THIS IN A NON-LUMEN MOD --
+-- to use this script, do not make it a global script, instead add this song script via lua --
+-- so you put `addLuaScript('data/changeCharShaderFix')` in a song specific script--
 
--- SCRIPT BY LEDONIC, CREDIT HIM IF YOU USE THIS IN A NON-LUMEN MOD
+-- this is for helping with issues with the change character event with shaders on the characters --
 
 local characterEventTiming = {}
 function onCreate()

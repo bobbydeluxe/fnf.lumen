@@ -145,14 +145,15 @@ class StoryMenuState extends MusicBeatState
 		#end
 
 		#if HSCRIPT_ALLOWED
-		var defaultScript = Paths.getPath('scripts/registry/states/StoryMenuState/default.hx', TEXT, null, true);
-		if (FileSystem.exists(defaultScript)) {
-			initHScript(defaultScript);
-			trace('Loaded default HScript: ' + defaultScript);
-		}
-		else {
-			trace('Default HScript not found: ' + defaultScript);
-		}		
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/storymenu/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
+
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
 		#end
 
 		final accept:String = controls.mobileC ? "A" : "ACCEPT";
@@ -587,34 +588,14 @@ class StoryMenuState extends MusicBeatState
 			curDifficulty = 0;
 
 		var newPos:Int = Difficulty.list.indexOf(lastDifficultyName);
-		//trace('Pos of ' + lastDifficultyName + ' is ' + newPos);
 		if(newPos > -1)
 		{
 			curDifficulty = newPos;
 		}
+
+		callOnHScript("onChangeWeek",[leWeek.fileName]);
+
 		updateText();
-		callOnHScript("onChangeWeek",[curWeek,leWeek,curDifficulty]);
-		callOnHScript("onChangeDifficulty",[sprDifficulty,curDifficulty]);
-		#if HSCRIPT_ALLOWED
-		// Clear existing HScript interpreters
-		for (script in hscriptArray) {
-			if (script != null) script.destroy();
-		}
-		hscriptArray = [];
-		
-		// Reload default script
-		var defaultScript = Paths.getPath('scripts/registry/states/StoryMenuState/default.hx', TEXT, null, true);
-		if (FileSystem.exists(defaultScript)) {
-			initHScript(defaultScript);
-		}
-		
-		// Load override if it exists
-		var weekScript = Paths.getPath('scripts/registry/states/StoryMenuState/' + leWeek.fileName + '.hx', TEXT, null, true);
-		if (FileSystem.exists(weekScript)) {
-			initHScript(weekScript);
-			trace('Loaded week-specific HScript: ' + weekScript);
-		}
-		#end
 	}
 
 	function weekIsLocked(name:String):Bool {

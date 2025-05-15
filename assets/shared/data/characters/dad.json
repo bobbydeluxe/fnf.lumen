@@ -75,7 +75,7 @@
 	],
 	"vocals_file": "",
 	"no_antialiasing": false,
-	"image": "characters/dad",
+	"image": "characters/dad/daddyDearest",
 	"position": [0, 0],
 	"healthicon": "dad",
 	"flip_x": false,

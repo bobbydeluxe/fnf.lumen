@@ -3,9 +3,6 @@ package mikolka.vslice.components.crash;
 import mikolka.compatibility.VsliceOptions;
 import mikolka.compatibility.ModsHelper;
 import flixel.FlxState;
-#if !LEGACY_PSYCH
-import states.TitleState;
-#end
 import openfl.events.ErrorEvent;
 import openfl.display.BitmapData;
 // crash handler stuff
@@ -32,8 +29,6 @@ class CrashState extends FlxState
 	{
 		if (Main.fpsVar != null)
 			Main.fpsVar.visible = false;
-		if (Main.memoryCounter != null)
-			Main.memoryCounter.visible = false;
 		if (Main.backgroundBox != null)
 			Main.backgroundBox.visible = false;
 		super.create();
