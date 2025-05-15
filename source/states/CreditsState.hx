@@ -42,7 +42,6 @@ class CreditsState extends MusicBeatState
 			['bobbyDX','bobby','Created Lumen Engine','https://github.com/bobbydeluxe','FFFB33'],
 			['Blantados', 'blantad', 'DD losing icon', 'https://x.com/Blantados', '64b3fe'],
 			['betopia','betty','sillyfont file + gf spritesheet source','https://betpowo.github.io/','f52c6f'],
-			['MrPolo', 'polo', 'IntroVideoState code', 'about:blank', '7a4b37'],
 			["TheWolfLovers", "ace", "added winning icons compatibility [from xythe engine]", "https://bsky.app/profile/thewolflovers.bsky.social", "fff700"],
 			['jarekboho', 'jarek', 'lil buddies psych port', 'https://gamebanana.com/members/2145650', '72ac8a'],
 			['GoodieBag', 'goodie', 'Press Enter To Begin text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
