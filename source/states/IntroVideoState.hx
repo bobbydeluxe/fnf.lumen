@@ -4,7 +4,7 @@ package states;
 // modified by bobbyDX [me] for linux support using hxCodec
 
 #if linux
-import hxCodec.flixel.FlxVideoSprite;
+import hxcodec.flixel.FlxVideoSprite;
 #else
 import hxvlc.flixel.FlxVideoSprite;
 #end
