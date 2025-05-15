@@ -59,7 +59,7 @@ class IntroState extends MusicBeatState {
         super.create();
 
         #if HSCRIPT_ALLOWED
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/intro/' + currentState + '/'))
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/intro/'))
 			for (file in FileSystem.readDirectory(folder))
 			{
 
