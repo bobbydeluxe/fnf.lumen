@@ -13,8 +13,7 @@ import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
 
-import states.IntroVideoState;
-import states.TitleState;
+import states.IntroState;
 
 #if COPYSTATE_ALLOWED
 import states.CopyState;
@@ -37,7 +36,7 @@ class Main extends Sprite
 	var game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
-		initialState: #if linux IntroVideoState, #else TitleState, #end
+		initialState: IntroState, // the initial state the game starts with
 		zoom: -1.0, // game state bounds
 		framerate: 60, // default framerate
 		skipSplash: true, // if the default flixel splash screen should be skipped
