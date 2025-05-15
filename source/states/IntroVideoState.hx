@@ -1,7 +1,8 @@
 package states;
 
 // code by polo and anas [from the psych engine discord server]
-// modified by bobbyDX [me] for linux support using hxCodec
+
+// SOMEONE HELP WITH LINUX SUPPORT PLEASE
 
 #if linux
 import hxcodec.flixel.FlxVideoSprite;
