@@ -57,7 +57,18 @@ class IntroState extends MusicBeatState {
     override public function create():Void
     {
         super.create();
-        callOnHScript("onCreate", []);
+
+        #if HSCRIPT_ALLOWED
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/intro/' + currentState + '/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
+
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
+		#end
 
         if (customIntro == false)
         {

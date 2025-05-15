@@ -47,6 +47,9 @@ class TitleState extends MusicBeatState
 
 	public static var initialized:Bool = false;
 
+	public static var titleEasterEgg:Bool = true;
+	public static var jingleEasterEgg:Bool = true;
+
 	var enterTimer:FlxTimer;
 
 	var credGroup:FlxGroup = new FlxGroup();
@@ -192,7 +195,10 @@ class TitleState extends MusicBeatState
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
 		loadJsonData();
-		#if TITLE_SCREEN_EASTER_EGG easterEggData(); #end
+		#if TITLE_SCREEN_EASTER_EGG
+		if (titleEasterEgg) 
+			easterEggData();
+		#end
 		Conductor.bpm = musicBPM;
 
 		#if HSCRIPT_ALLOWED
@@ -525,7 +531,7 @@ class TitleState extends MusicBeatState
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 			}
 			#if TITLE_SCREEN_EASTER_EGG
-			else if (FlxG.keys.firstJustPressed() != FlxKey.NONE)
+			else if (FlxG.keys.firstJustPressed() != FlxKey.NONE && titleEasterEgg == true)
 			{
 				var keyPressed:FlxKey = FlxG.keys.firstJustPressed();
 				var keyName:String = Std.string(keyPressed);
@@ -734,7 +740,7 @@ class TitleState extends MusicBeatState
 				FlxG.sound.music.onComplete = moveToAttract;
 			#end
 			#if TITLE_SCREEN_EASTER_EGG
-			if (playJingle) // Ignore deez
+			if (playJingle && titleEasterEgg) // Ignore deez
 			{
 				playJingle = false;
 				var easteregg:String = FlxG.save.data.psychDevsEasterEgg;
@@ -805,9 +811,12 @@ class TitleState extends MusicBeatState
 					easteregg = '';
 				easteregg = easteregg.toUpperCase();
 				#if TITLE_SCREEN_EASTER_EGG
-				if (easteregg == 'SHADOW')
+				if (titleEasterEgg)
 				{
-					FlxG.sound.music.fadeOut();
+					if (easteregg == 'SHADOW')
+					{
+						FlxG.sound.music.fadeOut();
+					}
 				}
 				#end
 			}
@@ -840,7 +849,7 @@ class TitleState extends MusicBeatState
 		if (input == cheatArray[curCheatPos])
 		{
 			curCheatPos += 1;
-			if (curCheatPos >= cheatArray.length)
+			if (curCheatPos >= cheatArray.length && jingleEasterEgg)
 				startCheat();
 		}
 		else
