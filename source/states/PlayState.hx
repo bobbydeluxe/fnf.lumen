@@ -62,6 +62,8 @@ import psychlua.HScript;
 import crowplexus.iris.Iris;
 #end
 
+import misc.CustomMainMenuConfig;
+
 /**
  * This is where all the Gameplay stuff happens and is managed
  *
@@ -2751,7 +2753,15 @@ class PlayState extends MusicBeatState
 				openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
 			}
 			else {
-				openSubState(new StickerSubState(null, (sticker) -> new MainMenuState(sticker)));
+				if (CustomMainMenuConfig.isScratchMenu == true)
+				{
+					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+					openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+				}
+				else
+				{
+					openSubState(new StickerSubState(null, (sticker) -> new MainMenuState(sticker)));
+				}
 			}
 			return;
 		}

@@ -11,6 +11,8 @@ import mikolka.vslice.results.ResultState;
 import objects.Character;
 import states.MainMenuState;
 
+import misc.CustomMainMenuConfig;
+
 class MasterEditorMenu extends MusicBeatState
 {
 	var options:Array<String> = [
@@ -116,7 +118,15 @@ class MasterEditorMenu extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			MusicBeatState.switchState(new MainMenuState());
+			if (CustomMainMenuConfig.isScratchMenu == true)
+				{
+					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+					MusicBeatState.switchState(new CustomState());
+				}
+				else
+				{
+					MusicBeatState.switchState(new MainMenuState());
+				}
 		}
 
 		if (controls.ACCEPT)

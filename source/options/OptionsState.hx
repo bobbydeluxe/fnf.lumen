@@ -8,6 +8,9 @@ import sys.thread.Mutex;
 import sys.thread.Thread;
 #end
 
+import misc.CustomMainMenuConfig;
+import states.CustomState;
+
 class OptionsState extends MusicBeatState
 {
 	var options:Array<String> = [
@@ -183,7 +186,16 @@ class OptionsState extends MusicBeatState
 				FlxG.sound.music.volume = 0;
 			}
 			else{
-				MusicBeatState.switchState(new MainMenuState());
+
+				if (CustomMainMenuConfig.isScratchMenu == true)
+				{
+					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+					MusicBeatState.switchState(new CustomState());
+				}
+				else
+				{
+					MusicBeatState.switchState(new MainMenuState());
+				}
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 		}

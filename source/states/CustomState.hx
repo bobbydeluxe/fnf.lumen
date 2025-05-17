@@ -8,6 +8,9 @@ import backend.Highscore;
 import options.OptionsState;
 import mikolka.vslice.freeplay.FreeplayState;
 import states.PlayState;
+import misc.CustomMainMenuConfig;
+import substates.StickerSubState;
+import mikolka.compatibility.ModsHelper;
 
 // This code is from Hybrid Engine, it was too good I added it to Lumen Engine
 // Credits to SadeceNicat for the Hybrid Engine code
@@ -15,8 +18,6 @@ import states.PlayState;
 class CustomState extends MusicBeatState {
 
     var currentState = FlxG.save.data.currentState;
-
-    var isScriptFinded:Bool = false;
     
 	#if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
@@ -25,6 +26,17 @@ class CustomState extends MusicBeatState {
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	private var luaDebugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
 	#end
+
+	var stickerSubState:StickerSubState;
+	public function new(?stickers:StickerSubState = null, isDisplayingRank:Bool = false)
+	{
+		super();
+
+		if (stickers != null)
+		{
+			stickerSubState = stickers;
+		}
+	}
 
     public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
 		#if HSCRIPT_ALLOWED
@@ -64,6 +76,19 @@ class CustomState extends MusicBeatState {
 	#end
 
     override function create() {
+
+		Paths.clearUnusedMemory();
+
+		if (stickerSubState != null)
+		{
+		  //this.persistentUpdate = true;
+		  //this.persistentDraw = true
+		  openSubState(stickerSubState);
+		  ModsHelper.clearStoredWithoutStickers();
+		  stickerSubState.degenStickers();
+		  //FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		}
+
         super.create();
 
         if (currentState == null) {
@@ -84,14 +109,9 @@ class CustomState extends MusicBeatState {
     }
 
     override function update(elapsed:Float) {
+		callOnHScript("onUpdate", [elapsed]);
         super.update(elapsed);
-
-        if (isScriptFinded == false) {
-            if (controls.BACK)
-            {
-                triggerEvent("ChangeState","mainmenu");
-            }
-        }
+		callOnHScript("onUpdatePost", [elapsed]);
     }
 
     function triggerEvent(eventName:String,eventValue:Dynamic = 1,eventValue2:Dynamic = 1, songStoryMode:Bool = false)
@@ -99,15 +119,27 @@ class CustomState extends MusicBeatState {
 		switch (eventName) {
 			case "ChangeState" :
 				if (eventValue == "storymode") {
+					FlxTransitionableState.skipNextTransIn = false;
+					FlxTransitionableState.skipNextTransOut = false;
+
 					MusicBeatState.switchState(new StoryMenuState());
 				}
 				else if (eventValue == "freeplay") {
-					MusicBeatState.switchState(new FreeplayState());
+					FlxTransitionableState.skipNextTransIn = true;
+					FlxTransitionableState.skipNextTransOut = true;
+
+					openSubState(new FreeplayState());
 				}
 				else if (eventValue == "credits") {
+					FlxTransitionableState.skipNextTransIn = false;
+					FlxTransitionableState.skipNextTransOut = false;
+
 					MusicBeatState.switchState(new CreditsState());
 				}
 				else if (eventValue == "options") {
+					FlxTransitionableState.skipNextTransIn = false;
+					FlxTransitionableState.skipNextTransOut = false;
+
 					MusicBeatState.switchState(new OptionsState());
 					OptionsState.onPlayState = false;
 					if (PlayState.SONG != null)
@@ -118,16 +150,53 @@ class CustomState extends MusicBeatState {
 					}
 				}
 				else if (eventValue == "awards") {
+					FlxTransitionableState.skipNextTransIn = false;
+					FlxTransitionableState.skipNextTransOut = false;
+
 					MusicBeatState.switchState(new AchievementsMenuState());
 				}
 				else if (eventValue == "mods") {
+					FlxTransitionableState.skipNextTransIn = false;
+					FlxTransitionableState.skipNextTransOut = false;
+
 					MusicBeatState.switchState(new ModsMenuState());
 				}
 				else if (eventValue == "mainmenu") {
-					MusicBeatState.switchState(new MainMenuState());
-				} else {
+					FlxTransitionableState.skipNextTransIn = false;
+					FlxTransitionableState.skipNextTransOut = false;
+
+					if (CustomMainMenuConfig.isScratchMenu == true)
+						{
+							FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+							MusicBeatState.switchState(new CustomState());
+						}
+						else
+						{
+							MusicBeatState.switchState(new MainMenuState());
+						}
+				}
+				else if (eventValue == "titlescreen") {
+					FlxTransitionableState.skipNextTransIn = false;
+					FlxTransitionableState.skipNextTransOut = false;
+					
+					MusicBeatState.switchState(new TitleState());
+				}
+				else {
 					FlxG.save.data.currentState = eventValue;
-					MusicBeatState.switchState(new CustomState());
+					if (eventValue2 == 1) {
+						eventValue2 = false;
+					}
+					FlxTransitionableState.skipNextTransIn = eventValue2;
+					FlxTransitionableState.skipNextTransOut = eventValue2;
+
+					if (songStoryMode)
+					{
+						openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+					}
+					else
+					{
+						MusicBeatState.switchState(new CustomState());
+					}
 				}
 			case "LoadSong" :
 				var songLowercase:String = Paths.formatToSongPath(eventValue);

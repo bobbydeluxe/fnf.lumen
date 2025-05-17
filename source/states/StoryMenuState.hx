@@ -22,6 +22,8 @@ import psychlua.HScript;
 
 import backend.StageData;
 
+import misc.CustomMainMenuConfig;
+
 class StoryMenuState extends MusicBeatState
 {
 	public static var weekCompleted:Map<String, Bool> = new Map<String, Bool>();
@@ -165,7 +167,7 @@ class StoryMenuState extends MusicBeatState
 			persistentUpdate = false;
 			MusicBeatState.switchState(new states.ErrorState("NO LEVELS ADDED FOR STORY MODE\n\nPress " + accept + " to go to the Week Editor Menu.\nPress " + reject + " to return to Main Menu.",
 				function() MusicBeatState.switchState(new states.editors.WeekEditorState()),
-				function() MusicBeatState.switchState(new states.MainMenuState())));
+				function() MusicBeatState.switchState(CustomMainMenuConfig.isScratchMenu ? new CustomState() : new MainMenuState())));
 			return;
 		}
 
@@ -334,7 +336,15 @@ class StoryMenuState extends MusicBeatState
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				movedBack = true;
-				MusicBeatState.switchState(new MainMenuState());
+				if (CustomMainMenuConfig.isScratchMenu == true)
+					{
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+						MusicBeatState.switchState(new CustomState());
+					}
+					else
+					{
+						MusicBeatState.switchState(new MainMenuState());
+					}
 			}
 			super.update(elapsed);
 			return;
@@ -418,7 +428,15 @@ class StoryMenuState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			callOnHScript("onExitMenu",[]);
 			movedBack = true;
-			MusicBeatState.switchState(new MainMenuState());
+			if (CustomMainMenuConfig.isScratchMenu == true)
+				{
+					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+					MusicBeatState.switchState(new CustomState());
+				}
+				else
+				{
+					MusicBeatState.switchState(new MainMenuState());
+				}
 		}
 
 		super.update(elapsed);

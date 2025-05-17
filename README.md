@@ -1,6 +1,4 @@
-# lumen engine [fnf]
-
-this fork has no lemons in it
+helloe we quasiluminary engine lol
 
 credits to mikolka for making [p-slice](https://github.com/Psych-Slice/P-Slice) engine
 

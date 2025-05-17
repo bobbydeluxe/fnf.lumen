@@ -52,7 +52,11 @@ using mikolka.funkin.utils.ArrayTools;
 import crowplexus.iris.Iris;
 import psychlua.HScript;
 import backend.Paths as PsychPaths;
+import backend.FreeplayMenuHelper;
+import misc.CustomMainMenuConfig;
 #end
+
+import states.CustomState;
 
 /**
  * Parameters used to initialize the FreeplayState.
@@ -1881,7 +1885,7 @@ class FreeplayState extends MusicBeatSubstate
 				caps.doJumpOut = true;
 			}
 
-			if (Type.getClass(_parentState) == MainMenuState)
+			if (Type.getClass(_parentState) == MainMenuState || Type.getClass(_parentState) == CustomState)
 			{
 				_parentState.persistentUpdate = false;
 				_parentState.persistentDraw = true;
@@ -1891,7 +1895,8 @@ class FreeplayState extends MusicBeatSubstate
 			{
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;
-				if (Type.getClass(_parentState) == MainMenuState)
+				if (Type.getClass(_parentState) == MainMenuState || 
+					(Type.getClass(_parentState) == CustomState && FlxG.save.data.currentState == CustomMainMenuConfig.mainMenuName))
 				{
 					FunkinSound.playMusic('freakyMenu', {
 						overrideExisting: true,
@@ -1902,7 +1907,15 @@ class FreeplayState extends MusicBeatSubstate
 				}
 				else
 				{
-					FlxG.switchState(new MainMenuState());
+					if (CustomMainMenuConfig.isScratchMenu == true)
+					{
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+						FlxG.switchState(new CustomState());
+					}
+					else
+					{
+						FlxG.switchState(new MainMenuState());
+					}
 				}
 			});
 		}
@@ -2343,11 +2356,11 @@ class FreeplayState extends MusicBeatSubstate
 	 */
 	public static function build(?params:FreeplayStateParams, ?stickers:StickerSubState):MusicBeatState
 	{
-		var result:MainMenuState;
+		var result:Dynamic;
 		if (params?.fromResults?.playRankAnim)
-			result = new MainMenuState(null, true);
+			result = FreeplayMenuHelper.getMainMenu(true);
 		else
-			result = new MainMenuState(null, false);
+			result = FreeplayMenuHelper.getMainMenu(false);
 		result.openSubState(new FreeplayState(params, stickers));
 		result.persistentUpdate = false;
 		result.persistentDraw = true;

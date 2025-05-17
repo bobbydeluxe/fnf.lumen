@@ -15,6 +15,8 @@ import lime.utils.Assets;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
 
+import misc.CustomMainMenuConfig;
+
 class ModsMenuState extends MusicBeatState
 {
 	var bg:FlxSprite;
@@ -383,7 +385,15 @@ class ModsMenuState extends MusicBeatState
 				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);
 			}
 			else
-				MusicBeatState.switchState(new MainMenuState());
+				if (CustomMainMenuConfig.isScratchMenu == true)
+					{
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+						MusicBeatState.switchState(new CustomState());
+					}
+					else
+					{
+						MusicBeatState.switchState(new MainMenuState());
+					}
 
 			persistentUpdate = false;
 			FlxG.autoPause = ClientPrefs.data.autoPause;

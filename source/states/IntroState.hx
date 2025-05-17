@@ -5,6 +5,8 @@ import psychlua.HScript;
 import crowplexus.iris.Iris;
 #end
 
+import misc.CustomMainMenuConfig;
+
 class IntroState extends MusicBeatState {
 
     public static var customIntro = false; // can override this variable in hscript
@@ -21,6 +23,7 @@ class IntroState extends MusicBeatState {
         #if HSCRIPT_ALLOWED
         for (script in hscriptArray) {
             if (script != null) {
+                script.set('mainMenuConfig', CustomMainMenuConfig);
                 if (script.exists(funcToCall)) {
                     script.call(funcToCall, args);
                 }
@@ -58,6 +61,8 @@ class IntroState extends MusicBeatState {
     {
         super.create();
 
+        CustomMainMenuConfig.reset();
+
         #if HSCRIPT_ALLOWED
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/intro/'))
 			for (file in FileSystem.readDirectory(folder))
@@ -76,6 +81,8 @@ class IntroState extends MusicBeatState {
             text.setFormat(null, 16, FlxColor.WHITE, "center");
             add(text);
         }
+
+        callOnHScript("onCreatePost", []);
     }
 
     override public function update(elapsed:Float):Void

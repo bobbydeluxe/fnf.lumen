@@ -22,6 +22,8 @@ import crowplexus.iris.Iris;
 import psychlua.HScript;
 #end
 
+import misc.CustomMainMenuConfig;
+
 typedef TitleData =
 {
 	var titlex:Float;
@@ -524,7 +526,15 @@ class TitleState extends MusicBeatState
 							FlxG.sound.music.fadeIn(4, 0, 0.7);
 						}
 						FlxTransitionableState.skipNextTransIn = true;
-						MusicBeatState.switchState(new MainMenuState());
+						if (CustomMainMenuConfig.isScratchMenu == true)
+							{
+								FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+								MusicBeatState.switchState(new CustomState());
+							}
+							else
+							{
+								MusicBeatState.switchState(new MainMenuState());
+							}
 
 					closedState = true;
 				});

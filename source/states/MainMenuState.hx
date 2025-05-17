@@ -395,7 +395,11 @@ class MainMenuState extends MusicBeatState
 				}
 				else if (eventValue == "mods") {
 					MusicBeatState.switchState(new ModsMenuState());
-				} else {
+				}
+				else if (eventValue == "titlescreen") {
+					MusicBeatState.switchState(new TitleState());
+				}
+				else {
 					FlxG.save.data.currentState = eventValue;
 					MusicBeatState.switchState(new CustomState());
 				}

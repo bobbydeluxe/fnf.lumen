@@ -4,6 +4,8 @@ import flixel.FlxObject;
 import flixel.util.FlxSort;
 import objects.Bar;
 
+import misc.CustomMainMenuConfig;
+
 #if ACHIEVEMENTS_ALLOWED
 class AchievementsMenuState extends MusicBeatState
 {
@@ -224,7 +226,15 @@ class AchievementsMenuState extends MusicBeatState
 
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
+			if (CustomMainMenuConfig.isScratchMenu == true)
+				{
+					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+					MusicBeatState.switchState(new CustomState());
+				}
+				else
+				{
+					MusicBeatState.switchState(new MainMenuState());
+				}
 			goingBack = true;
 		}
 		super.update(elapsed);

@@ -2,6 +2,8 @@ package states;
 
 import objects.AttachedSprite;
 
+import misc.CustomMainMenuConfig;
+
 class CreditsState extends MusicBeatState
 {
 	var curSelected:Int = -1;
@@ -43,7 +45,7 @@ class CreditsState extends MusicBeatState
 			['Blantados', 'blantad', 'DD losing icon', 'https://x.com/Blantados', '64b3fe'],
 			['betopia','betty','sillyfont file + gf spritesheet source','https://betpowo.github.io/','f52c6f'],
 			["TheWolfLovers", "ace", "added winning icons compatibility [from xythe engine]", "https://bsky.app/profile/thewolflovers.bsky.social", "fff700"],
-			['jarekboho', 'jarek', 'lil buddies psych port', 'https://gamebanana.com/members/2145650', '72ac8a'],
+			['jarekboho', 'jarekboho', 'lil buddies psych port', 'https://gamebanana.com/members/2145650', '72ac8a'],
 			['GoodieBag', 'goodie', 'Press Enter To Begin text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
 			['Rozebud', 'roze', 'Created the Lil Buddies [from FPS+]', '', 'FFB3D9'],
 			['SadeceNicat', 'sadecenicat', 'Created Hybrid Engine', 'https://github.com/SadeceNicat', '4B8EFF'],
@@ -202,7 +204,15 @@ class CreditsState extends MusicBeatState
 			if (controls.BACK)
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-				MusicBeatState.switchState(new MainMenuState());
+				if (CustomMainMenuConfig.isScratchMenu == true)
+					{
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+						MusicBeatState.switchState(new CustomState());
+					}
+					else
+					{
+						MusicBeatState.switchState(new MainMenuState());
+					}
 				quitting = true;
 			}
 		}
