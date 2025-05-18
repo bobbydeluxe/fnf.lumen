@@ -61,6 +61,7 @@ class BackingCard extends FlxSpriteGroup
 
   #if HSCRIPT_ALLOWED
 	public var hscriptArray:Array<HScript> = [];
+  public var hscriptLayer:FlxSpriteGroup = new FlxSpriteGroup();
 	#end
 
 	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
@@ -266,6 +267,10 @@ class BackingCard extends FlxSpriteGroup
     glow.visible = false;
 
     add(cardGlow);
+
+    #if HSCRIPT_ALLOWED
+    add(hscriptLayer); // <-- Add hscript visuals LAST so they render on top
+    #end
   }
 
   /**

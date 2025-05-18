@@ -3,7 +3,6 @@ package mikolka.stages.standard;
 import mikolka.compatibility.VsliceOptions;
 
 // DCE prevention imports
-import mikolka.stages.objects.TankmenBG;
 import shaders.AdjustColorScreenspace;
 import shaders.AdjustColorShader;
 

@@ -88,14 +88,6 @@ class Character extends FlxSprite
 		animOffsets = new Map<String, Array<Dynamic>>();
 		this.isPlayer = isPlayer;
 		changeCharacter(character);
-		
-		switch(curCharacter)
-		{
-			case 'pico-shoot-week7':
-				skipDance = true;
-				loadMappedAnims();
-				playAnim("shoot1");
-		}
 	}
 
 	public function changeCharacter(character:String)
@@ -267,22 +259,7 @@ class Character extends FlxSprite
 			dance();
 			finishAnimation();
 		}
-
-		switch(curCharacter)
-		{
-			case "pico-speaker":
-				if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
-				{
-					var noteData:Int = 1;
-					if(animationNotes[0][1] > 2) noteData = 3;
-
-					noteData += FlxG.random.int(0, 1);
-					playAnim('shoot' + noteData, true);
-					animationNotes.shift();
-				}
-				if(isAnimationFinished()) playAnim(getAnimationName(), false, false, animation.curAnim.frames.length - 3);
-		}
-
+		
 		if (getAnimationName().startsWith('sing')) holdTimer += elapsed;
 		else if(isPlayer) holdTimer = 0;
 
@@ -403,20 +380,6 @@ class Character extends FlxSprite
 			if (AnimName == 'singUP' || AnimName == 'singDOWN')
 				danced = !danced;
 		}
-	}
-
-	function loadMappedAnims():Void
-	{
-		try
-		{
-			var songData:SwagSong = Song.getChart('shooterchart', Paths.formatToSongPath(Song.loadedSongName));
-			if(songData != null)
-				for (section in songData.notes)
-					for (songNotes in section.sectionNotes)
-						animationNotes.push(songNotes);
-			animationNotes.sort(sortAnims);
-		}
-		catch(e:Dynamic) {}
 	}
 
 	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
