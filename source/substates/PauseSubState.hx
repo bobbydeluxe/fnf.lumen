@@ -12,6 +12,9 @@ import states.StoryMenuState;
 import substates.StickerSubState;
 import options.OptionsState;
 
+import states.CustomState;
+import misc.CustomMainMenuConfig;
+
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -377,11 +380,28 @@ class PauseSubState extends MusicBeatSubstate
 					if (PlayState.isStoryMode)
 						{
 							PlayState.storyPlaylist = [];
-							openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+		
+							if (CustomMainMenuConfig.isScratchMenu[1] == true)
+								{
+									FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[1];
+									openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+								}
+								else
+								{
+									openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+								}
 						}
 						else
 						{
-							openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
+							if (CustomMainMenuConfig.isScratchMenu[2] == true)
+								{
+									FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[2];
+									openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+								}
+								else
+								{
+									openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
+								}
 						}
 					PlayState.changedDifficulty = false;
 					PlayState.chartingMode = false;

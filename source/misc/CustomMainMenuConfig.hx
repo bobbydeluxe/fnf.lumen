@@ -2,23 +2,18 @@ package misc;
 
 class CustomMainMenuConfig {
     /**
-     * If true, Lumen will use a scratch custom menu instead of the default MainMenuState.
+     * DOCUMENTATION TBA
+     * Originally supposed to be for the main menu, i'm expanding this for story mode and freeplay states, as there are multiple transition calls for those
      */
-    public static var isScratchMenu:Bool = false;
-
-    /**
-     * Name of the custom menu script folder to load.
-     * Example: "CustomMainMenu"
-     * Note: This will look for and create the class by this name.
-     */
-    public static var mainMenuName:String = "CustomMainMenu";
+    public static var isScratchMenu:Array<Bool> = [false, false, false];
+    public static var mainMenuName:Array<String> = ["CustomMainMenu", "CustomStoryMenu", "CustomFreeplay"];
 
     /**
      * Resets all menu config to default.
      * Calls this in IntroState.create() or when doing a soft modpack reset.
      */
     public static function reset():Void {
-        isScratchMenu = false;
-        mainMenuName = "CustomMainMenu";
+        isScratchMenu = [false, false, false];
+        mainMenuName = ["CustomMainMenu", "CustomStoryMenu", "CustomFreeplay"];
     }
 }

@@ -156,7 +156,15 @@ class TitleState extends MusicBeatState
 
 		FlxG.mouse.visible = false;
 		#if FREEPLAY
-		MusicBeatState.switchState(new FreeplayState());
+		if (CustomMainMenuConfig.isScratchMenu[2] == true)
+			{
+				FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[2];
+				MusicBeatState.switchState(new CustomState());
+			}
+			else
+			{
+				MusicBeatState.switchState(new FreeplayState());
+			}
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
@@ -526,9 +534,9 @@ class TitleState extends MusicBeatState
 							FlxG.sound.music.fadeIn(4, 0, 0.7);
 						}
 						FlxTransitionableState.skipNextTransIn = true;
-						if (CustomMainMenuConfig.isScratchMenu == true)
+						if (CustomMainMenuConfig.isScratchMenu[0] == true)
 							{
-								FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+								FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
 								MusicBeatState.switchState(new CustomState());
 							}
 							else

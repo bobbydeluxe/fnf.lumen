@@ -2475,7 +2475,7 @@ class PlayState extends MusicBeatState
 		camFollow.setPosition(gf.getMidpoint().x, gf.getMidpoint().y);
 		camFollow.x += gf.cameraPosition[0] + girlfriendCameraOffset[0];
 		camFollow.y += gf.cameraPosition[1] + girlfriendCameraOffset[1];
-		tweenCamIn();
+		//tweenCamIn();
 	}
 
 	var cameraTwn:FlxTween;
@@ -2487,7 +2487,7 @@ class PlayState extends MusicBeatState
 			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 			camFollow.x += dad.cameraPosition[0] + opponentCameraOffset[0];
 			camFollow.y += dad.cameraPosition[1] + opponentCameraOffset[1];
-			tweenCamIn();
+			//tweenCamIn();
 		}
 		else
 		{
@@ -2496,6 +2496,7 @@ class PlayState extends MusicBeatState
 			camFollow.x -= boyfriend.cameraPosition[0] - boyfriendCameraOffset[0];
 			camFollow.y += boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];
 
+			/*
 			if (songName == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
 			{
 				cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
@@ -2505,16 +2506,7 @@ class PlayState extends MusicBeatState
 					}
 				});
 			}
-		}
-	}
-
-	public function tweenCamIn() {
-		if (songName == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1.3) {
-			cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
-				function (twn:FlxTween) {
-					cameraTwn = null;
-				}
-			});
+			*/
 		}
 	}
 
@@ -2716,23 +2708,34 @@ class PlayState extends MusicBeatState
 			var resultingAccuracy = Math.min(1,scoreData.accPoints/scoreData.totalNotesHit); 
 			var fpRank = Scoring.calculateRankFromData(scoreData.score,resultingAccuracy,scoreData.missed == 0) ?? SHIT;
 			if(isNewHighscore && !isStoryMode && !mainMenuTrans){
-				
-				camOther.fade(FlxColor.BLACK, 0.6,false,() -> {
-					FlxTransitionableState.skipNextTransOut = true;
-                FlxG.switchState(() -> FreeplayState.build(
-                  {
-                    {
-                      fromResults:
-                        {
-                          oldRank: prevScoreRank,
-                          newRank: fpRank,
-                          songId: curSong,
-                          difficultyId: Difficulty.getString(),
-                          playRankAnim: !botplay
-                        }
-                    }
-                  }));
-				});
+
+				if (CustomMainMenuConfig.isScratchMenu[2] == true)
+					{
+						camOther.fade(FlxColor.BLACK, 0.6,false,() -> {
+						FlxTransitionableState.skipNextTransOut = true;
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[2];
+						FlxG.switchState(new CustomState());
+						});
+					}
+					else
+					{
+						camOther.fade(FlxColor.BLACK, 0.6,false,() -> {
+						FlxTransitionableState.skipNextTransOut = true;
+						FlxG.switchState(() -> FreeplayState.build(
+						  {
+							{
+							  fromResults:
+								{
+								  oldRank: prevScoreRank,
+								  newRank: fpRank,
+								  songId: curSong,
+								  difficultyId: Difficulty.getString(),
+								  playRankAnim: !botplay
+								}
+							}
+						  }));
+						});
+					}
 			}
 			else if (!isStoryMode && !mainMenuTrans){
 				openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(
@@ -2748,14 +2751,46 @@ class PlayState extends MusicBeatState
 						  }
 					  }
 					}, sticker)));
+
+				if (CustomMainMenuConfig.isScratchMenu[2] == true)
+					{
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[2];
+						openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+					}
+					else
+					{
+						openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(
+							{
+							  {
+								fromResults:
+								  {
+									oldRank: null,
+									playRankAnim: false,
+									newRank: fpRank,
+									songId: curSong,
+									  difficultyId: Difficulty.getString()
+								  }
+							  }
+							}, sticker)));
+					}
 			}
 			else if (!mainMenuTrans) {
 				openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+
+				if (CustomMainMenuConfig.isScratchMenu[1] == true)
+					{
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[1];
+						openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+					}
+					else
+					{
+						openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+					}
 			}
 			else {
-				if (CustomMainMenuConfig.isScratchMenu == true)
+				if (CustomMainMenuConfig.isScratchMenu[0] == true)
 				{
-					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
 					openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
 				}
 				else
@@ -3365,9 +3400,6 @@ class PlayState extends MusicBeatState
 		if(result != LuaUtils.Function_Stop && result != LuaUtils.Function_StopHScript && result != LuaUtils.Function_StopAll) result = callOnHScript('opponentNoteHitPre', [note]);
 
 		if(result == LuaUtils.Function_Stop) return;
-
-		if (songName != 'tutorial')
-			camZooming = true;
 
 		if(note.noteType == 'Hey!' && dad.hasAnimation('hey'))
 		{

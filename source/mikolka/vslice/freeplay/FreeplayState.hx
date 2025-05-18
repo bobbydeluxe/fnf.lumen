@@ -1896,7 +1896,10 @@ class FreeplayState extends MusicBeatSubstate
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;
 				if (Type.getClass(_parentState) == MainMenuState || 
-					(Type.getClass(_parentState) == CustomState && FlxG.save.data.currentState == CustomMainMenuConfig.mainMenuName))
+					(Type.getClass(_parentState) == CustomState && 
+					(FlxG.save.data.currentState == CustomMainMenuConfig.mainMenuName[0] || 
+					FlxG.save.data.currentState == CustomMainMenuConfig.mainMenuName[1] || 
+					FlxG.save.data.currentState == CustomMainMenuConfig.mainMenuName[2])))
 				{
 					FunkinSound.playMusic('freakyMenu', {
 						overrideExisting: true,
@@ -1907,9 +1910,9 @@ class FreeplayState extends MusicBeatSubstate
 				}
 				else
 				{
-					if (CustomMainMenuConfig.isScratchMenu == true)
+					if (CustomMainMenuConfig.isScratchMenu[0] == true)
 					{
-						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
 						FlxG.switchState(new CustomState());
 					}
 					else

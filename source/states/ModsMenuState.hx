@@ -385,9 +385,9 @@ class ModsMenuState extends MusicBeatState
 				FlxG.camera.fade(FlxColor.BLACK, 0.5, false, FlxG.resetGame, false);
 			}
 			else
-				if (CustomMainMenuConfig.isScratchMenu == true)
+				if (CustomMainMenuConfig.isScratchMenu[0] == true)
 					{
-						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
 						MusicBeatState.switchState(new CustomState());
 					}
 					else

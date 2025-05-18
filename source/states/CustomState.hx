@@ -81,12 +81,13 @@ class CustomState extends MusicBeatState {
 
 		if (stickerSubState != null)
 		{
+		  callOnHScript("onStickerTrans", []);
 		  //this.persistentUpdate = true;
 		  //this.persistentDraw = true
 		  openSubState(stickerSubState);
 		  ModsHelper.clearStoredWithoutStickers();
 		  stickerSubState.degenStickers();
-		  //FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		  callOnHScript("onStickerTransPost", []);
 		}
 
         super.create();
@@ -118,28 +119,36 @@ class CustomState extends MusicBeatState {
 	{
 		switch (eventName) {
 			case "ChangeState" :
+				FlxTransitionableState.skipNextTransIn = false;
+				FlxTransitionableState.skipNextTransOut = false;
 				if (eventValue == "storymode") {
-					FlxTransitionableState.skipNextTransIn = false;
-					FlxTransitionableState.skipNextTransOut = false;
-
-					MusicBeatState.switchState(new StoryMenuState());
+					if (CustomMainMenuConfig.isScratchMenu[1] == true)
+						{
+							FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[1];
+							MusicBeatState.switchState(new CustomState());
+						}
+						else
+						{
+							MusicBeatState.switchState(new StoryMenuState());
+						}
 				}
 				else if (eventValue == "freeplay") {
-					FlxTransitionableState.skipNextTransIn = true;
-					FlxTransitionableState.skipNextTransOut = true;
-
-					openSubState(new FreeplayState());
+					if (CustomMainMenuConfig.isScratchMenu[2] == true)
+						{
+							FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[2];
+							MusicBeatState.switchState(new CustomState());
+						}
+						else
+						{
+							FlxTransitionableState.skipNextTransIn = true;
+							FlxTransitionableState.skipNextTransOut = true;
+							this.openSubState(new FreeplayState());
+						}
 				}
 				else if (eventValue == "credits") {
-					FlxTransitionableState.skipNextTransIn = false;
-					FlxTransitionableState.skipNextTransOut = false;
-
 					MusicBeatState.switchState(new CreditsState());
 				}
 				else if (eventValue == "options") {
-					FlxTransitionableState.skipNextTransIn = false;
-					FlxTransitionableState.skipNextTransOut = false;
-
 					MusicBeatState.switchState(new OptionsState());
 					OptionsState.onPlayState = false;
 					if (PlayState.SONG != null)
@@ -150,24 +159,15 @@ class CustomState extends MusicBeatState {
 					}
 				}
 				else if (eventValue == "awards") {
-					FlxTransitionableState.skipNextTransIn = false;
-					FlxTransitionableState.skipNextTransOut = false;
-
 					MusicBeatState.switchState(new AchievementsMenuState());
 				}
 				else if (eventValue == "mods") {
-					FlxTransitionableState.skipNextTransIn = false;
-					FlxTransitionableState.skipNextTransOut = false;
-
 					MusicBeatState.switchState(new ModsMenuState());
 				}
 				else if (eventValue == "mainmenu") {
-					FlxTransitionableState.skipNextTransIn = false;
-					FlxTransitionableState.skipNextTransOut = false;
-
-					if (CustomMainMenuConfig.isScratchMenu == true)
+					if (CustomMainMenuConfig.isScratchMenu[0] == true)
 						{
-							FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+							FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
 							MusicBeatState.switchState(new CustomState());
 						}
 						else
@@ -176,9 +176,6 @@ class CustomState extends MusicBeatState {
 						}
 				}
 				else if (eventValue == "titlescreen") {
-					FlxTransitionableState.skipNextTransIn = false;
-					FlxTransitionableState.skipNextTransOut = false;
-					
 					MusicBeatState.switchState(new TitleState());
 				}
 				else {

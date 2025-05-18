@@ -48,6 +48,9 @@ import mikolka.vslice.freeplay.FreeplayState;
 
 import options.OptionsState;
 
+import misc.CustomMainMenuConfig;
+import states.CustomState;
+
 class FunkinLua {
 	public var lua:State = null;
 	public var camTarget:FlxCamera;
@@ -751,13 +754,32 @@ class FunkinLua {
 			if (PlayState.isStoryMode)
 				{
 					PlayState.storyPlaylist = [];
-					if(skipTransition) FlxG.switchState(() -> new StoryMenuState())
-					else target.openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+
+					if (CustomMainMenuConfig.isScratchMenu[1] == true)
+						{
+							FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[1];
+							if(skipTransition) FlxG.switchState(() -> new CustomState())
+								else target.openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+						}
+						else
+						{
+							if(skipTransition) FlxG.switchState(() -> new StoryMenuState())
+								else target.openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+						}
 				}
 				else
 				{
-					if(skipTransition) FlxG.switchState(() -> FreeplayState.build(null, null))
-					else target.openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
+					if (CustomMainMenuConfig.isScratchMenu[2] == true)
+						{
+							FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[2];
+							if(skipTransition) FlxG.switchState(() -> new CustomState())
+								else target.openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+						}
+						else
+						{
+							if(skipTransition) FlxG.switchState(() -> FreeplayState.build(null, null))
+								else target.openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
+						}
 				}
 			return true;
 		});

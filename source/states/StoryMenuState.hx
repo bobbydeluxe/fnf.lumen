@@ -167,7 +167,7 @@ class StoryMenuState extends MusicBeatState
 			persistentUpdate = false;
 			MusicBeatState.switchState(new states.ErrorState("NO LEVELS ADDED FOR STORY MODE\n\nPress " + accept + " to go to the Week Editor Menu.\nPress " + reject + " to return to Main Menu.",
 				function() MusicBeatState.switchState(new states.editors.WeekEditorState()),
-				function() MusicBeatState.switchState(CustomMainMenuConfig.isScratchMenu ? new CustomState() : new MainMenuState())));
+				function() MusicBeatState.switchState(CustomMainMenuConfig.isScratchMenu[0] ? new CustomState() : new MainMenuState())));
 			return;
 		}
 
@@ -336,9 +336,9 @@ class StoryMenuState extends MusicBeatState
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				movedBack = true;
-				if (CustomMainMenuConfig.isScratchMenu == true)
+				if (CustomMainMenuConfig.isScratchMenu[0] == true)
 					{
-						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
 						MusicBeatState.switchState(new CustomState());
 					}
 					else
@@ -428,9 +428,9 @@ class StoryMenuState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			callOnHScript("onExitMenu",[]);
 			movedBack = true;
-			if (CustomMainMenuConfig.isScratchMenu == true)
+			if (CustomMainMenuConfig.isScratchMenu[0] == true)
 				{
-					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
 					MusicBeatState.switchState(new CustomState());
 				}
 				else

@@ -11,6 +11,9 @@ import flixel.math.FlxPoint;
 import states.StoryMenuState;
 import substates.StickerSubState;
 
+import states.CustomState;
+import misc.CustomMainMenuConfig;
+
 class GameOverSubstate extends MusicBeatSubstate
 {
 	public var boyfriend:Character;
@@ -139,11 +142,28 @@ class GameOverSubstate extends MusicBeatSubstate
 			if (PlayState.isStoryMode)
 				{
 					PlayState.storyPlaylist = [];
-					openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+
+					if (CustomMainMenuConfig.isScratchMenu[1] == true)
+						{
+							FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[1];
+							openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+						}
+						else
+						{
+							openSubState(new StickerSubState(null, (sticker) -> new StoryMenuState(sticker)));
+						}
 				}
 				else
 				{
-					openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
+					if (CustomMainMenuConfig.isScratchMenu[2] == true)
+						{
+							FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[2];
+							openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+						}
+						else
+						{
+							openSubState(new StickerSubState(null, (sticker) -> FreeplayState.build(null, sticker)));
+						}
 				}
 				PlayState.instance.callOnScripts('onGameOverConfirm', [false]);
 			}

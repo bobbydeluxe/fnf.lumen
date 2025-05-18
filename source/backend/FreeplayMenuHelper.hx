@@ -8,9 +8,9 @@ import misc.CustomMainMenuConfig;
 
 class FreeplayMenuHelper {
     public static function getMainMenu(playRankAnim:Bool = false):MusicBeatState {
-        if (CustomMainMenuConfig.isScratchMenu)
+        if (CustomMainMenuConfig.isScratchMenu[0])
         {
-            FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+            FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
             return new CustomState(null);
         }
         else

@@ -1,8 +1,8 @@
 /* FNF Lumen Engine - Custom Main Menu
  * by bobbyDX
  * to activate this, place this file in `mods/<mod_name>/scripts/states/custom/<mainMenuName>/` as a `.hx` file
- * you'll need an hscript in `mods/<mod_name>/scripts/states/intro/` that makes this the main menu
- * in the intro state script, you need to set mainMenuConfig.isScratchMenu to true and then also change mainMenuConfig.mainMenuName
+ * you'll need a script `mods/<mod_name>/scripts/registry/intro.hx` that makes this the main menu
+ * in the intro state script, you need to set mainMenuConfig.isScratchMenu first value in the array to true and then also change mainMenuConfig.mainMenuName array of strings
  * the mainMenuName will dictate in what folder under the custom state scripts folder will the main menu be
  */
 

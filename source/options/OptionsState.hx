@@ -187,9 +187,9 @@ class OptionsState extends MusicBeatState
 			}
 			else{
 
-				if (CustomMainMenuConfig.isScratchMenu == true)
+				if (CustomMainMenuConfig.isScratchMenu[0] == true)
 				{
-					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName;
+					FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
 					MusicBeatState.switchState(new CustomState());
 				}
 				else

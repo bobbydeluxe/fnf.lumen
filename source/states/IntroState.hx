@@ -64,12 +64,12 @@ class IntroState extends MusicBeatState {
         CustomMainMenuConfig.reset();
 
         #if HSCRIPT_ALLOWED
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/intro/'))
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/registry/'))
 			for (file in FileSystem.readDirectory(folder))
 			{
 
 				#if HSCRIPT_ALLOWED
-				if(file.toLowerCase().endsWith('.hx'))
+				if(file == 'intro.hx')
 					initHScript(folder + file);
 				#end
 			}
