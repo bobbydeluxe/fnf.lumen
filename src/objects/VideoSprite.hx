@@ -2,7 +2,9 @@ package objects;
 
 import flixel.addons.display.FlxPieDial;
 
-#if hxvlc
+#if linux
+import hxcodec.flixel.FlxVideoSprite;
+#else
 import hxvlc.flixel.FlxVideoSprite;
 #end
 
