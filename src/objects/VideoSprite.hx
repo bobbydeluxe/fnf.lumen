@@ -2,10 +2,11 @@ package objects;
 
 import flixel.addons.display.FlxPieDial;
 
-#if linux
-import hxcodec.flixel.FlxVideoSprite;
-#else
+#if hxvlc
 import hxvlc.flixel.FlxVideoSprite;
+#end
+#if hxCodec
+import hxcodec.flixel.FlxVideoSprite;
 #end
 
 class VideoSprite extends FlxSpriteGroup {
@@ -66,7 +67,9 @@ class VideoSprite extends FlxSpriteGroup {
 		});
 
 		// start video and adjust resolution to screen size
+		#if hxvlc
 		videoSprite.load(videoName, shouldLoop ? ['input-repeat=65545'] : null);
+		#end
 	}
 
 	var alreadyDestroyed:Bool = false;
@@ -165,7 +168,18 @@ class VideoSprite extends FlxSpriteGroup {
 		skipSprite.alpha = FlxMath.remapToRange(skipSprite.amount, 0.025, 1, 0, 1);
 	}
 
-	public function play() videoSprite?.play();
+	public function play() {
+		#if hxvlc
+		videoSprite.play();
+		#else
+		videoSprite.play(videoName, doWeLoop);
+		if (FlxG.autoPause)
+		{
+			FlxG.signals.focusGained.remove(videoSprite.resume);
+			FlxG.signals.focusLost.remove(videoSprite.pause);
+		}
+		#end
+	}
 	public function resume() videoSprite?.resume();
 	public function pause() videoSprite?.pause();
 	#end

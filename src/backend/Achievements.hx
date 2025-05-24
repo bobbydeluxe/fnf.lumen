@@ -211,11 +211,11 @@ class Achievements {
 
 		var modLoaded:String = Mods.currentModDirectory;
 		Mods.currentModDirectory = null;
-		loadAchievementJson(Paths.mods('data/config/achievements.json'));
+		loadAchievementJson(Paths.mods('data/config/awards.json'));
 		for (i => mod in Mods.parseList().enabled)
 		{
 			Mods.currentModDirectory = mod;
-			loadAchievementJson(Paths.mods('$mod/data/config/achievements.json'));
+			loadAchievementJson(Paths.mods('$mod/data/config/awards.json'));
 		}
 		Mods.currentModDirectory = modLoaded;
 	}
@@ -259,7 +259,7 @@ class Achievements {
 				}
 			} catch(e:Dynamic) {
 				var errorTitle = 'Mod name: ' + Mods.currentModDirectory != null ? Mods.currentModDirectory : "None";
-				var errorMsg = 'Error loading achievements.json: $e';
+				var errorMsg = 'Error loading awards.json: $e';
 				CoolUtil.showPopUp(errorMsg, errorTitle);
 				trace('$errorTitle - $errorMsg');
 			}
