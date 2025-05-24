@@ -5,7 +5,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="friday night funkin - quasiluminary" file="LumenFNF" packageName="com.bobbydx.luminaryfunkin" package="com.bobbydx.luminaryfunkin" main="Main" version="0.0.1" company="bobbyDX" />
+	<app title="friday night funkin - quasiluminaryengine" file="LumenFNF" packageName="com.bobbydx.luminaryfunkin" package="com.bobbydx.luminaryfunkin" main="Main" version="0.0.1" company="bobbyDX" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -75,7 +75,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
 
-	<source path="source" />
+	<source path="src" />
 
 	<!-- __________________________ Game Assets & Etc. __________________________ -->
 
