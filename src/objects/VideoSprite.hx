@@ -160,8 +160,15 @@ class VideoSprite extends FlxSpriteGroup {
 				destroy();
 			}
 		}
-	public function resume() videoSprite?.resume();
+	
 	public function pause() videoSprite?.pause();
+
+	public function resume() {
+		if (videoSprite != null) {
+			videoSprite.bitmap.time = videoSprite.bitmap.time; // Resync video position
+			videoSprite.resume();
+		}
+	}
 
 	public function play() {
 		#if hxvlc
