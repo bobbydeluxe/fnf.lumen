@@ -1917,19 +1917,11 @@ class PlayState extends MusicBeatState
 	// Health icon updaters
 	public dynamic function updateIconsScale(elapsed:Float)
 	{
-		var phi = (1 + Math.pow(5, 0.5)) / 2;
-		var pi = Math.PI; // this constant's already defined in haxe
-
-		var o = ((pi - 1) + (phi + 1.1)) / (pi - 1.75); // custom exponential base, codename o
-
-		var finalEase = FlxMath.lerp(Math.pow(o, -elapsed * 9 * playbackRate), Math.pow(1 - (elapsed * 9 * playbackRate), 3), 0.1);
-		// merged base o exponential and a cubic out ease so the tail doesn't run off
-
-		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, finalEase);
+		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, Math.exp(-elapsed * 9 * playbackRate));
 		iconP1.scale.set(mult, mult);
 		iconP1.updateHitbox();
 
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, finalEase);
+		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
 		iconP2.scale.set(mult, mult);
 		iconP2.updateHitbox();
 	}

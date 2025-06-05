@@ -1,3 +1,4 @@
+// Snow effect for the main menu
 // credits to SadeceNicat for this
 
 import states.StoryMenuState;

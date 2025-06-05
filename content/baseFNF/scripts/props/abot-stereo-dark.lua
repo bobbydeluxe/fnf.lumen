@@ -19,10 +19,10 @@ function onCreate()
         However, if you decide to take Abot inside another mod,
         the 'visualizerActive' variable will default to 'true' to avoid any bugs or issues.
     ]]
-    if getModSetting('visualizerActive') == nil then
+    if getModSetting('visualizerActive', currentModDirectory) == nil then
         visualizerActive = true
     else
-        visualizerActive = getModSetting('visualizerActive')
+        visualizerActive = getModSetting('visualizerActive', currentModDirectory)
     end
 end
 
@@ -44,8 +44,6 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
     end
     addLuaSprite('AbotSpeakerBGDark')
     setProperty('AbotSpeakerBGDark.color', 0x616785)
-
-    initLuaShader('adjustColor')
     for bar = 1, 7 do
         makeAnimatedLuaSprite('AbotSpeakerVisualizerDark'..bar, 'characters/abot/aBotViz')
         addAnimationByPrefix('AbotSpeakerVisualizerDark'..bar, 'idle', 'viz'..bar, 24, false)
@@ -55,16 +53,6 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
         end
         addLuaSprite('AbotSpeakerVisualizerDark'..bar)
         callMethod('AbotSpeakerVisualizerDark'..bar..'.animation.curAnim.finish')
-
-        createInstance('colorShader', 'shaders.AdjustColorScreenspace')
-        runHaxeCode([[
-            getVar('colorShader').setAdjustColor(-26, -45, 0, -12);
-            getVar('colorShader').threshold = 1;
-            game.dad.shader = getVar('colorShader');
-            game.boyfriend.shader = getVar('colorShader');
-            game.gf.shader = getVar('colorShader');
-        ]])
-        setProperty('AbotSpeakerVisualizerDark'..bar..'.shader', instanceArg('colorShader'), nil, true)
     end
 
     makeLuaSprite('AbotEyesDark')
@@ -151,6 +139,15 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
 				    getLuaObject('AbotSpeakerDark').anim.play('', true);
 		    }
         }
+        
+        // Shader Application Code
+
+        function applyShader(object:String, character:String, atlas:Bool) {
+            var colorShader = new shaders.AdjustColorScreenspace();
+            colorShader.setAdjustColor(-26, -45, 0, -12);
+            colorShader.threshold = 1; // no rim lighting
+            getLuaObject(object).shader = colorShader;
+        }
     ]])
 
     if characterName ~= '' then
@@ -160,8 +157,8 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
     end
 end
 
-local speakerActive = true
 -- Self explanatory. Nothing to add this time.
+local speakerActive = true
 function showSpeaker(value)
     for _, object in ipairs({'AbotSpeakerDark', 'AbotSpeakerBGDark', 'AbotPupilsDark', 'AbotEyesDark'}) do
         setProperty(object..'.visible', value)
@@ -285,6 +282,9 @@ function onSongStart()
     if visualizerActive == true and speakerActive == true then
         runHaxeFunction('startVisualizer')
     end
+    for bar = 1, 7 do
+        runHaxeFunction('applyShader', {'AbotSpeakerVisualizerDark'..bar, characterType, false})
+    end
 end
 
 function onEndSong()
@@ -351,14 +351,28 @@ function onUpdatePost(elapsed)
     setProperty('AbotPupilsDark.anim.framerate', 24 * playbackRate)
 end
 
+--[[
+    Exclusive function for the dark variant of the speaker.
+    This controls the look of the speaker when the lighting strikes 
+    in 'spookyErect' depending on the attached character's alpha.
+
+    More info inside the 'spookyErect' stage file, 
+    and the scripts used for the dark variants of characters.
+]]
 function translateAlpha(value)
+    setVar('vizInterpValue', value)
     setShaderFloat('AbotSpeakerDark', 'fadeAmount', value)
-    for bar = 1, 7 do
-        setShaderFloat('AbotSpeakerVisualizerDark'..bar, 'hue', interpolateFloat(0, -26, value))
-        setShaderFloat('AbotSpeakerVisualizerDark'..bar, 'saturation', interpolateFloat(0, -45, value))
-        setShaderFloat('AbotSpeakerVisualizerDark'..bar, 'contrast', interpolateFloat(0, 0, value))
-        setShaderFloat('AbotSpeakerVisualizerDark'..bar, 'brightness', interpolateFloat(0, -12, value))
-    end
+    runHaxeCode([[
+        for (i in 0...7) {
+            var obj = getLuaObject('AbotSpeakerVisualizerDark' + (i + 1));
+            if (obj != null && obj.shader != null) {
+                obj.shader.baseHue = parentLua.call('interpolateFloat', [0, -26, getVar('vizInterpValue')]);
+                obj.shader.baseSaturation = parentLua.call('interpolateFloat', [0, -45, getVar('vizInterpValue')]);
+                obj.shader.baseContrast = parentLua.call('interpolateFloat', [0, 0, getVar('vizInterpValue')]);
+                obj.shader.baseBrightness = parentLua.call('interpolateFloat', [0, -12, getVar('vizInterpValue')]);
+            }
+        }
+    ]])
 
     setProperty('AbotSpeakerBGDark.color', interpolateColor(0xFFFFFF, 0x616785, value))
     setProperty('AbotEyesDark.color', interpolateColor(0xFFFFFF, 0x6F96CE, value))
@@ -481,6 +495,7 @@ function visualizerOffsetY(bar)
     return offsetY
 end
 
+-- This handles which color to return between two set colors, depending on the factor.
 function interpolateColor(color1, color2, factor)
     redColor1 = color1 / (16^4)
     greenColor1 = (redColor1 - math.floor(redColor1)) * 256
@@ -497,6 +512,7 @@ function interpolateColor(color1, color2, factor)
     return math.floor(targetRed) * 16^4 + math.floor(targetGreen) * 16^2 + math.floor(targetBlue)
 end
 
+-- Ditto, but for float values.
 function interpolateFloat(value1, value2, factor)
     return (value2 - value1) * factor + value1
 end

@@ -116,8 +116,7 @@ class BackingCard extends FlxSpriteGroup
     var characterNameThingy:String = currentCharacter.getCodename(); 
 
     #if HSCRIPT_ALLOWED
-   // var scriptPath = Mods.directoriesWithFile(Paths.getSharedPath(), 'data/haxescript/backingCards/' + characterNameThingy + 'Card.hx');
-   var scriptPath = PsychPaths.getPath('scripts/registry/cards/' + characterNameThingy + 'Card.hx', TEXT, null, true);
+    var scriptPath = PsychPaths.getPath('scripts/registry/cards/' + characterNameThingy + 'Card.hx', TEXT, null, true);
 
 		if (FileSystem.exists(scriptPath)) {
 		    initHScript(scriptPath);

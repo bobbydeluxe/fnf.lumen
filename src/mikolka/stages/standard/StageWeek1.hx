@@ -6,6 +6,7 @@ import mikolka.compatibility.VsliceOptions;
 import shaders.AdjustColorScreenspace;
 import shaders.AdjustColorShader;
 import shaders.WiggleEffectRuntime;
+import shaders.OverlayShader;
 
 class StageWeek1 extends BaseStage
 {

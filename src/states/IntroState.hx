@@ -6,6 +6,7 @@ import crowplexus.iris.Iris;
 #end
 
 import misc.CustomMainMenuConfig;
+import backend.StateScriptBank;
 
 class IntroState extends MusicBeatState {
 
@@ -62,6 +63,7 @@ class IntroState extends MusicBeatState {
         super.create();
 
         CustomMainMenuConfig.reset();
+        StateScriptBank.clear();
 
         #if HSCRIPT_ALLOWED
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/registry/'))

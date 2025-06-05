@@ -332,6 +332,10 @@ class FreeplayState extends MusicBeatSubstate
 
 	override function create():Void
 	{
+
+		callOnHScript("onLoad", ["songs", songs]);
+		// gives us song list so we can have a fakeout removal of certain songs
+
 		//? Psych might've reloaded the mod list. Make sure we select current character's mod for the style
 		var saveBox = VsliceOptions.LAST_MOD;
 		if (ModsHelper.isModDirEnabled(saveBox.mod_dir))

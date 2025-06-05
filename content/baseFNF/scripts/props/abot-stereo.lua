@@ -103,6 +103,7 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
     runHaxeCode([[
         // Visualizer Code
         import funkin.vis.dsp.SpectralAnalyzer;
+        import shaders.AdjustColorScreenspace;
 
         var visualizer:SpectralAnalyzer;
         function startVisualizer() {
@@ -147,9 +148,35 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
 
         // Shader Tracking Code
         function shaderCheck(object:String, character:String) return getLuaObject(object).shader == getAttachedCharacter(character).shader;
-        function applyShader(object:String, character:String) getLuaObject(object).shader = getAttachedCharacter(character).shader;
         function shaderAtlasCheck(object:String, character:String) return game.variables.get(object).shader == getAttachedCharacter(character).shader;
-        function applyAtlasShader(object:String, character:String) game.variables.get(object).shader = getAttachedCharacter(character).shader;
+        
+        function applyShader(object:String, character:String, atlas:Bool) {
+            var baseShader = getAttachedCharacter(character).shader;
+            if (Std.isOfType(baseShader, AdjustColorScreenspace)) {
+                var colorShader = new shaders.AdjustColorScreenspace();
+                colorShader.setAdjustColor(
+                    baseShader.hue.value[0],
+                    baseShader.saturation.value[0],
+                    baseShader.brightness.value[0],
+                    baseShader.contrast.value[0]
+                );
+                colorShader.threshold = 1;
+                if (atlas) {
+                    game.variables.get(object).shader = colorShader;
+                }
+                else {
+                    getLuaObject(object).shader = colorShader;
+                }
+            }
+            else {
+                if (atlas) {
+                    game.variables.get(object).shader = baseShader;
+                }
+                else {
+                    getLuaObject(object).shader = baseShader;
+                }
+            }
+        }
 
         function getAttachedCharacter(character:String) {
             switch(character) {
@@ -345,17 +372,17 @@ function onUpdatePost(elapsed)
     if getVar('trackShader') == true then
         for _, object in ipairs({'AbotSpeaker', 'AbotPupils'}) do
             if runHaxeFunction('shaderAtlasCheck', {object, characterType}) == false then
-                runHaxeFunction('applyAtlasShader', {object, characterType})
+                runHaxeFunction('applyShader', {object, characterType, true})
             end
         end
         for bar = 1, 7 do
             if runHaxeFunction('shaderCheck', {'AbotSpeakerVisualizer'..bar, characterType}) == false then
-                runHaxeFunction('applyShader', {'AbotSpeakerVisualizer'..bar, characterType})
+                runHaxeFunction('applyShader', {'AbotSpeakerVisualizer'..bar, characterType, false})
             end
         end
         for _, object in ipairs({'AbotSpeakerBG', 'AbotEyes'}) do
             if runHaxeFunction('shaderCheck', {object, characterType}) == false then
-                runHaxeFunction('applyShader', {object, characterType})
+                runHaxeFunction('applyShader', {object, characterType, false})
             end
         end
     end

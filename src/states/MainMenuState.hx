@@ -14,6 +14,8 @@ import substates.StickerSubState;
 import crowplexus.iris.Iris;
 import psychlua.HScript;
 #end
+import substates.CustomSubstate;
+import misc.CustomMainMenuConfig;
 
 class MainMenuState extends MusicBeatState
 {
@@ -47,6 +49,8 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 
 	var cancelLoad:Bool = false;
+
+	var currentState = FlxG.save.data.currentState;
 	
 	var stickerSubState:StickerSubState;
 	public function new(?stickers:StickerSubState = null, isDisplayingRank:Bool = false)
@@ -353,21 +357,32 @@ class MainMenuState extends MusicBeatState
 		callOnHScript("onUpdatePost",[elapsed]);
 	}
 
-	function triggerEvent(eventName:String,eventValue:Dynamic = 1,eventValue2:Dynamic = 1, songStoryMode:Bool = false) {
-		switch (eventName) {
-			case "ChangeState" :
-				if (eventValue == "storymode") {
-					MusicBeatState.switchState(new StoryMenuState());
-				}
-				else if (eventValue == "freeplay") {
-					persistentDraw = true;
-					persistentUpdate = false;
-					// Freeplay has its own custom transition
-					FlxTransitionableState.skipNextTransIn = true;
-					FlxTransitionableState.skipNextTransOut = true;
+	function triggerSwitch(type:String, data:Array<Dynamic> = null, trans:Array<Bool> = null):Void {
+	switch (type) {
+		case "changeState":
+			var target:String = data[0];
+			var skipIn = trans != null && trans.length > 1 ? trans[0] : false;
+			var skipOut = trans != null && trans.length > 2 ? trans[1] : false;
 
-					openSubState(new FreeplayState());
-					subStateOpened.addOnce(state -> {
+			FlxTransitionableState.skipNextTransIn = skipIn;
+			FlxTransitionableState.skipNextTransOut = skipOut;
+
+			switch (target) {
+				case "StoryMenuState":
+					if (CustomMainMenuConfig.isScratchMenu[1]) {
+						currentState = CustomMainMenuConfig.mainMenuName[1];
+						MusicBeatState.switchState(new CustomState());
+					} else {
+						MusicBeatState.switchState(new StoryMenuState());
+					}
+
+				case "FreeplayState":
+					if (CustomMainMenuConfig.isScratchMenu[2]) {
+						currentState = CustomMainMenuConfig.mainMenuName[2];
+						MusicBeatState.switchState(new CustomState());
+					} else {
+						openSubState(new FreeplayState());
+						subStateOpened.addOnce(state -> {
 						for (i in 0...menuItems.members.length) {
 							menuItems.members[i].revive();
 							menuItems.members[i].alpha = 1;
@@ -375,52 +390,61 @@ class MainMenuState extends MusicBeatState
 							selectedSomethin = false;
 						}
 						changeItem(0);
-					});
-				}
-				else if (eventValue == "credits") {
-					MusicBeatState.switchState(new CreditsState());
-				}
-				else if (eventValue == "options") {
+						});
+					}
+
+				case "CreditsState": MusicBeatState.switchState(new CreditsState());
+				case "OptionsState":
 					MusicBeatState.switchState(new OptionsState());
 					OptionsState.onPlayState = false;
-					if (PlayState.SONG != null)
-					{
+					if (PlayState.SONG != null) {
 						PlayState.SONG.arrowSkin = null;
 						PlayState.SONG.splashSkin = null;
 						PlayState.stageUI = 'normal';
 					}
-				}
-				else if (eventValue == "awards") {
-					MusicBeatState.switchState(new AchievementsMenuState());
-				}
-				else if (eventValue == "mods") {
-					MusicBeatState.switchState(new ModsMenuState());
-				}
-				else if (eventValue == "titlescreen") {
-					MusicBeatState.switchState(new TitleState());
-				}
-				else {
-					FlxG.save.data.currentState = eventValue;
-					MusicBeatState.switchState(new CustomState());
-				}
-			case "LoadSong" :
-				var songLowercase:String = Paths.formatToSongPath(eventValue);
-				var poop:String = Highscore.formatSong(songLowercase, eventValue2);
-	
-				try
-				{
-					Song.loadFromJson(poop, songLowercase);
-					PlayState.isStoryMode = songStoryMode;
-					PlayState.storyDifficulty = eventValue2;
-				}
 
-				if (FlxG.save.data.isTransition == false) {
-					MusicBeatState.switchState(new PlayState());
-				} else {
-					LoadingState.loadAndSwitchState(new PlayState());
-				}
-			default :
-				trace("Null Value");
+				case "AwardsState": MusicBeatState.switchState(new AchievementsMenuState());
+				case "ModsState": MusicBeatState.switchState(new ModsMenuState());
+				case "MainMenuState":
+					if (CustomMainMenuConfig.isScratchMenu[0]) {
+						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
+						MusicBeatState.switchState(new CustomState());
+					} else {
+						MusicBeatState.switchState(new MainMenuState());
+					}
+
+				case "TitleState": MusicBeatState.switchState(new TitleState());
+
+				default:
+					FlxG.save.data.currentState = target;
+					
+					if (trans[3]) {
+							openSubState(new StickerSubState(null, (sticker) -> new CustomState(sticker)));
+					} else {
+						MusicBeatState.switchState(new CustomState());
+					}
+			}
+        case "loadSong":
+            var songLowercase:String = Paths.formatToSongPath(data[0]);
+			var poop:String = Highscore.formatSong(songLowercase, data[1]);
+	
+			try
+			{
+				Song.loadFromJson(poop, songLowercase);
+				PlayState.isStoryMode = data[2];
+				PlayState.storyDifficulty = data[1];
+			}
+
+			if (FlxG.save.data.isTransition == false) {
+				MusicBeatState.switchState(new PlayState());
+			} else {
+				LoadingState.loadAndSwitchState(new PlayState());
+			}
+		case "openSubState":
+			FlxG.save.data.currentSubstate = data[0];
+			openSubState(new CustomSubstate());
+		default:
+			trace('Unknown triggerSwitch type: $type');
 		}
 	}
 

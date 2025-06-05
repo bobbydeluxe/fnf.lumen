@@ -115,6 +115,7 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
     runHaxeCode([[
         // Visualizer Code
         import funkin.vis.dsp.SpectralAnalyzer;
+        import shaders.AdjustColorScreenspace;
 
         var visualizer:SpectralAnalyzer;
         function startVisualizer() {
@@ -159,7 +160,24 @@ function createSpeaker(attachedCharacter, offsetX, offsetY)
 
         // Shader Tracking Code
         function shaderCheck(object:String, character:String) return getLuaObject(object).shader == getAttachedCharacter(character).shader;
-        function applyShader(object:String, character:String) getLuaObject(object).shader = getAttachedCharacter(character).shader;
+        
+        function applyShader(object:String, character:String) {
+            var baseShader = getAttachedCharacter(character).shader;
+            if (Std.isOfType(baseShader, AdjustColorScreenspace)) {
+                var colorShader = new shaders.AdjustColorScreenspace();
+                colorShader.setAdjustColor(
+                    baseShader.hue.value[0],
+                    baseShader.saturation.value[0],
+                    baseShader.brightness.value[0],
+                    baseShader.contrast.value[0]
+                );
+                colorShader.threshold = 1;
+                getLuaObject(object).shader = colorShader;
+            }
+            else {
+                getLuaObject(object).shader = baseShader;
+            }
+        }
 
         function getAttachedCharacter(character:String) {
             switch(character) {
