@@ -1,6 +1,7 @@
 package content.baseFNF.scripts.registry.cards;
 
 import mikolka.funkin.FlxAtlasSprite;
+import openfl.display.BlendMode;
 
 var glowTest:FlxSprite;
 var glowTestDark:FlxSprite;

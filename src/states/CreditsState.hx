@@ -4,9 +4,17 @@ import objects.AttachedSprite;
 
 import misc.CustomMainMenuConfig;
 
+#if HSCRIPT_ALLOWED
+import psychlua.HScript;
+import crowplexus.iris.Iris;
+#end
 class CreditsState extends MusicBeatState
 {
 	var curSelected:Int = -1;
+
+	#if HSCRIPT_ALLOWED
+	public var hscriptArray:Array<HScript> = [];
+	#end
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var iconArray:Array<AttachedSprite> = [];
@@ -19,6 +27,95 @@ class CreditsState extends MusicBeatState
 
 	var offsetThing:Float = -75;
 
+	public var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
+		['Lumen Contributors'],
+		['bobbyDX','bobby','Created Lumen Engine','https://github.com/bobbydeluxe','FFFB33'],
+		['Blantados', 'blantad', 'DD losing icon', 'https://x.com/Blantados', '64b3fe'],
+		['betopia','betty','sillyfont file + gf spritesheet source','https://betpowo.github.io/','f52c6f'],
+		["TheWolfLovers", "ace", "added winning icons compatibility [from xythe engine]", "https://bsky.app/profile/thewolflovers.bsky.social", "fff700"],
+		['jarekboho', 'jarekboho', 'lil buddies psych port', 'https://gamebanana.com/members/2145650', '72ac8a'],
+		['GoodieBag', 'goodie', 'Press Enter To Begin text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
+		['Rozebud', 'roze', 'Created the Lil Buddies [from FPS+]', '', 'FFB3D9'],
+		['SadeceNicat', 'sadecenicat', 'Created Hybrid Engine', 'https://github.com/SadeceNicat', '4B8EFF'],
+		['Ledonic', 'ledonic', 'created the change character event fix script', 'https://youtube.com/@ledonic852', '3897FF'],
+		['HollowSoulxs', 'hollow', 'made the lumen engine icon [not the 16x16 one]', '', 'A23FFF'],
+		['riconuts', 'rico', 'made the hitsound [from their fnf troll engine]', 'https://github.com/riconuts', '3F47CC'],
+		['unholywanderer04', 'unholy', 'source of the optimized pico speaker shoot asset and the epic rating graphic [from unholy engine]', 'https://github.com/Unholywanderer', '5F92E9'],
+		["victoria",			"vi",				"restyled combo number assets",							"https://x.com/fnfin3d",					"82CDE3"],
+		[""],
+		['P-Slice Engine Team'],
+		['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
+		['mcagabe19',			'lily',             'Porter of P-slice for mobile devices and creator of linc_luajit-rewritten (used for mobile builds)',                       'https://youtube.com/@mcagabe19',		'FFE7C0'],
+		[""],
+		['P-Slice Contributors'],
+		["Fazecarl",			'fazecarl',			'Made the new logo for P-Slice',									'https://gamebanana.com/members/2121406',	'29170a'],
+		["Mykarm",			'mykarm',			'Made the new icon for P-Slice',									'https://x.com/cronviersmeat/status/1849059676467417311?s=46&t=4dcTT7PAMkRJ8zYd4LgTow',	'29170a'],
+		[""],
+		[""],
+		["Psych Engine Team"],
+		["Shadow Mario",		"shadowmario",		"Main Programmer and Head of Psych Engine",					"https://ko-fi.com/shadowmario",	"444444"],
+		["Riveren",				"riveren",			"Main Artist/Animator of Psych Engine",						"https://x.com/riverennn",			"14967B"],
+		[""],
+		["Former Engine Members"],
+		["bb-panzu",			"bb",				"Ex-Programmer of Psych Engine",							"https://x.com/bbsub3",				"3E813A"],
+		[""],
+		["Engine Contributors"],
+		["crowplexus",			"crowplexus",		"HScript Iris, Input System v3, and Other PRs",				"https://github.com/crowplexus",	"CFCFCF"],
+		["Kamizeta",			"kamizeta",			"Creator of Pessy, Psych Engine's mascot.",				"https://www.instagram.com/cewweey/",	"D21C11"],
+		["MaxNeton",			"maxneton",			"Loading Screen Easter Egg Artist/Animator.",	"https://bsky.app/profile/maxneton.bsky.social","3C2E4E"],
+		["Keoiki",				"keoiki",			"Note Splash Animations and Latin Alphabet",				"https://x.com/Keoiki_",			"D2D2D2"],
+		["SqirraRNG",			"sqirra",			"Crash Handler and Base code for\nChart Editor's Waveform",	"https://x.com/gedehari",			"E1843A"],
+		["EliteMasterEric",		"mastereric",		"Runtime Shaders support and Other PRs",					"https://x.com/EliteMasterEric",	"FFBD40"],
+		["MAJigsaw77",			"majigsaw",			".MP4 Video Loader Library (hxvlc)",						"https://x.com/MAJigsaw77",			"5F5F5F"],
+		["iFlicky",				"flicky",			"Composer of Psync and Tea Time\nAnd some sound effects",	"https://x.com/flicky_i",			"9E29CF"],
+		["KadeDev",				"kade",				"Fixed some issues on Chart Editor and Other PRs",			"https://x.com/kade0912",			"64A250"],
+		["superpowers04",		"superpowers04",	"LUA JIT Fork",												"https://x.com/superpowers04",		"B957ED"],
+		["CheemsAndFriends",	"cheems",			"Creator of FlxAnimate",									"https://x.com/CheemsnFriendos",	"E1E1E1"],
+		[""],
+		["The Funkin' Crew Inc"],
+		["ninjamuffin99",		"ninjamuffin99",	"Programmer of Friday Night Funkin'",						"https://x.com/ninja_muffin99",		"CF2D2D"],
+		["PhantomArcade",		"phantomarcade",	"Animator of Friday Night Funkin'",							"https://x.com/PhantomArcade3K",	"FADC45"],
+		["evilsk8r",			"evilsk8r",			"Artist of Friday Night Funkin'",							"https://x.com/evilsk8r",			"5ABD4B"],
+		["kawaisprite",			"kawaisprite",		"Composer of Friday Night Funkin'",							"https://x.com/kawaisprite",		"378FC7"],
+		];
+
+	public function callOnHScript(funcToCall:String, args:Array<Dynamic> = null) {
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray) {
+			if (script != null) {
+				if (script.exists(funcToCall)) {
+					script.call(funcToCall, args);
+				}
+			}
+		}
+		#end
+	}
+
+	public function initHScript(file:String)
+	{
+		var newScript:HScript = null;
+		try
+		{
+			newScript = new HScript(null, file);
+			if (newScript.exists('onCreate')) newScript.call('onCreate');
+			trace('initialized hscript interp successfully: $file');
+			hscriptArray.push(newScript);
+		}
+		catch(e:Dynamic)
+		{
+			addTextToDebug('ERROR ON LOADING ($file) - $e', FlxColor.RED);
+			var newScript:HScript = cast (Iris.instances.get(file), HScript);
+			if(newScript != null)
+				newScript.destroy();
+		}
+	}
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	public function addTextToDebug(text:String, color:FlxColor) {
+
+	}
+	#end
+
 	override function create()
 	{
 		#if DISCORD_ALLOWED
@@ -26,71 +123,32 @@ class CreditsState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
+		#if HSCRIPT_ALLOWED
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/credits/'))
+			for (file in FileSystem.readDirectory(folder))
+			{
+
+				#if HSCRIPT_ALLOWED
+				if(file.toLowerCase().endsWith('.hx'))
+					initHScript(folder + file);
+				#end
+			}
+		#end
+
 		persistentUpdate = true;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
+		callOnHScript('onLoad', ["bg", bg]);
 		bg.screenCenter();
 		
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
+		callOnHScript('onLoad', ["grpOptions", grpOptions]);
 
 		#if MODS_ALLOWED
 		for (mod in Mods.parseList().enabled) pushModCreditsToList(mod);
 		#end
-
-		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
-			['Lumen Contributors'],
-			['bobbyDX','bobby','Created Lumen Engine','https://github.com/bobbydeluxe','FFFB33'],
-			['Blantados', 'blantad', 'DD losing icon', 'https://x.com/Blantados', '64b3fe'],
-			['betopia','betty','sillyfont file + gf spritesheet source','https://betpowo.github.io/','f52c6f'],
-			["TheWolfLovers", "ace", "added winning icons compatibility [from xythe engine]", "https://bsky.app/profile/thewolflovers.bsky.social", "fff700"],
-			['jarekboho', 'jarekboho', 'lil buddies psych port', 'https://gamebanana.com/members/2145650', '72ac8a'],
-			['GoodieBag', 'goodie', 'Press Enter To Begin text [from FNF:FTT]', 'https://twitter.com/GoodieBag78/', '336600'],
-			['Rozebud', 'roze', 'Created the Lil Buddies [from FPS+]', '', 'FFB3D9'],
-			['SadeceNicat', 'sadecenicat', 'Created Hybrid Engine', 'https://github.com/SadeceNicat', '4B8EFF'],
-			['Ledonic', 'ledonic', 'created the change character event fix script', 'https://youtube.com/@ledonic852', '3897FF'],
-			['HollowSoulxs', 'hollow', 'made the lumen engine icon [not the 16x16 one]', '', 'A23FFF'],
-			['riconuts', 'rico', 'made the hitsound [from their fnf troll engine]', 'https://github.com/riconuts', '3F47CC'],
-			['unholywanderer04', 'unholy', 'source of the optimized pico speaker shoot asset and the epic rating graphic [from unholy engine]', 'https://github.com/Unholywanderer', '5F92E9'],
-			["victoria",			"vi",				"restyled combo number assets",							"https://x.com/fnfin3d",					"82CDE3"],
-			[""],
-			['P-Slice Engine Team'],
-			['Mikolka9144',			'mikolka',			'Did everything for P-slice',								 'https://gamebanana.com/members/3329541',									'2ebcfa'],
-			['mcagabe19',			'lily',             'Porter of P-slice for mobile devices and creator of linc_luajit-rewritten (used for mobile builds)',                       'https://youtube.com/@mcagabe19',		'FFE7C0'],
-			[""],
-			['P-Slice Contributors'],
-			["Fazecarl",			'fazecarl',			'Made the new logo for P-Slice',									'https://gamebanana.com/members/2121406',	'29170a'],
-			["Mykarm",			'mykarm',			'Made the new icon for P-Slice',									'https://x.com/cronviersmeat/status/1849059676467417311?s=46&t=4dcTT7PAMkRJ8zYd4LgTow',	'29170a'],
-			[""],
-			[""],
-			["Psych Engine Team"],
-			["Shadow Mario",		"shadowmario",		"Main Programmer and Head of Psych Engine",					"https://ko-fi.com/shadowmario",	"444444"],
-			["Riveren",				"riveren",			"Main Artist/Animator of Psych Engine",						"https://x.com/riverennn",			"14967B"],
-			[""],
-			["Former Engine Members"],
-			["bb-panzu",			"bb",				"Ex-Programmer of Psych Engine",							"https://x.com/bbsub3",				"3E813A"],
-			[""],
-			["Engine Contributors"],
-			["crowplexus",			"crowplexus",		"HScript Iris, Input System v3, and Other PRs",				"https://github.com/crowplexus",	"CFCFCF"],
-			["Kamizeta",			"kamizeta",			"Creator of Pessy, Psych Engine's mascot.",				"https://www.instagram.com/cewweey/",	"D21C11"],
-			["MaxNeton",			"maxneton",			"Loading Screen Easter Egg Artist/Animator.",	"https://bsky.app/profile/maxneton.bsky.social","3C2E4E"],
-			["Keoiki",				"keoiki",			"Note Splash Animations and Latin Alphabet",				"https://x.com/Keoiki_",			"D2D2D2"],
-			["SqirraRNG",			"sqirra",			"Crash Handler and Base code for\nChart Editor's Waveform",	"https://x.com/gedehari",			"E1843A"],
-			["EliteMasterEric",		"mastereric",		"Runtime Shaders support and Other PRs",					"https://x.com/EliteMasterEric",	"FFBD40"],
-			["MAJigsaw77",			"majigsaw",			".MP4 Video Loader Library (hxvlc)",						"https://x.com/MAJigsaw77",			"5F5F5F"],
-			["iFlicky",				"flicky",			"Composer of Psync and Tea Time\nAnd some sound effects",	"https://x.com/flicky_i",			"9E29CF"],
-			["KadeDev",				"kade",				"Fixed some issues on Chart Editor and Other PRs",			"https://x.com/kade0912",			"64A250"],
-			["superpowers04",		"superpowers04",	"LUA JIT Fork",												"https://x.com/superpowers04",		"B957ED"],
-			["CheemsAndFriends",	"cheems",			"Creator of FlxAnimate",									"https://x.com/CheemsnFriendos",	"E1E1E1"],
-			[""],
-
-			["The Funkin' Crew Inc"],
-			["ninjamuffin99",		"ninjamuffin99",	"Programmer of Friday Night Funkin'",						"https://x.com/ninja_muffin99",		"CF2D2D"],
-			["PhantomArcade",		"phantomarcade",	"Animator of Friday Night Funkin'",							"https://x.com/PhantomArcade3K",	"FADC45"],
-			["evilsk8r",			"evilsk8r",			"Artist of Friday Night Funkin'",							"https://x.com/evilsk8r",			"5ABD4B"],
-			["kawaisprite",			"kawaisprite",		"Composer of Friday Night Funkin'",							"https://x.com/kawaisprite",		"378FC7"],
-		];
 		
 		for(i in defaultList)
 			creditsStuff.push(i);
@@ -140,13 +198,15 @@ class CreditsState extends MusicBeatState
 		descBox.alphaMult = 0.6;
 		descBox.alpha = 0.6;
 		add(descBox);
+		callOnHScript('onLoad', ["descBox", descBox]);
 
 		descText = new FlxText(50, FlxG.height + offsetThing - 25, 1180, "", 32);
-		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
+		descText.setFormat(Paths.font("sillyfont.ttf"), 32, FlxColor.WHITE, CENTER/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
 		descText.scrollFactor.set();
 		//descText.borderSize = 2.4;
 		descBox.sprTracker = descText;
 		add(descText);
+		callOnHScript('onLoad', ["descText", descText]);
 
 		bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		intendedColor = bg.color;
@@ -155,12 +215,14 @@ class CreditsState extends MusicBeatState
 		addTouchPad('UP_DOWN', 'A_B');
 		#end
 		super.create();
+		callOnHScript('onCreatePost', []);
 	}
 
 	var quitting:Bool = false;
 	var holdTime:Float = 0;
 	override function update(elapsed:Float)
 	{
+		callOnHScript('onUpdate', [elapsed]);
 		if (FlxG.sound.music.volume < 0.7)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
@@ -179,11 +241,13 @@ class CreditsState extends MusicBeatState
 				if (upP)
 				{
 					changeSelection(-shiftMult);
+					callOnHScript('onMoveUp', []);
 					holdTime = 0;
 				}
 				if (downP)
 				{
 					changeSelection(shiftMult);
+					callOnHScript('onMoveDown', []);
 					holdTime = 0;
 				}
 
@@ -196,16 +260,19 @@ class CreditsState extends MusicBeatState
 					if(holdTime > 0.5 && checkNewHold - checkLastHold > 0)
 					{
 						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+						callOnHScript('onHold', [controls.UI_UP ? -shiftMult : shiftMult]);
 					}
 				}
 			}
 
 			if(controls.ACCEPT && (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4)) {
+				callOnHScript('onSelect', [curSelected]);
 				CoolUtil.browserLoad(creditsStuff[curSelected][3]);
 			}
 			if (controls.BACK)
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
+				callOnHScript('onExit', []);
 				if (CustomMainMenuConfig.isScratchMenu[0] == true)
 					{
 						FlxG.save.data.currentState = CustomMainMenuConfig.mainMenuName[0];
@@ -237,6 +304,7 @@ class CreditsState extends MusicBeatState
 			}
 		}
 		super.update(elapsed);
+		callOnHScript('onUpdatePost', [elapsed]);
 	}
 
 	var moveTween:FlxTween = null;
