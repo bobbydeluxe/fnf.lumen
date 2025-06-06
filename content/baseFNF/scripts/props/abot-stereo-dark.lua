@@ -19,10 +19,10 @@ function onCreate()
         However, if you decide to take Abot inside another mod,
         the 'visualizerActive' variable will default to 'true' to avoid any bugs or issues.
     ]]
-    if getModSetting('visualizerActive', currentModDirectory) == nil then
+    if getModSetting('visualizerActive') == nil then
         visualizerActive = true
     else
-        visualizerActive = getModSetting('visualizerActive', currentModDirectory)
+        visualizerActive = getModSetting('visualizerActive')
     end
 end
 
