@@ -102,7 +102,7 @@ class CustomState extends MusicBeatState {
             // Find the script in hscriptArray by its file path and remove it
             for (i in 0...hscriptArray.length) {
                 var script = hscriptArray[i];
-                if (script != null && script.file == scriptPath) {
+                if (script != null && script.filePath == scriptPath) {
                     if (script.exists('onDestroy')) script.call('onDestroy');
                     script.destroy();
                     hscriptArray.splice(i, 1);

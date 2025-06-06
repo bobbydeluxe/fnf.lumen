@@ -72,8 +72,8 @@ class IntroState extends MusicBeatState {
 			{
 
 				#if HSCRIPT_ALLOWED
-				if(file.toLowerCase() == 'intro.hx')
-					initHScript(folder + file);
+                if(file.toLowerCase() == 'intro.hx')
+                    initHScript(folder + '/' + file);
 				#end
 			}
 		#end
@@ -103,7 +103,7 @@ class IntroState extends MusicBeatState {
     {
         #if HSCRIPT_ALLOWED
         FlxG.save.data.currentSubstate = name;
-        openSubstate(new CustomSubstate());
+        openSubState(new CustomSubstate());
         #end
     }
 }
