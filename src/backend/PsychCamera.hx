@@ -101,7 +101,13 @@ class PsychCamera extends FlxCamera
 			}
 		}
 
-		var mult:Float = 1 - Math.exp(-elapsed * followLerp / (1/60));
+		var PHI = (1 + Math.pow(5, 0.5)) / 2;
+		var customExponential = Math.pow(PHI + 1.7, -elapsed * followLerp / (1/60));
+		var cubicEase = Math.pow(1 - (elapsed * followLerp / (1/60)), 3);
+		var cameraEasing = FlxMath.lerp(customExponential, cubicEase, 0.25);
+
+		var mult:Float = 1 - cameraEasing;
+
 		scroll.x += (_scrollTarget.x - scroll.x) * mult;
 		scroll.y += (_scrollTarget.y - scroll.y) * mult;
 		//trace('lerp on this frame: $mult');

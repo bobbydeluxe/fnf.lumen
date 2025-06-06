@@ -7,6 +7,7 @@ import crowplexus.iris.Iris;
 
 import misc.CustomMainMenuConfig;
 import backend.StateScriptBank;
+import substates.CustomSubstate;
 
 class IntroState extends MusicBeatState {
 
@@ -96,5 +97,13 @@ class IntroState extends MusicBeatState {
         {
             MusicBeatState.switchState(new TitleState());  
         } // with customintro true, you can still make your own press any key mechanism
+    }
+
+    function openSubstate(name:String)
+    {
+        #if HSCRIPT_ALLOWED
+        FlxG.save.data.currentSubstate = name;
+        openSubstate(new CustomSubstate());
+        #end
     }
 }
