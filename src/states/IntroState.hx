@@ -72,7 +72,7 @@ class IntroState extends MusicBeatState {
 			for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/registry/'))
 			{
 				// Only scan folders that belong to enabled mods
-				if (folder.indexOf('/' + mod.id + '/') != -1 || folder.indexOf('\\' + mod.id + '\\') != -1)
+				if (folder.indexOf('/' + mod + '/') != -1 || folder.indexOf('\\' + mod + '\\') != -1)
 				{
 					for (file in FileSystem.readDirectory(folder))
 					{
