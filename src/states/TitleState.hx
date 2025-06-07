@@ -212,15 +212,23 @@ class TitleState extends MusicBeatState
 		Conductor.bpm = musicBPM;
 
 		#if HSCRIPT_ALLOWED
-		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/titlestate/'))
-			for (file in FileSystem.readDirectory(folder))
+		for (mod in Mods.parseList().enabled)
+		{
+			for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/states/titlestate/'))
 			{
-
-				#if HSCRIPT_ALLOWED
-				if(file.toLowerCase().endsWith('.hx'))
-					initHScript(folder + file);
-				#end
+				// Only scan folders that belong to enabled mods
+				if (folder.indexOf('/' + mod.id + '/') != -1 || folder.indexOf('\\' + mod.id + '\\') != -1)
+				{
+					for (file in FileSystem.readDirectory(folder))
+					{
+						#if HSCRIPT_ALLOWED
+						if(file.toLowerCase().endsWith('.hx'))
+							initHScript(folder + file);
+						#end
+					}
+				}
 			}
+		}
 		#end
 
 

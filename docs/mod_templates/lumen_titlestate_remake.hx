@@ -7,6 +7,7 @@
 var ngLogo:FlxSprite = null;
 var introText:Array<Alphabet> = [];
 var sickBeats:Int = 0;
+var introSkipped:Bool = false;
 
 var allWackys:Array<Array<String>> = getIntroTextShit();
 var curWacky:Array<String> = allWackys[FlxG.random.int(0, allWackys.length - 1)];
@@ -44,7 +45,6 @@ function onCreatePost() {
 		ngLogo.animation.add('idle', [0, 1], 4);
 		ngLogo.animation.play('idle');
 		ngLogo.setGraphicSize(Std.int(ngLogo.width * 0.55));
-		ngLogo.y += 25;
 	}
 	else
 	{
@@ -53,7 +53,7 @@ function onCreatePost() {
 	}
 
 	ngLogo.updateHitbox();
-	ngLogo.screenCenter();
+	ngLogo.x = (FlxG.width - ngLogo.width) / 2;
 	ngLogo.antialiasing = true;
 	ngLogo.visible = false;
 	add(ngLogo);
@@ -87,7 +87,9 @@ function onBeatTexts(beat:Int) {
 
 		case 8:
 			addMoreText("newgrounds", -40);
-			ngLogo.visible = true;
+			if (!introSkipped) {
+				ngLogo.visible = true;
+			}
 
 		case 9:
 			deleteCoolText();
@@ -114,5 +116,11 @@ function onBeatTexts(beat:Int) {
 
 		case 17:
 			skipIntro();
+	}
+}
+
+function onSkipIntro() {
+	if (!introSkipped) {
+		introSkipped = true;
 	}
 }
