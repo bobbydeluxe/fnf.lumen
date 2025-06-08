@@ -242,4 +242,8 @@ class CustomState extends MusicBeatState {
             trace('Unknown triggerSwitch type: $type');
         }
     }
+
+    function openSub(item:Dynamic) {
+        openSubState(item);
+    }
 }
