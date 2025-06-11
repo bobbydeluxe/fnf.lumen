@@ -41,14 +41,7 @@ function onUpdate(elapsed:Float) {
     if (controls.ACCEPT) {
         Bank.set("menu_selection", curSelected);
         switch (curSelected) {
-            case 0: // Story Mode
-                triggerSwitch("changeState", ["StoryMenuState"], [false, false]);
-            case 1: // Freeplay
-                triggerSwitch("changeState", ["FreeplayState"], [false, false]);
-            case 2: // Credits
-                triggerSwitch("changeState", ["CreditsState"], [false, false]);
-            case 3: // Options
-                triggerSwitch("changeState", ["OptionsState"], [false, false]);
+            // do ur shit here
         }
     }
 }
