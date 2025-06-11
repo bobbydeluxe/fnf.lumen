@@ -18,7 +18,7 @@ import substates.CustomSubstate;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var lumenEngineVersion:String = '1.0'; // Similar to DuskieWhy's NightmareVision engine, Lumen Engine does not follow a strict versioning system, so 1.0 acts as a placeholder.
+	public static var lumenEngineVersion:String = '1.0'; // Similar to DuskieWhy's NightmareVision engine [at this moment], Lumen Engine does not follow a strict versioning system, so 1.0 acts as a placeholder.
 	public static var isLumen:Bool = true; // This is used for Lua functions to check if the engine is Lumen Engine or not.
 	public static var psychEngineVersion:String = '1.0'; // This is also used for Discord RPC
 	public static var pSliceVersion:String = '2.2.2'; 

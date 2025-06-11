@@ -16,7 +16,7 @@ import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 
 import backend.StateScriptBank;
-import misc.CustomMainMenuConfig
+import misc.CustomMainMenuConfig;
 
 typedef HScriptInfos = {
 	> haxe.PosInfos,
