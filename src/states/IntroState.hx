@@ -6,6 +6,7 @@ import crowplexus.iris.Iris;
 #end
 import backend.StateScriptBank;
 import substates.CustomSubstate;
+import misc.CustomMainMenuConfig;
 
 class IntroState extends MusicBeatState {
 
