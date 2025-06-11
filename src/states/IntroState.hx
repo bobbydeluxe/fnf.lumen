@@ -4,8 +4,6 @@ package states;
 import psychlua.HScript;
 import crowplexus.iris.Iris;
 #end
-
-import misc.CustomMainMenuConfig;
 import backend.StateScriptBank;
 import substates.CustomSubstate;
 
@@ -25,7 +23,6 @@ class IntroState extends MusicBeatState {
         #if HSCRIPT_ALLOWED
         for (script in hscriptArray) {
             if (script != null) {
-                script.set('mainMenuConfig', CustomMainMenuConfig);
                 if (script.exists(funcToCall)) {
                     script.call(funcToCall, args);
                 }

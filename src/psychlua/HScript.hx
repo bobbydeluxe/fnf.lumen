@@ -15,6 +15,9 @@ import crowplexus.iris.IrisConfig;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 
+import backend.StateScriptBank;
+import misc.CustomMainMenuConfig
+
 typedef HScriptInfos = {
 	> haxe.PosInfos,
 	var ?funcName:String;
@@ -177,6 +180,8 @@ class HScript extends Iris
 		#if flxanimate
 		set('FlxAnimate', FlxAnimate);
 		#end
+		set('menuConfig', CustomMainMenuConfig);
+		set('bank', StateScriptBank);
 
 		// Functions & Variables
 		set('setVar', function(name:String, value:Dynamic) {
